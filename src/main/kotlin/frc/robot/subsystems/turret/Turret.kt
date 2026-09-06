@@ -4,12 +4,12 @@ import com.ctre.phoenix6.CANBus.systemcore
 import com.ctre.phoenix6.controls.PositionVoltage
 import com.ctre.phoenix6.hardware.CANcoder
 import frc.robot.lib.commands.addPeriodic
-import frc.robot.lib.commands.invoke
+import frc.robot.lib.commands.supplierCommand
+import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.rot
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
-import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.Angle
@@ -35,24 +35,15 @@ object Turret : Mechanism() {
     val motorPosition: Angle
         get() = motor.inputs.position
 
-    private fun updateSetpoint(angle: Angle) {
-        setpoint = constraintTurretLimit(angle)
-        motor.setControl(positionVoltage.withPosition(setpoint))
-    }
+    val setAngle =
+        supplierCommand<Angle> { angle ->
+            setpoint = constraintTurretLimit(angle)
+            motor.setControl(positionVoltage.withPosition(setpoint))
 
-    fun setAngle(angle: Angle): Command =
-        setAngle { angle }
-            .until { atSetpoint.asBoolean }
-            .named("Subsystems/Turret/setAngle")
-
-    fun setAngle(angleSupplier: () -> Angle): Command =
-        this {
-                while (true) {
-                    updateSetpoint(angleSupplier())
-                    yield()
-                }
+            whenOneShot {
+                atSetpoint.waitUntil()
             }
-            .named("Subsystems/Turret/setAngle")
+        }
 
     fun constraintTurretLimit(angle: Angle): Angle {
         if (angle < REVERSE_LIMIT) return 1.rot + angle
