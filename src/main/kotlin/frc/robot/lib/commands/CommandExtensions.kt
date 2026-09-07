@@ -54,3 +54,8 @@ fun Trigger.onChange(runnable: (state: Boolean) -> Unit) {
     onFalse(command { runnable(false) }.named("onChangeFalse"))
     onTrue(command { runnable(true) }.named("onChangeTrue"))
 }
+
+context(coroutine: Coroutine)
+fun Command.fork() {
+    coroutine.fork(this)
+}
