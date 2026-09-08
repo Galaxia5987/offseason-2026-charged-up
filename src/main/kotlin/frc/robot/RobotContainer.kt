@@ -7,13 +7,14 @@ import frc.robot.lib.Mode
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
+import frc.robot.lib.commands.onChange
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.logTrigger
 import frc.robot.lib.state_machine.register
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.setpoint_manager.SetpointManager
 import frc.robot.states.IntakeState
-import frc.robot.states.setShouldShoot
+import frc.robot.states.shouldShoot
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.hood.Hood
 import frc.robot.subsystems.turret.Turret
@@ -77,7 +78,9 @@ object RobotContainer {
         driverController.create().onTrue(DriveCommands.resetGyro())
         intakeButton = driverController.rightBumper()
         outtakeButton = driverController.leftBumper()
-        driverController.circle().onFalse( setShouldShoot(true)).onTrue(setShouldShoot(false))
+        driverController.circle().onChange {
+            shouldShoot = !it
+        }
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

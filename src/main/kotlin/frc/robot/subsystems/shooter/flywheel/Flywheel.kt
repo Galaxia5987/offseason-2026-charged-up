@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter.flywheel
 import com.ctre.phoenix6.CANBus.systemcore
 import com.ctre.phoenix6.controls.Follower
 import com.ctre.phoenix6.controls.VelocityVoltage
+import com.ctre.phoenix6.controls.VoltageOut
 import com.ctre.phoenix6.signals.MotorAlignmentValue
 import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.supplierCommand
@@ -60,13 +61,17 @@ object Flywheel : Mechanism() {
 
     val setVelocity =
         supplierCommand<AngularVelocity> { velocity ->
-                setpoint = velocity
-                mainMotor.setControl(velocityVoltage.withVelocity(velocity))
+            setpoint = velocity
+            mainMotor.setControl(velocityVoltage.withVelocity(velocity))
 
-                whenOneShot {
-                    atSetpoint.waitUntil()
-                }
+            whenOneShot {
+                atSetpoint.waitUntil()
             }
+        }.configure {
+            whenCanceled {
+                mainMotor.setControl(VoltageOut(0.0))
+            }
+        }
             .named("Subsystems/Flywheel/setVelocity")
 
     fun periodic() {

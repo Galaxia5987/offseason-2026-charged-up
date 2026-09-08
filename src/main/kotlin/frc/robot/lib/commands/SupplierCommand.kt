@@ -35,13 +35,13 @@ class SupplierCommand<T>(
     private val action: SupplierCommandScope.(T) -> Unit,
 ) {
     private var commandName: String? = null
-    private var configurationHooks: (UnnamedCommand.() -> Unit)? = null
+    private var configurationHooks: (UnnamedCommand.() -> Unit) = { }
 
     operator fun invoke(target: T): Command =
         mechanism {
                 SupplierCommandScope(this, isContinuous = false).action(target)
             }
-            .apply { configurationHooks?.invoke(this) }
+            .apply { configurationHooks() }
             .also {
                 require(commandName != null) {
                     "SupplierCommand's name cannot be null!"
@@ -57,7 +57,7 @@ class SupplierCommand<T>(
                     yield()
                 }
             }
-            .apply { configurationHooks?.invoke(this) }
+            .apply { configurationHooks() }
             .also {
                 require(commandName != null) {
                     "SupplierCommand's name cannot be null!"
