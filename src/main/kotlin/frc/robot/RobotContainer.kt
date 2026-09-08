@@ -7,7 +7,6 @@ import frc.robot.lib.Mode
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
-import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.logTrigger
 import frc.robot.lib.state_machine.register
@@ -65,7 +64,10 @@ object RobotContainer {
                 { -driverController.rightX },
             )
 
-        Turret.defaultCommand = Turret.setAngle(0.deg)
+        Turret.defaultCommand = Turret.setAngle {
+            SetpointManager.turretSetpoint
+        }
+        Hood.defaultCommand = Hood.setPosition { SetpointManager.hoodSetpoint }
 
 
         IntakeState.stateMachine.register()

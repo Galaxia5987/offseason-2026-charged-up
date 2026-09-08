@@ -3,12 +3,11 @@ package frc.robot.subsystems.hood
 import com.ctre.phoenix6.controls.PositionVoltage
 import com.ctre.phoenix6.hardware.CANcoder
 import frc.robot.lib.commands.addPeriodic
-import frc.robot.lib.commands.invoke
+import frc.robot.lib.commands.supplierCommand
 import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.log
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.Angle
@@ -36,11 +35,12 @@ object Hood : Mechanism() {
         motor.inputs.position.isNear(setpoint, TOLERANCE)
     }
 
-    fun setPosition(angle: Angle): Command =
-        this {
+    val setPosition =
+        supplierCommand<Angle> { angle ->
                 setpoint = angle
                 motor.setControl(positionRequest.withPosition(setpoint))
-                atSetpoint.waitUntil()
+
+                whenOneShot { atSetpoint.waitUntil() }
             }
             .named("Subsystems/Hood/setPosition")
 

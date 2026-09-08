@@ -5,11 +5,11 @@ import com.ctre.phoenix6.controls.Follower
 import com.ctre.phoenix6.controls.VelocityVoltage
 import com.ctre.phoenix6.signals.MotorAlignmentValue
 import frc.robot.lib.commands.addPeriodic
-import frc.robot.lib.commands.invoke
+import frc.robot.lib.commands.supplierCommand
+import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.rps
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
-import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.AngularVelocity
@@ -58,10 +58,14 @@ object Flywheel : Mechanism() {
         )
     }
 
-    fun setVelocity(velocity: AngularVelocity): Command =
-        this {
+    val setVelocity =
+        supplierCommand<AngularVelocity> { velocity ->
                 setpoint = velocity
                 mainMotor.setControl(velocityVoltage.withVelocity(velocity))
+
+                whenOneShot {
+                    atSetpoint.waitUntil()
+                }
             }
             .named("Subsystems/Flywheel/setVelocity")
 
