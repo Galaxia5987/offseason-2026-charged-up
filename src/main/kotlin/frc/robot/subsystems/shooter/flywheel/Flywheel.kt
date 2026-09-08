@@ -61,17 +61,18 @@ object Flywheel : Mechanism() {
 
     val setVelocity =
         supplierCommand<AngularVelocity> { velocity ->
-            setpoint = velocity
-            mainMotor.setControl(velocityVoltage.withVelocity(velocity))
+                setpoint = velocity
+                mainMotor.setControl(velocityVoltage.withVelocity(velocity))
 
-            whenOneShot {
-                atSetpoint.waitUntil()
+                whenOneShot {
+                    atSetpoint.waitUntil()
+                }
             }
-        }.configure {
-            whenCanceled {
-                mainMotor.setControl(VoltageOut(0.0))
+            .configure {
+                whenCanceled {
+                    mainMotor.setControl(VoltageOut(0.0))
+                }
             }
-        }
             .named("Subsystems/Flywheel/setVelocity")
 
     fun periodic() {

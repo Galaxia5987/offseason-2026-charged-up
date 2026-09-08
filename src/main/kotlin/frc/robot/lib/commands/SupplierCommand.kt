@@ -35,7 +35,7 @@ class SupplierCommand<T>(
     private val action: SupplierCommandScope.(T) -> Unit,
 ) {
     private var commandName: String? = null
-    private var configurationHooks: (UnnamedCommand.() -> Unit) = { }
+    private var configurationHooks: (UnnamedCommand.() -> Unit) = {}
 
     operator fun invoke(target: T): Command =
         mechanism {
