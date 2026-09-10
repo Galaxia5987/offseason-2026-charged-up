@@ -12,5 +12,11 @@ This is the code for our 2026 offseason robot, a slightly modified game of Charg
 * [CommandEnum Explanation](annotation/src/main/kotlin/org/team5987/annotation/command_enum/README.md)
 * [UniversalMotor Explanation](src/main/kotlin/frc/robot/lib/universal_motor/UsageExample.md)
 
+## Graphs
+
+Robot State Graph
+
+![Robot State](files/export/RobotState-Page-1.png)
+
 ## See Also
 - [Website](https://galaxia5987.com)
