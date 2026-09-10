@@ -29,6 +29,9 @@ jobs:
           path: files
           format: svg
           
+      - name: Fix file permissions
+        run: sudo chown -R $USER:$USER files/
+          
       - name: Commit directly to branch
         if: github.ref != 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
