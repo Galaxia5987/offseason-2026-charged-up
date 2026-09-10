@@ -2,8 +2,8 @@
     <img src="files/markdown/logo.png" alt="Logo" />
 </div>
 
-## Recode 2026
-This is the offseason recode for 2026, using CommandV3.
+## Offseason Robot 2026 Charged Up
+This is the code for our 2026 offseason robot, a slightly modified game of Charged Up
 
 ## Documents
 * [CommandV3 Explanation](src/main/kotlin/frc/robot/lib/commands/commandv3.md)
