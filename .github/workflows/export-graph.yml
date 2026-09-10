@@ -17,18 +17,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Export Draw.io diagrams to SVG
-        uses: severgroup-tt/actions-drawio-cli@v0.0.2
+        uses: rlespinasse/drawio-export-action@v2
         with:
-          source: files
-          destination: files
+          path: files
+          format: svg
           
       - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: 'files/**/*.svg'
           commit_message: Update diagrams
