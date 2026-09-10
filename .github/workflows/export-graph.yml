@@ -1,0 +1,34 @@
+name: Export Drawio Diagrams
+
+on:
+  push:
+    paths:
+      - 'files/**/*.drawio'
+  pull_request:
+    paths:
+      - 'files/**/*.drawio'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export-diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Export Draw.io diagrams to SVG
+        uses: severgroup-tt/actions-drawio-cli@v0.0.2
+        with:
+          source: files
+          destination: files
+          
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: 'files/**/*.svg'
+          commit_message: Update diagrams
