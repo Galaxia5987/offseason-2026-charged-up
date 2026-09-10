@@ -23,11 +23,12 @@ jobs:
           ref: ${{ github.head_ref || github.ref }}
           fetch-depth: 0
 
-      - name: Export Draw.io diagrams to SVG
+      - name: Export Draw.io diagrams to PNG
         uses: rlespinasse/drawio-export-action@v2
         with:
           path: files
-          format: svg
+          format: png
+          transparent: false
           
       - name: Fix file permissions
         run: sudo chown -R $USER:$USER files/
@@ -36,7 +37,7 @@ jobs:
         if: github.ref != 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          file_pattern: 'files/**/*.svg'
+          file_pattern: 'files/**/*.png'
           commit_message: Update diagrams
 
       - name: Create Pull Request
@@ -46,5 +47,5 @@ jobs:
           commit-message: Update diagrams
           branch: update-diagrams-bot
           title: Update exported drawio diagrams
-          body: Automated PR to update SVG diagrams from modified .drawio files.
-          add-paths: 'files/**/*.svg'
+          body: Automated PR to update diagrams from modified .drawio files.
+          add-paths: 'files/**/*.png'
