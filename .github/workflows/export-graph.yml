@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   export-diagrams:
@@ -19,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.head_ref || github.ref }}
           fetch-depth: 0
 
       - name: Export Draw.io diagrams to SVG
@@ -28,8 +29,19 @@ jobs:
           path: files
           format: svg
           
-      - name: Commit and push changes
+      - name: Commit directly to branch
+        if: github.ref != 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: 'files/**/*.svg'
           commit_message: Update diagrams
+
+      - name: Create Pull Request
+        if: github.ref == 'refs/heads/main'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: Update diagrams
+          branch: update-diagrams-bot
+          title: Update exported drawio diagrams
+          body: Automated PR to update SVG diagrams from modified .drawio files.
+          add-paths: 'files/**/*.svg'
