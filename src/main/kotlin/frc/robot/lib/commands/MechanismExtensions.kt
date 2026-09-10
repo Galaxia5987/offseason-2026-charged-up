@@ -27,3 +27,6 @@ fun initializeAllMechanisms() {
         it.objectInstance
     }
 }
+
+// So build won't fail on a project without any mechanisms
+object EmptyMechanism : Mechanism()
