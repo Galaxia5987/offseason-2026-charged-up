@@ -15,11 +15,14 @@ import frc.robot.states.IntakeState
 import frc.robot.states.shouldShoot
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.hood.Hood
+import frc.robot.subsystems.mechTest.elevator.Elevator
+import frc.robot.subsystems.mechTest.elevator.Wrist
 import frc.robot.subsystems.turret.Turret
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
 import org.wpilib.command3.Trigger
+import org.wpilib.command3.button.CommandGenericHID
 import org.wpilib.smartdashboard.SendableChooser
 
 object RobotContainer {
@@ -77,6 +80,9 @@ object RobotContainer {
         driverController.circle().onChange {
             shouldShoot = !it
         }
+        val keyboard = CommandGenericHID(1)
+        keyboard.button(0).onTrue(Wrist.upright()).onFalse(Wrist.closed())
+        keyboard.button(1).onTrue(Elevator.high()).onFalse(Elevator.low())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

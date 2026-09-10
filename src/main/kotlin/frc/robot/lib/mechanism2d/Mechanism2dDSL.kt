@@ -26,11 +26,6 @@ class Section(
     val ligament = LoggedMechanismLigament2d(name, length(), angle(), lineWidth, color)
     private val children = mutableListOf<Section>()
 
-    fun attach(child: Section) {
-        children.add(child)
-        ligament.append(child.ligament)
-    }
-
     fun update() {
         ligament.length = length()
         ligament.angle = angle()
@@ -44,13 +39,20 @@ class Section(
         lineWidth: Double = 6.0,
         color: Color8Bit = Color8Bit(235, 137, 52),
         block: Section.() -> Unit = {}
-    ): Section = Section(name, { length()[m] }, { angle()[deg] }, lineWidth, color).apply {
-        block()
-        this@Section.attach(this)
+    ): Section {
+        val child = Section(name, { length()[m] }, { angle()[deg] }, lineWidth, color)
+        child.block()
+        child.attach()
+        return child
     }
 
-    fun Section.attach() {
-        attach(this)
+    // Accepts nullable to intercept uninitialized properties during class instantiation
+    fun Section?.attach() {
+        requireNotNull(this) {
+            "Cannot attach a null Section. If you declared this section as a property, ensure it is defined BEFORE the parent section."
+        }
+        this@Section.children.add(this)
+        this@Section.ligament.append(this.ligament)
     }
 }
 
@@ -60,13 +62,8 @@ class Root(
     val x: Double,
     val y: Double
 ) {
-    private var mechanismRoot: LoggedMechanismRoot2d? = null
+    var mechanismRoot: LoggedMechanismRoot2d? = null
     private val children = mutableListOf<Section>()
-
-    fun attach(child: Section) {
-        children.add(child)
-        mechanismRoot?.append(child.ligament)
-    }
 
     fun bind(mech2d: LoggedMechanism2d) {
         mechanismRoot = mech2d.getRoot(name, x, y)
@@ -84,13 +81,20 @@ class Root(
         lineWidth: Double = 6.0,
         color: Color8Bit = Color8Bit(235, 137, 52),
         block: Section.() -> Unit = {}
-    ): Section = Section(name, { length()[m] }, { angle()[deg] }, lineWidth, color).apply {
-        block()
-        this@Root.attach(this)
+    ): Section {
+        val child = Section(name, { length()[m] }, { angle()[deg] }, lineWidth, color)
+        child.block()
+        child.attach()
+        return child
     }
 
-    fun Section.attach() {
-        attach(this)
+    // Accepts nullable to intercept uninitialized properties during class instantiation
+    fun Section?.attach() {
+        requireNotNull(this) {
+            "Cannot attach a null Section. If you declared this section as a property in your MechanismBuilder subclass, ensure it is defined BEFORE 'override val mechanism = root { ... }'."
+        }
+        this@Root.children.add(this)
+        this@Root.mechanismRoot?.append(this.ligament)
     }
 }
 
@@ -103,12 +107,13 @@ abstract class MechanismBuilder(
     abstract val mechanism: Root
 
     private val mech2d = LoggedMechanism2d(width, height, backgroundColor)
-
-    init {
-        mechanism.bind(mech2d)
-    }
+    private var isBound = false
 
     fun update(logPath: String) {
+        if (!isBound) {
+            mechanism.bind(mech2d)
+            isBound = true
+        }
         mechanism.update()
         Logger.recordOutput(logPath, mech2d)
     }
