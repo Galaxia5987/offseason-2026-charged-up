@@ -1,25 +1,25 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="XUy4zUvCzc9Pmg-YTrYt">
-    <mxGraphModel dx="637" dy="384" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1548" dy="924" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="htNTkt9fsBuufHHYdwd6-18" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="htNTkt9fsBuufHHYdwd6-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="htNTkt9fsBuufHHYdwd6-33" connectable="0" parent="htNTkt9fsBuufHHYdwd6-18" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="In position for scoring" vertex="1">
+        <mxCell id="htNTkt9fsBuufHHYdwd6-33" connectable="0" parent="htNTkt9fsBuufHHYdwd6-18" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="In position for scoring and&lt;div&gt;dontScore lifted&lt;/div&gt;" vertex="1">
           <mxGeometry relative="1" x="0.0966" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Idle" vertex="1">
-          <mxGeometry height="40" width="80" x="358" y="270" as="geometry" />
+          <mxGeometry height="40" width="80" x="268" y="270" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-34" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-3">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="559.97" y="50.02999999999997" />
-              <mxPoint x="559.97" y="290.03" />
+              <mxPoint x="469.97" y="50.02999999999997" />
+              <mxPoint x="469.97" y="290.03" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -29,13 +29,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ScoringLow" vertex="1">
-          <mxGeometry height="40" width="80" x="440" y="30" as="geometry" />
+          <mxGeometry height="40" width="80" x="350" y="30" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-35" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-3">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="240.02999999999997" y="50.02999999999997" />
-              <mxPoint x="240.02999999999997" y="290.03" />
+              <mxPoint x="150.02999999999997" y="50.02999999999997" />
+              <mxPoint x="150.02999999999997" y="290.03" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -45,12 +45,12 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ScoringHigh" vertex="1">
-          <mxGeometry height="40" width="80" x="278" y="30" as="geometry" />
+          <mxGeometry height="40" width="80" x="188" y="30" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-10" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="htNTkt9fsBuufHHYdwd6-3">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="420" y="450" as="sourcePoint" />
-            <mxPoint x="420" y="300" as="targetPoint" />
+            <mxPoint x="330" y="450" as="sourcePoint" />
+            <mxPoint x="330" y="300" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-11" connectable="0" parent="htNTkt9fsBuufHHYdwd6-10" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Button r&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;eleased&lt;/span&gt;" vertex="1">
@@ -59,7 +59,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Intaking" vertex="1">
-          <mxGeometry height="40" width="80" x="358" y="370" as="geometry" />
+          <mxGeometry height="40" width="80" x="268" y="370" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-7" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Adar" vertex="1">
           <mxGeometry height="60" width="30" as="geometry" />
@@ -75,7 +75,7 @@
         <mxCell id="htNTkt9fsBuufHHYdwd6-17" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="htNTkt9fsBuufHHYdwd6-5">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="319.97" y="180.02999999999997" />
+              <mxPoint x="229.97000000000003" y="180.02999999999997" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -85,7 +85,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-15" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Cube is&lt;/div&gt;&lt;div&gt;green?&lt;/div&gt;" vertex="1">
-          <mxGeometry height="80" width="80" x="358" y="140" as="geometry" />
+          <mxGeometry height="80" width="80" x="268" y="140" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-36" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-6">
           <mxGeometry relative="1" as="geometry" />
@@ -96,7 +96,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;strokeColor=#FF0000;" value="Any" vertex="1">
-          <mxGeometry height="40" width="80" x="150" y="370" as="geometry" />
+          <mxGeometry height="40" width="80" x="60" y="370" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-47" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-42">
           <mxGeometry relative="1" as="geometry" />
@@ -107,13 +107,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-40" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Forward" vertex="1">
-          <mxGeometry height="40" width="80" x="240" y="540" as="geometry" />
+          <mxGeometry height="40" width="80" x="150" y="540" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-41" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Intake Roller" vertex="1">
-          <mxGeometry height="30" width="80" x="360" y="490" as="geometry" />
+          <mxGeometry height="30" width="80" x="270" y="490" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-42" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Stop" vertex="1">
-          <mxGeometry height="40" width="80" x="480" y="540" as="geometry" />
+          <mxGeometry height="40" width="80" x="390" y="540" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-49" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-53">
           <mxGeometry relative="1" as="geometry" />
@@ -124,25 +124,25 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-51" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Forward" vertex="1">
-          <mxGeometry height="40" width="80" x="240" y="670" as="geometry" />
+          <mxGeometry height="40" width="80" x="150" y="670" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-52" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Conveyor Roller" vertex="1">
-          <mxGeometry height="30" width="80" x="360" y="620" as="geometry" />
+          <mxGeometry height="30" width="80" x="270" y="620" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-53" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Stop" vertex="1">
-          <mxGeometry height="40" width="80" x="480" y="670" as="geometry" />
+          <mxGeometry height="40" width="80" x="390" y="670" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-80" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-71">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-58" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Forward" vertex="1">
-          <mxGeometry height="40" width="80" x="180" y="850" as="geometry" />
+          <mxGeometry height="40" width="80" x="90" y="850" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-59" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Dispatch Roller" vertex="1">
-          <mxGeometry height="30" width="80" x="360" y="750" as="geometry" />
+          <mxGeometry height="30" width="80" x="270" y="750" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-60" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Stop" vertex="1">
-          <mxGeometry height="40" width="80" x="480" y="850" as="geometry" />
+          <mxGeometry height="40" width="80" x="390" y="850" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-61" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-65">
           <mxGeometry relative="1" as="geometry" />
@@ -153,32 +153,38 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-63" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Forward" vertex="1">
-          <mxGeometry height="40" width="80" x="240" y="1020" as="geometry" />
+          <mxGeometry height="40" width="80" x="150" y="1020" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-64" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Grip roller" vertex="1">
-          <mxGeometry height="30" width="80" x="360" y="970" as="geometry" />
+          <mxGeometry height="30" width="80" x="270" y="970" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-65" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Stop" vertex="1">
-          <mxGeometry height="40" width="80" x="480" y="1020" as="geometry" />
+          <mxGeometry height="40" width="80" x="390" y="1020" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-67" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Intaking" vertex="1">
-          <mxGeometry height="110" width="200" x="900" y="120" as="geometry" />
+          <mxGeometry height="110" width="200" x="600" y="190" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-68" parent="htNTkt9fsBuufHHYdwd6-67" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Open wrist&lt;div&gt;Start intake roller&lt;/div&gt;&lt;div&gt;Start conveyor roller&lt;/div&gt;&lt;div&gt;Stop dispatch roller&lt;/div&gt;&lt;div&gt;Stop grip roller&lt;/div&gt;" vertex="1">
           <mxGeometry height="70" width="180" x="10" y="30" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-69" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Scoring Low" vertex="1">
-          <mxGeometry height="170" width="200" x="900" y="250" as="geometry" />
+          <mxGeometry height="340" width="200" x="600" y="320" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-70" parent="htNTkt9fsBuufHHYdwd6-69" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="if cube in intake:&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Open wrist&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Turn on intake roller&lt;/div&gt;&lt;div&gt;else:&lt;br&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Close wrist&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Start Conveyor Roller&lt;/div&gt;&lt;div&gt;Dispatch cube to low&lt;/div&gt;&lt;div&gt;Wait until cube leaves body&lt;/div&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="130" width="180" x="10" y="30" as="geometry" />
         </mxCell>
+        <mxCell id="Uxn51IEn9FsMZ3DdZKhr-1" parent="htNTkt9fsBuufHHYdwd6-69" style="swimlane;whiteSpace=wrap;html=1;" value=".whenCancelled()" vertex="1">
+          <mxGeometry height="160" width="180" x="10" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="Uxn51IEn9FsMZ3DdZKhr-2" parent="Uxn51IEn9FsMZ3DdZKhr-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Reverse dispatch&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;Wait until cube returns to robot&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Stop dispatch&lt;/div&gt;&lt;/div&gt;&lt;div&gt;Go to idle&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="160" x="10" y="30" as="geometry" />
+        </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-74" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-60">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="350" y="810.03" />
-              <mxPoint x="520" y="810.03" />
-              <mxPoint x="520" y="850.03" />
+              <mxPoint x="260" y="810.03" />
+              <mxPoint x="430" y="810.03" />
+              <mxPoint x="430" y="850.03" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -195,9 +201,9 @@
         <mxCell id="htNTkt9fsBuufHHYdwd6-77" edge="1" parent="1" source="htNTkt9fsBuufHHYdwd6-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="htNTkt9fsBuufHHYdwd6-60">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="350" y="930.03" />
-              <mxPoint x="520" y="930.03" />
-              <mxPoint x="520" y="890.03" />
+              <mxPoint x="260" y="930.03" />
+              <mxPoint x="430" y="930.03" />
+              <mxPoint x="430" y="890.03" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -212,16 +218,22 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-71" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;" value="If scoring high" vertex="1">
-          <mxGeometry height="80" width="80" x="310" y="830" as="geometry" />
+          <mxGeometry height="80" width="80" x="220" y="830" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-82" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Scoring High" vertex="1">
-          <mxGeometry height="280" width="200" x="1140" y="100" as="geometry" />
+          <mxGeometry height="360" width="200" x="600" y="680" as="geometry" />
         </mxCell>
-        <mxCell id="htNTkt9fsBuufHHYdwd6-83" parent="htNTkt9fsBuufHHYdwd6-82" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="if cube in intake:&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Open wrist&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Turn on intake roller&lt;br&gt;&lt;/div&gt;&lt;div&gt;else:&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Close wrist&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Start conveyor roller&lt;/div&gt;&lt;div&gt;Dispatch cube to low&lt;/div&gt;&lt;div&gt;Start grip roller&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Wait until cube gripped&lt;/div&gt;&lt;div&gt;Start elevator&lt;/div&gt;&lt;div&gt;Wait until elevator arrived&lt;/div&gt;&lt;div&gt;Release gripper&lt;/div&gt;&lt;div&gt;Wait until gripper done&lt;/div&gt;&lt;div&gt;Close elevator&lt;/div&gt;&lt;div&gt;Wait until elevator closed&lt;/div&gt;" vertex="1">
+        <mxCell id="htNTkt9fsBuufHHYdwd6-83" parent="htNTkt9fsBuufHHYdwd6-82" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="if cube in intake:&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Open wrist&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Turn on intake roller&lt;br&gt;&lt;/div&gt;&lt;div&gt;else:&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Close wrist&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Start conveyor roller&lt;/div&gt;&lt;div&gt;Dispatch cube to high&lt;/div&gt;&lt;div&gt;Start grip roller&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Wait until cube gripped&lt;/div&gt;&lt;div&gt;Start elevator&lt;/div&gt;&lt;div&gt;Wait until elevator arrived&lt;/div&gt;&lt;div&gt;Release gripper&lt;/div&gt;&lt;div&gt;Wait until gripper done&lt;/div&gt;&lt;div&gt;Close elevator&lt;/div&gt;&lt;div&gt;Wait until elevator closed&lt;/div&gt;" vertex="1">
           <mxGeometry height="240" width="180" x="10" y="30" as="geometry" />
         </mxCell>
+        <mxCell id="Uxn51IEn9FsMZ3DdZKhr-4" parent="htNTkt9fsBuufHHYdwd6-82" style="swimlane;whiteSpace=wrap;html=1;" value=".whenCancelled()" vertex="1">
+          <mxGeometry height="70" width="180" x="10" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="Uxn51IEn9FsMZ3DdZKhr-5" parent="Uxn51IEn9FsMZ3DdZKhr-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Retract elevator&lt;br&gt;Go to idle" vertex="1">
+          <mxGeometry height="30" width="160" x="10" y="30" as="geometry" />
+        </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-84" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Idle" vertex="1">
-          <mxGeometry height="60" width="200" x="900" y="40" as="geometry" />
+          <mxGeometry height="60" width="200" x="600" y="110" as="geometry" />
         </mxCell>
         <mxCell id="htNTkt9fsBuufHHYdwd6-85" parent="htNTkt9fsBuufHHYdwd6-84" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Stop everything" vertex="1">
           <mxGeometry height="25" width="180" x="10" y="30" as="geometry" />
