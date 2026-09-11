@@ -9,7 +9,7 @@ import frc.robot.lib.extensions.volts
 val DISPATCH_ROLLER_CONFIG =
     RollerConfig(
         forwardVoltage = 5.volts,
-        reverseVoltage = 5.volts,
+        reverseVoltage = (-5).volts,
         canBus = systemcore(0),
         motorPort = 0,
         motorOutput =
