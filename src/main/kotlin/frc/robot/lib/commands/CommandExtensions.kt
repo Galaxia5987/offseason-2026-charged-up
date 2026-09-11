@@ -46,9 +46,10 @@ fun Trigger.waitUntil() {
     } while (!this.asBoolean)
 }
 
-fun Trigger.onChange(command: Command) {
+fun Trigger.onChange(command: Command): Trigger {
     onFalse(command)
     onTrue(command)
+    return this
 }
 
 fun Trigger.onChange(runnable: (state: Boolean) -> Unit) {
