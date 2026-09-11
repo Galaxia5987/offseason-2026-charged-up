@@ -10,6 +10,8 @@ import frc.robot.lib.createCurrentLimits
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.rot
+import org.team5987.annotation.command_enum.CommandEnum
+import org.wpilib.units.measure.Angle
 
 val PORT = 1
 val SIM_GAINS = Gains(kP = 0.5, kD = 0.075)
@@ -38,4 +40,8 @@ val CONFIG =
         CurrentLimits = createCurrentLimits()
     }
 
-val OPEN_POSITION = 90.deg
+@CommandEnum
+enum class WristPosition(val angle: Angle) {
+    CLOSED(0.deg),
+    OPEN(90.deg),
+}
