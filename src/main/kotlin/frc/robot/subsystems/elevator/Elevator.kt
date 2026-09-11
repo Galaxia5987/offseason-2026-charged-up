@@ -17,10 +17,21 @@ import org.wpilib.command3.Trigger
 
 object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     private val mainMotor =
-        UniversalTalonFX(MAIN_PORT, config = MOTOR_CONFIG, gearRatio = GEAR_RATIO, simGains = SIM_GAINS, linearSystemWheelDiameter = DIAMETER)
+        UniversalTalonFX(
+            MAIN_PORT,
+            config = MOTOR_CONFIG,
+            gearRatio = GEAR_RATIO,
+            simGains = SIM_GAINS,
+            linearSystemWheelDiameter = DIAMETER,
+        )
     private val auxMotor =
-        UniversalTalonFX(AUX_PORT, config = MOTOR_CONFIG, gearRatio = GEAR_RATIO, simGains = SIM_GAINS,linearSystemWheelDiameter = DIAMETER)
-
+        UniversalTalonFX(
+            AUX_PORT,
+            config = MOTOR_CONFIG,
+            gearRatio = GEAR_RATIO,
+            simGains = SIM_GAINS,
+            linearSystemWheelDiameter = DIAMETER,
+        )
 
     private var setpoint = 0.m
     private val torqueCurrentFOC = MotionMagicTorqueCurrentFOC(0.0)
@@ -31,7 +42,9 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     init {
         addPeriodic(::periodic)
-        auxMotor.setControl(Follower(mainMotor.port, MotorAlignmentValue.Opposed))
+        auxMotor.setControl(
+            Follower(mainMotor.port, MotorAlignmentValue.Opposed)
+        )
     }
 
     fun periodic() {
@@ -43,7 +56,10 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
         setpoint = value.toElevatorLength()
-        mainMotor.setControl(torqueCurrentFOC with value.toElevatorLength().toAngle(DIAMETER, GEAR_RATIO))
+        mainMotor.setControl(
+            torqueCurrentFOC with
+                value.toElevatorLength().toAngle(DIAMETER, GEAR_RATIO)
+        )
         isAtSetPoint.waitUntil()
     }
 }
