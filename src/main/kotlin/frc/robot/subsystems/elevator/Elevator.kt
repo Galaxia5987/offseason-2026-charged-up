@@ -6,14 +6,13 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue
 import frc.robot.lib.commands.UnnamedCommand
 import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
-import frc.robot.lib.commands.waitUntil
-import frc.robot.lib.extensions.m
-import frc.robot.lib.extensions.toAngle
-import frc.robot.lib.extensions.with
+import frc.robot.lib.extensions.*
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
+import kotlin.math.sin
 
 object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     private val mainMotor =
@@ -52,14 +51,25 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
         auxMotor.periodic()
         Logger.recordOutput("Subsystems/Elevator/isAtSetpoint", isAtSetPoint)
         Logger.recordOutput("Subsystems/Elevator/setpoint", setpoint)
+        Logger.recordOutput("Subsystems/Elevator/Height", mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad]))
     }
 
-    override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
-        setpoint = value.toElevatorLength()
+    fun close(): Command = this {
+        setpoint = 0.0.m
         mainMotor.setControl(
-            torqueCurrentFOC with
-                value.toElevatorLength().toAngle(DIAMETER, GEAR_RATIO)
+            torqueCurrentFOC with 0.0
         )
-        isAtSetPoint.waitUntil()
+    }.named("close")
+
+    override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
+        while (true) {
+            if (value.calculateHeight() < value.minHeight) continue
+            setpoint = value.calculateDropDistance()
+            mainMotor.setControl(
+                torqueCurrentFOC with
+                        value.calculateDropDistance().toAngle(DIAMETER, GEAR_RATIO)
+            )
+            yield()
+        }
     }
 }

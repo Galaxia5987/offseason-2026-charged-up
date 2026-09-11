@@ -4,14 +4,16 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
+import frc.robot.drive
 import frc.robot.lib.Gains
 import frc.robot.lib.MotionMagicGains
 import frc.robot.lib.createCurrentLimits
 import frc.robot.lib.extensions.*
-import kotlin.math.sin
-import kotlin.math.tan
+import frc.robot.towerPoseX
 import org.team5987.annotation.command_enum.CommandEnum
 import org.wpilib.units.measure.Distance
+import kotlin.math.cos
+import kotlin.math.tan
 
 const val MAIN_PORT = 1
 const val AUX_PORT = 2
@@ -31,17 +33,15 @@ val MOTOR_CONFIG =
             }
         Slot0 = GAINS.toSlotConfig()
     }
-
-val TOLERANCE = 0.1.m
 val ELEVATOR_ANGLE = 20.deg
+val TOLERANCE = 0.1.m
+
 
 @CommandEnum
-enum class ElevatorHeights(val height: Distance) {
-    CLOSE(0.m),
-    MID(0.4.m),
-    HIGH(0.6.m);
+enum class ElevatorHeights(val minHeight: Distance) {
+    MID(1.m),
+    HIGH(2.m);
 
-    fun toElevatorLength(): Distance = this.height / sin(ELEVATOR_ANGLE[rad])
-
-    fun toLength(): Distance = this.height / tan(ELEVATOR_ANGLE[rad])
+    fun calculateDropDistance(): Distance = (drive.pose.x.m - towerPoseX) / cos(ELEVATOR_ANGLE[rad])
+    fun calculateHeight(): Distance = (drive.pose.x.m - towerPoseX) * tan(ELEVATOR_ANGLE[rad])
 }

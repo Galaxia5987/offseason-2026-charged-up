@@ -1,6 +1,7 @@
 package frc.robot
 
 import frc.robot.lib.Mode
+import frc.robot.lib.extensions.m
 import org.littletonrobotics.junction.LoggedRobot
 import org.team5987.annotation.LogLevel
 import org.team5987.annotation.LoggedOutput
@@ -29,3 +30,6 @@ val isSim = Trigger { CURRENT_MODE == Mode.SIM }
 val isAuto = Trigger { RobotState.isAutonomous() } // TODO!!!
 
 val isEnabled = Trigger { RobotState.isEnabled() } // TODO!!
+
+val towerPoseX = 1.m
+val towerPoseYOffset = 0.2.m
