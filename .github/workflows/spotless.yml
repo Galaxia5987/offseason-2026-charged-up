@@ -1,0 +1,49 @@
+name: Spotless Apply Bot
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  spotless:
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '@galaxia-bot spotless') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout PR branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.issue.number }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Run Spotless
+        run: ./gradlew spotlessApply
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add .
+          
+          # Check if there are any formatting changes before attempting to commit
+          if ! git diff --staged --quiet; then
+            git commit -m "Apply Spotless"
+            git push
+          fi
