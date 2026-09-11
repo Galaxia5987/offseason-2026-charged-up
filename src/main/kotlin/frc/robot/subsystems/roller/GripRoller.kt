@@ -22,7 +22,8 @@ val GRIP_ROLLER_CONFIG =
     )
 
 object GripRoller : Roller("Grip", GRIP_ROLLER_CONFIG) {
-    private val stopTrigger: Trigger = Trigger { true }.onChange(stop()) // TODO: Replace with gripSensor
+    private val stopTrigger: Trigger =
+        Trigger { true }.onChange(stop()) // TODO: Replace with gripSensor
 
     fun grip() = super.forward().named("${name}/grip")
 
