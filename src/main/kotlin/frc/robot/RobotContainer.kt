@@ -50,7 +50,10 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        driverController.circle().onFalse(Elevator.close()).onTrue(Elevator.high())
+        driverController
+            .circle()
+            .onFalse(Elevator.close())
+            .onTrue(Elevator.high())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

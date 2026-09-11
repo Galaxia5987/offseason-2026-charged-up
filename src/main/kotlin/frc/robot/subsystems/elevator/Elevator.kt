@@ -3,16 +3,21 @@ package frc.robot.subsystems.elevator
 import com.ctre.phoenix6.controls.Follower
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC
 import com.ctre.phoenix6.signals.MotorAlignmentValue
+import frc.robot.drive
+import frc.robot.field.towerTranslation
 import frc.robot.lib.commands.UnnamedCommand
 import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.extensions.*
 import frc.robot.lib.universal_motor.UniversalTalonFX
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.tan
 import org.littletonrobotics.junction.Logger
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
-import kotlin.math.sin
+import org.wpilib.units.measure.Distance
 
 object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     private val mainMotor =
@@ -25,12 +30,29 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
         )
     private val auxMotor =
         UniversalTalonFX(
-            AUX_PORT,
-            config = MOTOR_CONFIG,
-            gearRatio = GEAR_RATIO,
-            simGains = SIM_GAINS,
-            linearSystemWheelDiameter = DIAMETER,
-        )
+                AUX_PORT,
+                config = MOTOR_CONFIG,
+                gearRatio = GEAR_RATIO,
+                simGains = SIM_GAINS,
+                linearSystemWheelDiameter = DIAMETER,
+            )
+            .apply {
+                setControl(
+                    Follower(mainMotor.port, MotorAlignmentValue.Opposed)
+                )
+            }
+
+    val elevatorHeight: Distance by periodic {
+        mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad])
+    }
+
+    val targetElevatorLength: Distance by periodic {
+        (drive.pose.x - towerTranslation.x).m / cos(ELEVATOR_ANGLE[rad])
+    }
+
+    val targetHeight: Distance by periodic {
+        (drive.pose.x - towerTranslation.x).m * tan(ELEVATOR_ANGLE[rad])
+    }
 
     private var setpoint = 0.m
     private val torqueCurrentFOC = MotionMagicTorqueCurrentFOC(0.0)
@@ -41,9 +63,6 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     init {
         addPeriodic(::periodic)
-        auxMotor.setControl(
-            Follower(mainMotor.port, MotorAlignmentValue.Opposed)
-        )
     }
 
     fun periodic() {
@@ -51,23 +70,23 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
         auxMotor.periodic()
         Logger.recordOutput("Subsystems/Elevator/isAtSetpoint", isAtSetPoint)
         Logger.recordOutput("Subsystems/Elevator/setpoint", setpoint)
-        Logger.recordOutput("Subsystems/Elevator/Height", mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad]))
+        Logger.recordOutput("Subsystems/Elevator/Height", elevatorHeight)
     }
 
-    fun close(): Command = this {
-        setpoint = 0.0.m
-        mainMotor.setControl(
-            torqueCurrentFOC with 0.0
-        )
-    }.named("close")
+    fun close(): Command =
+        this {
+                setpoint = 0.0.m
+                mainMotor.setControl(torqueCurrentFOC with 0.0)
+            }
+            .named("close")
 
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
         while (true) {
-            if (value.calculateHeight() < value.minHeight) continue
-            setpoint = value.calculateDropDistance()
+            if (targetHeight < value.minHeight) continue
+            setpoint = targetElevatorLength
             mainMotor.setControl(
                 torqueCurrentFOC with
-                        value.calculateDropDistance().toAngle(DIAMETER, GEAR_RATIO)
+                    targetElevatorLength.toAngle(DIAMETER, GEAR_RATIO)
             )
             yield()
         }
