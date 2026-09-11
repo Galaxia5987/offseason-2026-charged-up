@@ -4,7 +4,6 @@ import com.ctre.phoenix6.CANBus.systemcore
 import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
-import frc.robot.lib.commands.invoke
 import frc.robot.lib.commands.onChange
 import frc.robot.lib.extensions.volts
 import org.wpilib.command3.Trigger
