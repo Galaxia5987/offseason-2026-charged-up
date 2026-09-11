@@ -8,7 +8,6 @@ import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
-import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 
@@ -20,6 +19,7 @@ object Wrist : Mechanism(), WristPositionCommandFactory {
             config = CONFIG,
             gearRatio = RATIO,
             simGains = SIM_GAINS,
+            canCoder = CANcCoder,
         )
 
     var setpoint = 0.deg
@@ -33,7 +33,6 @@ object Wrist : Mechanism(), WristPositionCommandFactory {
         motor.setControl(positionVoltage.withPosition(setpoint))
         atSetpoint.waitUntil()
     }
-
 
     init {
         addPeriodic(::periodic)

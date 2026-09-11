@@ -1,8 +1,10 @@
 package frc.robot.subsystems.wrist
 
+import com.ctre.phoenix6.CANBus
 import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs
 import com.ctre.phoenix6.configs.TalonFXConfiguration
+import com.ctre.phoenix6.hardware.CANcoder
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import frc.robot.lib.Gains
@@ -20,6 +22,7 @@ val TOLERANCE = 1.deg
 const val RATIO = 0.0
 val FORWARD_LIMIT = 90.deg
 val REVERSE_LIMIT = 0.deg
+val CANcCoder = CANcoder(1, CANBus())
 val CONFIG =
     TalonFXConfiguration().apply {
         CurrentLimits = createCurrentLimits()
