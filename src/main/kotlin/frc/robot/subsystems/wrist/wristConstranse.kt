@@ -1,0 +1,41 @@
+package frc.robot.subsystems.wrist
+
+import com.ctre.phoenix6.configs.MotorOutputConfigs
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs
+import com.ctre.phoenix6.configs.TalonFXConfiguration
+import com.ctre.phoenix6.signals.InvertedValue
+import com.ctre.phoenix6.signals.NeutralModeValue
+import frc.robot.lib.Gains
+import frc.robot.lib.createCurrentLimits
+import frc.robot.lib.extensions.deg
+import frc.robot.lib.extensions.get
+import frc.robot.lib.extensions.rot
+
+val PORT = 1
+val SIM_GAINS = Gains(kP = 0.5, kD = 0.075)
+val REAL_GAINS = Gains(kP = 0.5, kD = 0.075)
+val TOLERANCE = 1.deg
+const val RATIO = 0.0
+val FORWARD_LIMIT = 90.deg
+val REVERSE_LIMIT = 0.deg
+val CONFIG =
+    TalonFXConfiguration().apply {
+        CurrentLimits = createCurrentLimits()
+        Slot0 = REAL_GAINS.toSlotConfig()
+        MotorOutput =
+            MotorOutputConfigs().apply {
+                Inverted = InvertedValue.CounterClockwise_Positive
+                NeutralMode = NeutralModeValue.Brake
+            }
+        SoftwareLimitSwitch =
+            SoftwareLimitSwitchConfigs().apply {
+                ForwardSoftLimitEnable = true
+                ForwardSoftLimitThreshold =
+                    FORWARD_LIMIT[rot] // The thresholds work in rotations.
+                ReverseSoftLimitEnable = true
+                ReverseSoftLimitThreshold = REVERSE_LIMIT[rot]
+            }
+        CurrentLimits = createCurrentLimits()
+    }
+
+val OPEN_POSITION = 90.deg
