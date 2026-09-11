@@ -3,7 +3,6 @@ package frc.robot.subsystems.roller
 import com.ctre.phoenix6.CANBus
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs
 import com.ctre.phoenix6.configs.MotorOutputConfigs
-import frc.robot.lib.createCurrentLimits
 import org.wpilib.units.measure.Voltage
 
 data class RollerConfig(

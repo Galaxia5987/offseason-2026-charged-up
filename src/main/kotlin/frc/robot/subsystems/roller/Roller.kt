@@ -14,21 +14,23 @@ import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.units.measure.Voltage
 
-abstract class Roller(name: String, val config: RollerConfig) : Mechanism("${name}Roller") {
+abstract class Roller(name: String, val config: RollerConfig) :
+    Mechanism("${name}Roller") {
     protected val motor: UniversalTalonFX =
         UniversalTalonFX(
             port = config.motorPort,
             canbus = config.canBus,
-            config = TalonFXConfiguration().apply {
-                MotorOutput = config.motorOutput
-                CurrentLimits = config.currentLimits
-
-            },
-            logConfig = MotorLogConfig(
-                current = true,
-                velocity = true,
-                voltage = true
-            )
+            config =
+                TalonFXConfiguration().apply {
+                    MotorOutput = config.motorOutput
+                    CurrentLimits = config.currentLimits
+                },
+            logConfig =
+                MotorLogConfig(
+                    current = true,
+                    velocity = true,
+                    voltage = true,
+                ),
         )
 
     protected var setpoint: Voltage = 0.volts
@@ -48,10 +50,12 @@ abstract class Roller(name: String, val config: RollerConfig) : Mechanism("${nam
         motor.setControl(voltageOut with setpoint)
     }
 
-    public open fun stop(): Command = this {
-        setpoint = 0.volts
-        motor.setControl(voltageOut with setpoint)
-    }.named("${name}/stop")
+    public open fun stop(): Command =
+        this {
+                setpoint = 0.volts
+                motor.setControl(voltageOut with setpoint)
+            }
+            .named("${name}/stop")
 
     private fun _periodic() {
         motor.periodic()
@@ -59,6 +63,5 @@ abstract class Roller(name: String, val config: RollerConfig) : Mechanism("${nam
         periodic()
     }
 
-    protected open fun periodic() { }
+    protected open fun periodic() {}
 }
-
