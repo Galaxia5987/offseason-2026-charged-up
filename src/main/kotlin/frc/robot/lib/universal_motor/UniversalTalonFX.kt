@@ -3,6 +3,7 @@ package frc.robot.lib.universal_motor
 import com.ctre.phoenix6.CANBus
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.controls.ControlRequest
+import com.ctre.phoenix6.hardware.CANcoder
 import frc.robot.CURRENT_MODE
 import frc.robot.lib.Gains
 import frc.robot.lib.Mode
@@ -45,6 +46,7 @@ class UniversalTalonFX(
     private val linearSystemWheelDiameter: Distance = 0.m,
     private val absoluteEncoderOffset: Angle = 0.deg,
     private val logConfig: MotorLogConfig = MotorLogConfig(),
+    private val canCoder: CANcoder,
 ) {
     init {
         if (CURRENT_MODE == Mode.SIM) {
