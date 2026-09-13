@@ -1,5 +1,6 @@
 package frc.robot.lib.sysid
 
+import com.ctre.phoenix6.SignalLogger
 import com.ctre.phoenix6.controls.VoltageOut
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.invoke
@@ -112,6 +113,7 @@ class SysIdCommand<T>(
                 routineConfig.loggedStepVoltage.get().volts,
                 routineConfig.loggedTimeout.get().sec,
             ) { state: SysIdRoutineLog.State ->
+                SignalLogger.writeString("state", state.toString())
                 Logger.recordOutput("SysId/$name/state", state.toString())
             },
             SysIdRoutine.SysIdMechanism(
