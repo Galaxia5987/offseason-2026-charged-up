@@ -10,11 +10,9 @@ import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.sysid.sysId
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.subsystems.drive.DriveCommands
-import kotlin.reflect.full.isSubclassOf
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
-import org.wpilib.command3.Mechanism
 import org.wpilib.smartdashboard.SendableChooser
 
 object RobotContainer {
@@ -76,13 +74,12 @@ object RobotContainer {
             DriveCommands.feedforwardCharacterization(),
         )
 
-        // Register all classes implementing SysIdable
-        MechanismRegistry.allMechanisms
-            .filter { it.isSubclassOf(SysIdable::class) }
-            .forEach {
-                if (it is Mechanism && it is SysIdable) {
-                    autoChooser.addOption("${it.name} SysId", it.sysId())
-                }
+        // Register all mechanisms that implement SysIdable
+        MechanismRegistry.allMechanisms.forEach { mechanismClass ->
+            val mechanism = mechanismClass.objectInstance
+            if (mechanism is SysIdable) {
+                autoChooser.addOption("${mechanism.name} SysId", mechanism.sysId())
             }
+        }
     }
 }
