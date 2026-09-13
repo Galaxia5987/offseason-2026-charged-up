@@ -88,7 +88,7 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
                     torqueCurrentFOC with
                         MIN_LENGTH.toAngle(DIAMETER, GEAR_RATIO)
                 )
-            atSetpoint.waitUntil()
+                atSetpoint.waitUntil()
             }
             .named("close")
 
