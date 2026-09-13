@@ -10,14 +10,14 @@ import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.extensions.*
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import org.wpilib.command3.Command
-import org.wpilib.command3.Mechanism
-import org.wpilib.command3.Trigger
-import org.wpilib.units.measure.Distance
 import kotlin.math.absoluteValue
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.tan
+import org.wpilib.command3.Command
+import org.wpilib.command3.Mechanism
+import org.wpilib.command3.Trigger
+import org.wpilib.units.measure.Distance
 
 object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     private val mainMotor =
@@ -30,12 +30,12 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
         )
     private val auxMotor =
         UniversalTalonFX(
-            AUX_PORT,
-            config = MOTOR_CONFIG,
-            gearRatio = GEAR_RATIO,
-            simGains = SIM_GAINS,
-            linearSystemWheelDiameter = DIAMETER,
-        )
+                AUX_PORT,
+                config = MOTOR_CONFIG,
+                gearRatio = GEAR_RATIO,
+                simGains = SIM_GAINS,
+                linearSystemWheelDiameter = DIAMETER,
+            )
             .apply {
                 setControl(
                     Follower(mainMotor.port, MotorAlignmentValue.Opposed)
@@ -82,9 +82,12 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     fun close(): Command =
         this {
-            setpoint = 0.m
-            mainMotor.setControl(torqueCurrentFOC with MIN_LENGTH.toAngle(DIAMETER, GEAR_RATIO))
-        }
+                setpoint = 0.m
+                mainMotor.setControl(
+                    torqueCurrentFOC with
+                        MIN_LENGTH.toAngle(DIAMETER, GEAR_RATIO)
+                )
+            }
             .named("close")
 
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
@@ -92,8 +95,7 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
             if (targetHeight < value.minHeight) continue
             setpoint = targetLength
             mainMotor.setControl(
-                torqueCurrentFOC with
-                        targetLength.toAngle(DIAMETER, GEAR_RATIO)
+                torqueCurrentFOC with targetLength.toAngle(DIAMETER, GEAR_RATIO)
             )
             yield()
         }
