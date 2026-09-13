@@ -5,11 +5,6 @@ import frc.robot.lib.commands.command
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.commands.waitTime
-import org.wpilib.units.VoltageUnit
-import org.wpilib.units.measure.Time
-import org.wpilib.units.measure.Velocity
-import org.wpilib.units.measure.Voltage
-import org.wpilib.sysid.SysIdRoutineLog
 import frc.robot.lib.extensions.div
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.sec
@@ -19,6 +14,11 @@ import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
+import org.wpilib.sysid.SysIdRoutineLog
+import org.wpilib.units.VoltageUnit
+import org.wpilib.units.measure.Time
+import org.wpilib.units.measure.Velocity
+import org.wpilib.units.measure.Voltage
 
 private val TIME_BETWEEN_ROUTINES = 1.sec
 
@@ -26,12 +26,12 @@ data class SysIdRoutineConfig(
     val rampRate: Velocity<VoltageUnit>,
     val stepVoltage: Voltage,
     val timeout: Time,
-    val direction: SysIdRoutine.Direction
+    val direction: SysIdRoutine.Direction,
 )
 
 data class SysIdMechanismConfig(
     val forwardRoutineConfig: SysIdRoutineConfig,
-    val backwardRoutineConfig: SysIdRoutineConfig
+    val backwardRoutineConfig: SysIdRoutineConfig,
 )
 
 /**
@@ -42,7 +42,12 @@ data class SysIdMechanismConfig(
  */
 fun <T> T.sysId(): Command where T : SysIdable, T : Mechanism {
     val config = configureSysId()
-    return SysIdCommand(this, config.forwardRoutineConfig, config.backwardRoutineConfig).command()
+    return SysIdCommand(
+            this,
+            config.forwardRoutineConfig,
+            config.backwardRoutineConfig,
+        )
+        .command()
 }
 
 /**
@@ -72,22 +77,28 @@ interface SysIdable {
  * (forward/backward/quasistatic).
  *
  * @param T The subsystem type, which must implement [SysIdable] and extend
- * [Mechanism].
+ *   [Mechanism].
  * @property subsystem The target subsystem being characterized.
  * @property forwardRoutineConfig configuration for the forward routine.
  * @property backwardRoutineConfig configuration for the backward routine.
  */
-class SysIdCommand<T>(private val subsystem: T, forwardRoutineConfig: SysIdRoutineConfig, backwardRoutineConfig: SysIdRoutineConfig) where
-T : SysIdable,
-T : Mechanism {
+class SysIdCommand<T>(
+    private val subsystem: T,
+    forwardRoutineConfig: SysIdRoutineConfig,
+    backwardRoutineConfig: SysIdRoutineConfig,
+) where T : SysIdable, T : Mechanism {
 
     private val name = subsystem.name
 
-    private val forwardRoutineConfig = LoggedSysIdRoutineConfig(forwardRoutineConfig)
-    private val backwardRoutineConfig = LoggedSysIdRoutineConfig(backwardRoutineConfig)
+    private val forwardRoutineConfig =
+        LoggedSysIdRoutineConfig(forwardRoutineConfig)
+    private val backwardRoutineConfig =
+        LoggedSysIdRoutineConfig(backwardRoutineConfig)
 
-    private var forwardRoutine: () -> SysIdRoutine = createRoutine(this.forwardRoutineConfig)
-    private var backwardRoutine: () -> SysIdRoutine = createRoutine(this.backwardRoutineConfig)
+    private var forwardRoutine: () -> SysIdRoutine =
+        createRoutine(this.forwardRoutineConfig)
+    private var backwardRoutine: () -> SysIdRoutine =
+        createRoutine(this.backwardRoutineConfig)
 
     /**
      * Creates the [SysIdRoutine] object with the provided configuration.
@@ -106,17 +117,18 @@ T : Mechanism {
             SysIdRoutine.SysIdMechanism(
                 subsystem.setVoltageConsumer,
                 null,
-                subsystem
-            )
+                subsystem,
+            ),
         )
     }
 
     /** Initializes the internal SysId routines from the stored constants. */
     private fun createRoutineCommands(): Command =
         command {
-            forwardRoutine = createRoutine(forwardRoutineConfig)
-            backwardRoutine = createRoutine(backwardRoutineConfig)
-        }.named("createRoutineCommands")
+                forwardRoutine = createRoutine(forwardRoutineConfig)
+                backwardRoutine = createRoutine(backwardRoutineConfig)
+            }
+            .named("createRoutineCommands")
 
     /**
      * Builds the full characterization command sequence:
@@ -132,20 +144,20 @@ T : Mechanism {
      */
     fun command(): Command =
         subsystem {
-            +createRoutineCommands()
-            +forwardRoutine().dynamic(SysIdRoutine.Direction.FORWARD)
-            +waitTime(TIME_BETWEEN_ROUTINES)
-            +backwardRoutine().dynamic(SysIdRoutine.Direction.REVERSE)
-            +waitTime(TIME_BETWEEN_ROUTINES)
-            +forwardRoutine().quasistatic(SysIdRoutine.Direction.FORWARD)
-            +waitTime(TIME_BETWEEN_ROUTINES)
-            +backwardRoutine().quasistatic(SysIdRoutine.Direction.REVERSE)
-        }.named("$name/characterize")
+                +createRoutineCommands()
+                +forwardRoutine().dynamic(SysIdRoutine.Direction.FORWARD)
+                +waitTime(TIME_BETWEEN_ROUTINES)
+                +backwardRoutine().dynamic(SysIdRoutine.Direction.REVERSE)
+                +waitTime(TIME_BETWEEN_ROUTINES)
+                +forwardRoutine().quasistatic(SysIdRoutine.Direction.FORWARD)
+                +waitTime(TIME_BETWEEN_ROUTINES)
+                +backwardRoutine().quasistatic(SysIdRoutine.Direction.REVERSE)
+            }
+            .named("$name/characterize")
 
     /**
      * Holds the constants used for configuring a [SysIdRoutine], with tunable
      * logging support.
-     *
      */
     inner class LoggedSysIdRoutineConfig(val config: SysIdRoutineConfig) {
 
@@ -155,12 +167,15 @@ T : Mechanism {
         val loggedRampRate =
             LoggedNetworkNumber(
                 "$loggingPath/rampRate",
-                config.rampRate.`in`(volts.per(sec))
+                config.rampRate.`in`(volts.per(sec)),
             )
 
         /** Logged step voltage in volts, tunable via NetworkTables. */
         val loggedStepVoltage =
-            LoggedNetworkNumber("$loggingPath/stepVoltage", config.stepVoltage[volts])
+            LoggedNetworkNumber(
+                "$loggingPath/stepVoltage",
+                config.stepVoltage[volts],
+            )
 
         /** Logged timeout duration in seconds, tunable via NetworkTables. */
         val loggedTimeout =

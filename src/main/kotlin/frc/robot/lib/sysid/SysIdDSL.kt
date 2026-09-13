@@ -5,8 +5,7 @@ import org.wpilib.units.measure.Time
 import org.wpilib.units.measure.Velocity
 import org.wpilib.units.measure.Voltage
 
-@DslMarker
-annotation class SysIdDsl
+@DslMarker annotation class SysIdDsl
 
 @SysIdDsl
 class SysIdRoutineConfigBuilder {
@@ -19,9 +18,10 @@ class SysIdRoutineConfigBuilder {
     fun build(): SysIdRoutineConfig {
         return SysIdRoutineConfig(
             rampRate = requireNotNull(rampRate) { "rampRate is required" },
-            stepVoltage = requireNotNull(stepVoltage) { "stepVoltage is required" },
+            stepVoltage =
+                requireNotNull(stepVoltage) { "stepVoltage is required" },
             timeout = requireNotNull(timeout) { "timeout is required" },
-            direction = requireNotNull(direction) { "direction is required" }
+            direction = requireNotNull(direction) { "direction is required" },
         )
     }
 }
@@ -33,43 +33,57 @@ class SysIdMechanismConfigBuilder {
 
     /** Configure the forward routine specifically. */
     fun forward(block: SysIdRoutineConfigBuilder.() -> Unit) {
-        forwardConfig = SysIdRoutineConfigBuilder().apply {
-            direction = SysIdRoutine.Direction.FORWARD
-            block()
-        }.build()
+        forwardConfig =
+            SysIdRoutineConfigBuilder()
+                .apply {
+                    direction = SysIdRoutine.Direction.FORWARD
+                    block()
+                }
+                .build()
     }
 
     /** Configure the backward routine specifically. */
     fun backward(block: SysIdRoutineConfigBuilder.() -> Unit) {
-        backwardConfig = SysIdRoutineConfigBuilder().apply {
-            direction = SysIdRoutine.Direction.REVERSE
-            block()
-        }.build()
+        backwardConfig =
+            SysIdRoutineConfigBuilder()
+                .apply {
+                    direction = SysIdRoutine.Direction.REVERSE
+                    block()
+                }
+                .build()
     }
 
-    /**
-     * Forward and backward routines share the same voltages and timeouts.
-     */
+    /** Forward and backward routines share the same voltages and timeouts. */
     fun symmetric(block: SysIdRoutineConfigBuilder.() -> Unit) {
-        forwardConfig = SysIdRoutineConfigBuilder()
-            .apply(block)
-            .apply { direction = SysIdRoutine.Direction.FORWARD }
-            .build()
+        forwardConfig =
+            SysIdRoutineConfigBuilder()
+                .apply(block)
+                .apply { direction = SysIdRoutine.Direction.FORWARD }
+                .build()
 
-        backwardConfig = SysIdRoutineConfigBuilder()
-            .apply(block)
-            .apply { direction = SysIdRoutine.Direction.REVERSE }
-            .build()
+        backwardConfig =
+            SysIdRoutineConfigBuilder()
+                .apply(block)
+                .apply { direction = SysIdRoutine.Direction.REVERSE }
+                .build()
     }
 
     fun build(): SysIdMechanismConfig {
         return SysIdMechanismConfig(
-            forwardRoutineConfig = requireNotNull(forwardConfig) { "Forward configuration is missing" },
-            backwardRoutineConfig = requireNotNull(backwardConfig) { "Backward configuration is missing" }
+            forwardRoutineConfig =
+                requireNotNull(forwardConfig) {
+                    "Forward configuration is missing"
+                },
+            backwardRoutineConfig =
+                requireNotNull(backwardConfig) {
+                    "Backward configuration is missing"
+                },
         )
     }
 }
 
-fun buildSysIdConfig(block: SysIdMechanismConfigBuilder.() -> Unit): SysIdMechanismConfig {
+fun buildSysIdConfig(
+    block: SysIdMechanismConfigBuilder.() -> Unit
+): SysIdMechanismConfig {
     return SysIdMechanismConfigBuilder().apply(block).build()
 }
