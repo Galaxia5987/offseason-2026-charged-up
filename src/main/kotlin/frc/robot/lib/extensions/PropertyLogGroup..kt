@@ -11,7 +11,7 @@ class PropertyLogGroup(
         "$loggingPath/${property.name}" to property
     }
 
-    fun log() {
+    fun periodic() {
         recordedProperties.forEach { (key, property) ->
             property.get()?.log(key)
         }

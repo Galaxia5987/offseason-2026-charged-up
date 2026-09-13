@@ -77,7 +77,7 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     fun periodic() {
         mainMotor.periodic()
         auxMotor.periodic()
-        logList.log()
+        logList.periodic()
     }
 
     fun close(): Command =
