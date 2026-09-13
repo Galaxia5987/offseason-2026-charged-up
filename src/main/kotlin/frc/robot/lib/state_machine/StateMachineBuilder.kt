@@ -17,6 +17,8 @@ class StateMachineBuilder<E : Enum<E>>(
 
     private val stateMap = mutableMapOf<E, StateMachine.State>()
 
+    private var stateChangeCallback: (newState: E) -> Unit = {}
+
     operator fun E.invoke(command: Command): E {
         require(!stateMap.containsKey(this))
 
@@ -26,10 +28,15 @@ class StateMachineBuilder<E : Enum<E>>(
                 "States/${this@StateMachineBuilder::class.simpleName}/state"
             state.onEnter {
                 Logger.recordOutput(logPath, name)
+                stateChangeCallback(this)
             }
         }
         stateMap[this] = state
         return this
+    }
+
+    fun onStateChange(callback: (newState: E) -> Unit) {
+        stateChangeCallback = callback
     }
 
     inline operator fun E.invoke(crossinline block: Coroutine.() -> Unit): E {
