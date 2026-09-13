@@ -8,6 +8,7 @@ import frc.robot.field.TOWER_GRID
 import frc.robot.lib.commands.UnnamedCommand
 import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
+import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.*
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import kotlin.math.absoluteValue
@@ -82,11 +83,12 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     fun close(): Command =
         this {
-                setpoint = 0.m
+                setpoint = MIN_LENGTH
                 mainMotor.setControl(
                     torqueCurrentFOC with
                         MIN_LENGTH.toAngle(DIAMETER, GEAR_RATIO)
                 )
+            atSetpoint.waitUntil()
             }
             .named("close")
 
