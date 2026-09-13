@@ -17,10 +17,16 @@ object SysIdTest : Mechanism(), SysIdable {
     override fun setVoltage(voltage: Voltage) = makeSysIdVoltageSupplier(motor, voltage)
 
     override fun configureSysId(): SysIdMechanismConfig = buildSysIdConfig {
-        symmetric {
-            rampRate = 1.0.volts.per(sec)
-            stepVoltage = 6.0.volts
-            timeout = 5.0.sec
+        forward {
+            rampRate = 1.volts.per(sec)
+            stepVoltage = 6.volts
+            timeout = 5.sec
+        }
+
+        backward {
+            rampRate = (-1).volts.per(sec)
+            stepVoltage = (-6).volts
+            timeout = 5.sec
         }
     }
 

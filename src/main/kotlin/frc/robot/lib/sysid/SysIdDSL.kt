@@ -53,21 +53,6 @@ class SysIdMechanismConfigBuilder {
                 .build()
     }
 
-    /** Forward and backward routines share the same voltages and timeouts. */
-    fun symmetric(block: SysIdRoutineConfigBuilder.() -> Unit) {
-        forwardConfig =
-            SysIdRoutineConfigBuilder()
-                .apply(block)
-                .apply { direction = SysIdRoutine.Direction.FORWARD }
-                .build()
-
-        backwardConfig =
-            SysIdRoutineConfigBuilder()
-                .apply(block)
-                .apply { direction = SysIdRoutine.Direction.REVERSE }
-                .build()
-    }
-
     fun build(): SysIdMechanismConfig {
         return SysIdMechanismConfig(
             forwardRoutineConfig =
