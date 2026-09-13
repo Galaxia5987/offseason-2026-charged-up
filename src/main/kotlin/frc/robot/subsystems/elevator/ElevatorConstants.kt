@@ -16,9 +16,16 @@ const val AUX_PORT = 2
 const val GEAR_RATIO = 1.0
 val DIAMETER = 20.mm
 
+val ELEVATOR_ANGLE = 20.deg
+val TOLERANCE = 2.cm
+val MAX_LENGTH = 3.m
+val MIN_LENGTH = 0.0.m
+
+
 val MOTION_MAGIC_CONFIG = MotionMagicGains(80.rps, 160.rps_squared, 1600.0)
 val GAINS = Gains(1.0, motionMagicGains = MOTION_MAGIC_CONFIG)
 val SIM_GAINS = Gains(1.0)
+
 val MOTOR_CONFIG =
     TalonFXConfiguration().apply {
         CurrentLimits = createCurrentLimits()
@@ -28,9 +35,13 @@ val MOTOR_CONFIG =
                 Inverted = InvertedValue.Clockwise_Positive
             }
         Slot0 = GAINS.toSlotConfig()
+        SoftwareLimitSwitch.apply {
+            ForwardSoftLimitEnable = true
+            ReverseSoftLimitEnable = true
+            ForwardSoftLimitThreshold = MAX_LENGTH.toAngle(DIAMETER,GEAR_RATIO)[rot]
+            ReverseSoftLimitThreshold = MIN_LENGTH.toAngle(DIAMETER,GEAR_RATIO)[rot]
+        }
     }
-val ELEVATOR_ANGLE = 20.deg
-val TOLERANCE = 0.1.m
 
 @CommandEnum
 enum class ElevatorHeights(val minHeight: Distance) {
