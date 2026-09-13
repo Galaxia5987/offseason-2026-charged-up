@@ -5,7 +5,7 @@ import kotlin.reflect.KProperty0
 
 class PropertyLogGroup(
     vararg properties: KProperty0<*>,
-    loggingPath: String = "Subsystems/" + getFileNameFromStack(),
+    loggingPath: String = "Subsystems/" + getFileNameFromStack(2),
 ) {
     private val recordedProperties = properties.map { property ->
         "$loggingPath/${property.name}" to property

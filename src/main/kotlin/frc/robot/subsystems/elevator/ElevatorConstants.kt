@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
+import frc.robot.field.CUBE_SIZE
 import frc.robot.lib.Gains
 import frc.robot.lib.MotionMagicGains
 import frc.robot.lib.createCurrentLimits
@@ -17,9 +18,9 @@ const val GEAR_RATIO = 1.0
 val DIAMETER = 20.mm
 
 val ELEVATOR_ANGLE = 20.deg
-val TOLERANCE = 2.cm
-val MAX_LENGTH = 3.m
-val MIN_LENGTH = 0.0.m
+val TOLERANCE = 1.cm
+val MAX_LENGTH = 1.m
+val MIN_LENGTH = 0.m
 
 val MOTION_MAGIC_CONFIG = MotionMagicGains(80.rps, 160.rps_squared, 1600.0)
 val GAINS = Gains(1.0, motionMagicGains = MOTION_MAGIC_CONFIG)
@@ -46,6 +47,6 @@ val MOTOR_CONFIG =
 
 @CommandEnum
 enum class ElevatorHeights(val minHeight: Distance) {
-    MID(1.m),
-    HIGH(2.m),
+    MID(CUBE_SIZE * 2.0),
+    HIGH(MID.minHeight + CUBE_SIZE),
 }
