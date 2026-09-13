@@ -31,6 +31,7 @@ abstract class Roller(name: String, val config: RollerConfig) :
                     velocity = true,
                     voltage = true,
                 ),
+            subsystem = name,
         )
 
     protected var setpoint: Voltage = 0.volts
