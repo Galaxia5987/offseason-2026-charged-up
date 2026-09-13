@@ -78,7 +78,10 @@ object RobotContainer {
         MechanismRegistry.allMechanisms.forEach { mechanismClass ->
             val mechanism = mechanismClass.objectInstance
             if (mechanism is SysIdable) {
-                autoChooser.addOption("${mechanism.name} SysId", mechanism.sysId())
+                autoChooser.addOption(
+                    "${mechanism.name} SysId",
+                    mechanism.sysId(),
+                )
             }
         }
     }
