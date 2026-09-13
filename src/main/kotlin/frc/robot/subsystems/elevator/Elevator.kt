@@ -92,11 +92,13 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
         while (true) {
-            if (targetHeight < value.minHeight) continue
-            setpoint = targetLength
-            mainMotor.setControl(
-                torqueCurrentFOC with targetLength.toAngle(DIAMETER, GEAR_RATIO)
-            )
+            if (targetHeight >= value.minHeight) {
+                setpoint = targetLength
+                mainMotor.setControl(
+                    torqueCurrentFOC with
+                        targetLength.toAngle(DIAMETER, GEAR_RATIO)
+                )
+            }
             yield()
         }
     }
