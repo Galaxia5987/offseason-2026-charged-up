@@ -110,7 +110,7 @@ class SysIdCommand<T>(
      * 4. Runs forward quasistatic
      * 5. Runs backward quasistatic
      *
-     * Waits `TIME_BETWEEN_ROUTINES` between each step.
+     * Waits [TIME_BETWEEN_ROUTINES] between each step.
      *
      * @return The full [Command] sequence.
      */
