@@ -5,7 +5,9 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import frc.robot.lib.commands.onChange
+import frc.robot.lib.commands.unless
 import frc.robot.lib.extensions.volts
+import frc.robot.subsystems.sensors.Sensors
 import org.wpilib.command3.Trigger
 
 val GRIP_ROLLER_CONFIG =
@@ -22,10 +24,10 @@ val GRIP_ROLLER_CONFIG =
     )
 
 object GripRoller : Roller("Grip", GRIP_ROLLER_CONFIG) {
-    private val stopTrigger: Trigger =
-        Trigger { true }.onChange(stop()) // TODO: Replace with gripSensor
+    val stopTrigger: Trigger =
+        Trigger { Sensors.GripSensor.isPresent }.onChange(stop())
 
-    fun grip() = super.forward().named("${name}/grip")
+    fun grip() = super.forward().named("${name}/grip") .unless(Sensors.GripSensor::isPresent)
 
     fun release() = super.backward().named("${name}/release")
 }
