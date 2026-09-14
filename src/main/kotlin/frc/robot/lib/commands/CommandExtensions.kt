@@ -6,7 +6,6 @@ import org.wpilib.command3.Mechanism
 import org.wpilib.command3.NeedsNameBuilderStage
 import org.wpilib.command3.Scheduler
 import org.wpilib.command3.Trigger
-import org.wpilib.units.measure.Time
 
 /**
  * A typealias for a command that hasn't finished it's building. This command
@@ -66,5 +65,3 @@ fun Command.fork() {
 fun Command.schedule() {
     Scheduler.getDefault().schedule(this)
 }
-
-fun waitTime(time: Time): Command = Command.waitFor(time).named("waitTime")
