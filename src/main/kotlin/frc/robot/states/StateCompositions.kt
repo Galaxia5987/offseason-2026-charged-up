@@ -11,9 +11,11 @@ import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
 import frc.robot.subsystems.roller.GripRoller
 import frc.robot.subsystems.roller.IntakeRoller
+import frc.robot.subsystems.sensors.Sensors
 import frc.robot.subsystems.wrist.Wrist
 import frc.robot.subsystems.wrist.WristPosition
 import org.wpilib.command3.Command
+import java.awt.Color
 
 fun idle(): Command = command {
     +IntakeRoller.stop()
@@ -38,7 +40,7 @@ fun alignment() : Command = command {
 fun scoringLow(): Command = command {
     drive.continousLock().fork()
 
-    if (true) { // todo if cube in intake
+    if (Sensors.IntakeSensor.isPresent) {
         Wrist.setTarget(WristPosition.OPEN)
         +IntakeRoller.intake()
     }
@@ -49,15 +51,13 @@ fun scoringLow(): Command = command {
     +ConveyorRoller.convey()
     +DispatchRoller.dispatchLow()
 
-    waitUntil { true } // cube leaves body
-
-    drive
+    waitUntil { !Sensors.DispatchSensor.isPresent }
 }.named("States/Scoring/Low")
 
 fun scoringHigh(): Command = command {
     drive.continousLock().fork()
 
-    if (true) { // todo if cube in intake
+    if (Sensors.IntakeSensor.isPresent) {
         Wrist.setTarget(WristPosition.OPEN)
         +IntakeRoller.intake()
     }
@@ -71,12 +71,14 @@ fun scoringHigh(): Command = command {
 
     GripRoller.stopTrigger.waitUntil()
 
-    Elevator.setTarget(ElevatorHeights.HIGH) // todo decide on correct height
+    if (Sensors.GripSensor.color == Color.red) // todo change to appropriate enums
+        Elevator.setTarget(ElevatorHeights.HIGH)
+    else
+        Elevator.setTarget(ElevatorHeights.MID)
 
     +GripRoller.release()
 
-    //todo await grip
+    GripRoller.stopTrigger.waitUntil()
 
     +Elevator.close()
-
 }.named("States/Scoring/High")
