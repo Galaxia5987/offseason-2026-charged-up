@@ -1,6 +1,7 @@
 package frc.robot.states
 
 import frc.robot.drive
+import frc.robot.field.CubeColors
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.fork
 import frc.robot.lib.commands.unaryPlus
@@ -71,10 +72,11 @@ fun scoringHigh(): Command = command {
 
     GripRoller.stopTrigger.waitUntil()
 
-    if (Sensors.GripSensor.color == Color.red) // todo change to appropriate enums
+    if (Sensors.GripSensor.color == CubeColors.RED)
         Elevator.setTarget(ElevatorHeights.HIGH)
-    else
+    else if (Sensors.GripSensor.color == CubeColors.YELLOW)
         Elevator.setTarget(ElevatorHeights.MID)
+    else
 
     +GripRoller.release()
 
