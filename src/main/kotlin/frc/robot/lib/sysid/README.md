@@ -14,26 +14,29 @@ object SysIdTest : Mechanism(), SysIdable {
 
     private val motor = UniversalTalonFX(0)
 
-    override fun setVoltage(voltage: Voltage) = makeSysIdVoltageSupplier(motor, voltage)
-
-    override fun configureSysId(): SysIdMechanismConfig = buildSysIdConfig {
-        forward {
-            rampRate = 1.volts.per(sec)
-            stepVoltage = 6.volts
+    override val sysidConfig = SysIdMechanismConfig(
+        forward = SysIdRoutineConfig(
+            rampRate = 1.volts.per(sec),
+            stepVoltage = 6.volts,
             timeout = 5.sec
-        }
+        ),
+        backward = SysIdRoutineConfig(
+            rampRate = (-1).volts.per(sec),
+            stepVoltage = (-6).volts,
+            timeout = 5.sec,
+        )
+    )
+    
+    override fun setVoltage(voltage: Voltage) = motor.setControl(VoltageOut(voltage))
 
-        backward {
-            rampRate = (-1).volts.per(sec)
-            stepVoltage = (-6).volts
-            timeout = 5.sec
-        }
-    }
+    
 
 }
-````
+```
 
 ### Create and Configure a `SysIdCommand`
+
+> Objects implementing the `SysIdable` interface will automatically be registered in the Auto Chooser
 
 Use the `sysId()` extension function to generate a `SysIdCommand` and configure it with forward and backward routines.
 
