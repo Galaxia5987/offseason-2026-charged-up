@@ -60,11 +60,7 @@ interface SysIdable {
     /** Applies the specified [voltage] to the subsystem. */
     fun setVoltage(voltage: Voltage)
 
-    fun configureSysId(): SysIdMechanismConfig
-
-    fun makeSysIdVoltageSupplier(motor: UniversalTalonFX, voltage: Voltage) {
-        motor.setControl(VoltageOut(voltage))
-    }
+    val sysidConfig: SysIdMechanismConfig
 }
 
 /**
