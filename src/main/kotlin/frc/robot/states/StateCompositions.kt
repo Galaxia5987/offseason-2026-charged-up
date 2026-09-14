@@ -4,6 +4,7 @@ import frc.robot.drive
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.subsystems.elevator.Elevator
+import frc.robot.subsystems.elevator.ElevatorHeights
 import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
 import frc.robot.subsystems.roller.GripRoller
@@ -50,3 +51,29 @@ fun scoringLow(): Command = command {
     // todo unlock drive
 }.named("States/Scoring/Low")
 
+fun scoringHigh(): Command = command {
+    drive.lock()
+
+    if (true) { // todo if cube in intake
+        Wrist.setTarget(WristPosition.OPEN)
+        +IntakeRoller.intake()
+    }
+    else {
+        Wrist.setTarget(WristPosition.CLOSED)
+    }
+
+    +ConveyorRoller.convey()
+    +DispatchRoller.dispatchHigh()
+    +GripRoller.grip()
+
+    // todo await grip
+
+    Elevator.setTarget(ElevatorHeights.HIGH) // todo decide on correct height
+
+    +GripRoller.release()
+
+    //todo await grip
+
+    +Elevator.close()
+
+}.named("States/Scoring/High")
