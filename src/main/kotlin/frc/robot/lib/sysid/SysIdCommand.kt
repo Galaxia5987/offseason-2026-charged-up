@@ -1,16 +1,12 @@
 package frc.robot.lib.sysid
 
 import com.ctre.phoenix6.SignalLogger
-import com.ctre.phoenix6.controls.VoltageOut
-import frc.robot.lib.commands.command
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.commands.unaryPlus
-import frc.robot.lib.commands.waitTime
 import frc.robot.lib.extensions.div
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.volts
-import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.wpilib.command3.Command
@@ -31,8 +27,8 @@ data class SysIdRoutineConfig(
 )
 
 data class SysIdMechanismConfig(
-    val forwardRoutineConfig: SysIdRoutineConfig,
-    val backwardRoutineConfig: SysIdRoutineConfig,
+    val forward: SysIdRoutineConfig,
+    val backward: SysIdRoutineConfig,
 )
 
 /**
@@ -41,15 +37,13 @@ data class SysIdMechanismConfig(
  *
  * @return A [Command].
  */
-fun <T> T.sysId(): Command where T : SysIdable, T : Mechanism {
-    val config = configureSysId()
-    return SysIdCommand(
+fun <T> T.sysId(): Command where T : SysIdable, T : Mechanism =
+    SysIdCommand(
             this,
-            config.forwardRoutineConfig,
-            config.backwardRoutineConfig,
+            sysidConfig.forward,
+            sysidConfig.backward,
         )
         .command()
-}
 
 /**
  * Interface that allows a subsystem to be characterized via SysId. Must provide
@@ -86,17 +80,12 @@ class SysIdCommand<T>(
     private val backwardRoutineConfig =
         LoggedSysIdRoutineConfig(backwardRoutineConfig)
 
-    private var forwardRoutine: () -> SysIdRoutine =
-        createRoutine(this.forwardRoutineConfig)
-    private var backwardRoutine: () -> SysIdRoutine =
-        createRoutine(this.backwardRoutineConfig)
-
     /**
      * Creates the [SysIdRoutine] object with the provided configuration.
      *
      * @param routineConfig A configuration for the routine.
      */
-    private fun createRoutine(routineConfig: LoggedSysIdRoutineConfig) = { ->
+    private fun createRoutine(routineConfig: LoggedSysIdRoutineConfig) =
         SysIdRoutine(
             SysIdRoutine.Config(
                 routineConfig.loggedRampRate.get().volts / sec,
@@ -107,20 +96,11 @@ class SysIdCommand<T>(
                 Logger.recordOutput("SysId/$name/state", state.toString())
             },
             SysIdRoutine.SysIdMechanism(
-                subsystem.setVoltageConsumer,
+                subsystem::setVoltage,
                 null,
                 subsystem,
             ),
         )
-    }
-
-    /** Initializes the internal SysId routines from the stored constants. */
-    private fun createRoutineCommands(): Command =
-        command {
-                forwardRoutine = createRoutine(forwardRoutineConfig)
-                backwardRoutine = createRoutine(backwardRoutineConfig)
-            }
-            .named("createRoutineCommands")
 
     /**
      * Builds the full characterization command sequence:
@@ -136,14 +116,15 @@ class SysIdCommand<T>(
      */
     fun command(): Command =
         subsystem {
-                +createRoutineCommands()
-                +forwardRoutine().dynamic(SysIdRoutine.Direction.FORWARD)
-                +waitTime(TIME_BETWEEN_ROUTINES)
-                +backwardRoutine().dynamic(SysIdRoutine.Direction.REVERSE)
-                +waitTime(TIME_BETWEEN_ROUTINES)
-                +forwardRoutine().quasistatic(SysIdRoutine.Direction.FORWARD)
-                +waitTime(TIME_BETWEEN_ROUTINES)
-                +backwardRoutine().quasistatic(SysIdRoutine.Direction.REVERSE)
+                val forwardRoutine = createRoutine(forwardRoutineConfig)
+                val backwardRoutine = createRoutine(backwardRoutineConfig)
+                +forwardRoutine.dynamic(SysIdRoutine.Direction.FORWARD)
+                wait(TIME_BETWEEN_ROUTINES)
+                +backwardRoutine.dynamic(SysIdRoutine.Direction.REVERSE)
+                wait(TIME_BETWEEN_ROUTINES)
+                +forwardRoutine.quasistatic(SysIdRoutine.Direction.FORWARD)
+                wait(TIME_BETWEEN_ROUTINES)
+                +backwardRoutine.quasistatic(SysIdRoutine.Direction.REVERSE)
             }
             .named("$name/characterize")
 
