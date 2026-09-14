@@ -41,8 +41,11 @@ fun intaking(): Command = command {
 
 fun alignment(): Command =
     command {
-        +runToPose(SCORING_POSTS.getClosest(drive.pose.translation).toPose()).named("Drive/AlignToScoringPost")
-    }
+            +runToPose(
+                    SCORING_POSTS.getClosest(drive.pose.translation).toPose()
+                )
+                .named("Drive/AlignToScoringPost")
+        }
         .named("States/Alignment")
 
 fun scoringLow(): Command = command {
@@ -63,10 +66,11 @@ fun scoringLow(): Command = command {
         }
         .whenCanceled {
             command {
-                +DispatchRoller.dispatchHigh() // Reverse the roller
-                waitUntil { Sensors.DispatchSensor.isPresent }
-                +DispatchRoller.stop()
-            }.named("States/Scoring/Low/WhenCancelled")
+                    +DispatchRoller.dispatchHigh() // Reverse the roller
+                    waitUntil { Sensors.DispatchSensor.isPresent }
+                    +DispatchRoller.stop()
+                }
+                .named("States/Scoring/Low/WhenCancelled")
                 .schedule()
         }
         .named("States/Scoring/Low")
@@ -106,8 +110,9 @@ fun scoringHigh(): Command = command {
         }
         .whenCanceled {
             command {
-                +Elevator.close()
-            }.named("States/Scoring/High/WhenCancelled")
+                    +Elevator.close()
+                }
+                .named("States/Scoring/High/WhenCancelled")
                 .schedule()
         }
         .named("States/Scoring/High")
