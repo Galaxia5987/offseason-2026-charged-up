@@ -4,21 +4,22 @@ import com.ctre.phoenix6.controls.Follower
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC
 import com.ctre.phoenix6.signals.MotorAlignmentValue
 import frc.robot.drive
-import frc.robot.field.TOWER_GRID
+import frc.robot.field.TowerXOffset
+import frc.robot.field.getGridOffset
 import frc.robot.lib.commands.UnnamedCommand
 import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.*
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import kotlin.math.absoluteValue
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.tan
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.Distance
+import kotlin.math.absoluteValue
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.tan
 
 object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     private val mainMotor =
@@ -31,12 +32,12 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
         )
     private val auxMotor =
         UniversalTalonFX(
-                AUX_PORT,
-                config = MOTOR_CONFIG,
-                gearRatio = GEAR_RATIO,
-                simGains = SIM_GAINS,
-                linearSystemWheelDiameter = DIAMETER,
-            )
+            AUX_PORT,
+            config = MOTOR_CONFIG,
+            gearRatio = GEAR_RATIO,
+            simGains = SIM_GAINS,
+            linearSystemWheelDiameter = DIAMETER,
+        )
             .apply {
                 setControl(
                     Follower(mainMotor.port, MotorAlignmentValue.Opposed)
@@ -47,13 +48,13 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
         mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad])
     }
 
-    val targetLength: Distance by periodic {
-        (drive.pose.x - TOWER_GRID.x).absoluteValue.m / cos(ELEVATOR_ANGLE[rad])
-    }
+    var targetOffset = getGridOffset(TowerXOffset.HIGH)
 
-    val targetHeight: Distance by periodic {
-        (drive.pose.x - TOWER_GRID.x).absoluteValue.m * tan(ELEVATOR_ANGLE[rad])
-    }
+    val distance by periodic { (drive.pose.x - targetOffset).absoluteValue.m }
+
+    val targetLength: Distance by periodic { distance * tan(ELEVATOR_ANGLE[rad]) }
+
+    val targetHeight: Distance by periodic { distance / cos(ELEVATOR_ANGLE[rad]) }
 
     private var setpoint = 0.m
     private val torqueCurrentFOC = MotionMagicTorqueCurrentFOC(0.0)
@@ -83,22 +84,24 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
 
     fun close(): Command =
         this {
-                setpoint = MIN_LENGTH
-                mainMotor.setControl(
-                    torqueCurrentFOC with
+            targetOffset = getGridOffset(TowerXOffset.LOW)
+            setpoint = MIN_LENGTH
+            mainMotor.setControl(
+                torqueCurrentFOC with
                         MIN_LENGTH.toAngle(DIAMETER, GEAR_RATIO)
-                )
-                atSetpoint.waitUntil()
-            }
+            )
+            atSetpoint.waitUntil()
+        }
             .named("close")
 
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
         while (true) {
             if (targetHeight >= value.minHeight) {
+                targetOffset = getGridOffset(value.towerXOffset)
                 setpoint = targetLength
                 mainMotor.setControl(
                     torqueCurrentFOC with
-                        targetLength.toAngle(DIAMETER, GEAR_RATIO)
+                            targetLength.toAngle(DIAMETER, GEAR_RATIO)
                 )
             }
             yield()

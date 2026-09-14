@@ -5,6 +5,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import frc.robot.field.CUBE_SIZE
+import frc.robot.field.TowerXOffset
 import frc.robot.lib.Gains
 import frc.robot.lib.MotionMagicGains
 import frc.robot.lib.createCurrentLimits
@@ -46,7 +47,7 @@ val MOTOR_CONFIG =
     }
 
 @CommandEnum
-enum class ElevatorHeights(val minHeight: Distance) {
-    MID(CUBE_SIZE * 2.0),
-    HIGH(MID.minHeight + CUBE_SIZE),
+enum class ElevatorHeights(val minHeight: Distance,val towerXOffset: TowerXOffset) {
+    MID(CUBE_SIZE * 2.0, TowerXOffset.HIGH),
+    HIGH(MID.minHeight + CUBE_SIZE, TowerXOffset.MID),
 }
