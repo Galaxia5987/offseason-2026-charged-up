@@ -6,6 +6,7 @@ import frc.robot.field.SCORING_POSTS
 import frc.robot.lib.align.runToPose
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.fork
+import frc.robot.lib.commands.schedule
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.toPose
@@ -58,8 +59,17 @@ fun scoringLow(): Command = command {
     +ConveyorRoller.convey()
     +DispatchRoller.dispatchLow()
 
-    waitUntil { !Sensors.DispatchSensor.isPresent }
-}.named("States/Scoring/Low")
+            waitUntil { !Sensors.DispatchSensor.isPresent }
+        }
+        .whenCanceled {
+            command {
+                +DispatchRoller.dispatchHigh() // Reverse the roller
+                waitUntil { Sensors.DispatchSensor.isPresent }
+                +DispatchRoller.stop()
+            }.named("States/Scoring/Low/WhenCancelled")
+                .schedule()
+        }
+        .named("States/Scoring/Low")
 
 fun scoringHigh(): Command = command {
     drive.continousLock().fork()
@@ -86,7 +96,19 @@ fun scoringHigh(): Command = command {
 
     +GripRoller.release()
 
+<<<<<<< HEAD
     GripRoller.stopTrigger.waitUntil()
 
     +Elevator.close()
 }.named("States/Scoring/High")
+=======
+            +Elevator.close()
+        }
+        .whenCanceled {
+            command {
+                +Elevator.close()
+            }.named("States/Scoring/High/WhenCancelled")
+                .schedule()
+        }
+        .named("States/Scoring/High")
+>>>>>>> ef682d8 (Add WhenCancelled actions)
