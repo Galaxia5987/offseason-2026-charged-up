@@ -15,3 +15,17 @@ enum class TowerXOffset(val offset: Distance) {
 
 fun getGridOffset(towerXOffset: TowerXOffset) =
     Translation2d(towerXOffset.offset[m], 0.0).flipIfNeeded().x
+
+val SCORING_POSTS_START_OFFSET = 0.m
+
+val SCORING_POSTS_X = 1.m
+
+val SCORING_POST_GAP = 5.cm
+
+val SCORING_POST_WIDTH = 1.m
+
+val NUM_POSTS = 9
+
+val SCORING_POSTS = Array(NUM_POSTS) { index ->
+    Translation2d(SCORING_POSTS_X, SCORING_POSTS_START_OFFSET + (index * (SCORING_POST_WIDTH + SCORING_POST_GAP)[m]).m)
+}
