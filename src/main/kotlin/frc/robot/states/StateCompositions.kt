@@ -2,7 +2,9 @@ package frc.robot.states
 
 import frc.robot.drive
 import frc.robot.lib.commands.command
+import frc.robot.lib.commands.fork
 import frc.robot.lib.commands.unaryPlus
+import frc.robot.lib.commands.waitUntil
 import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.elevator.ElevatorHeights
 import frc.robot.subsystems.roller.ConveyorRoller
@@ -34,7 +36,8 @@ fun alignment() : Command = command {
 }.named("States/Alignment")
 
 fun scoringLow(): Command = command {
-    drive.lock()
+    drive.continousLock().fork()
+
     if (true) { // todo if cube in intake
         Wrist.setTarget(WristPosition.OPEN)
         +IntakeRoller.intake()
@@ -48,11 +51,11 @@ fun scoringLow(): Command = command {
 
     waitUntil { true } // cube leaves body
 
-    // todo unlock drive
+    drive
 }.named("States/Scoring/Low")
 
 fun scoringHigh(): Command = command {
-    drive.lock()
+    drive.continousLock().fork()
 
     if (true) { // todo if cube in intake
         Wrist.setTarget(WristPosition.OPEN)
@@ -66,7 +69,7 @@ fun scoringHigh(): Command = command {
     +DispatchRoller.dispatchHigh()
     +GripRoller.grip()
 
-    // todo await grip
+    GripRoller.stopTrigger.waitUntil()
 
     Elevator.setTarget(ElevatorHeights.HIGH) // todo decide on correct height
 
