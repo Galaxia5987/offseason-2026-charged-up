@@ -24,7 +24,7 @@ private val SCORING_POST_GAP = 5.cm
 
 private val SCORING_POST_WIDTH = 1.m
 
-private val NUM_POSTS = 9
+private const val NUM_POSTS = 9
 
 val SCORING_POSTS = Array(NUM_POSTS) { index ->
     Translation2d(SCORING_POSTS_X, SCORING_POSTS_START_OFFSET + (index * (SCORING_POST_WIDTH + SCORING_POST_GAP)[m]).m)
