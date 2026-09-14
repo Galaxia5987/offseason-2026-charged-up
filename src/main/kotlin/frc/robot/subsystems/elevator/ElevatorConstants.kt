@@ -47,7 +47,10 @@ val MOTOR_CONFIG =
     }
 
 @CommandEnum
-enum class ElevatorHeights(val minHeight: Distance,val towerXOffset: TowerXOffset) {
+enum class ElevatorHeights(
+    val minHeight: Distance,
+    val towerXOffset: TowerXOffset,
+) {
     MID(CUBE_SIZE * 2.0, TowerXOffset.HIGH),
     HIGH(MID.minHeight + CUBE_SIZE, TowerXOffset.MID),
 }
