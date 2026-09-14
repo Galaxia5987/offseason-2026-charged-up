@@ -16,7 +16,7 @@ enum class TowerXOffset(val offset: Distance) {
 
 enum class CubeColors(val color: Color?) {
     RED(Color.RED),
-    YELLO(Color.YELLOW),
+    YELLOW(Color.YELLOW),
     GREEN(Color.GREEN),
     NONE(null)
 }
