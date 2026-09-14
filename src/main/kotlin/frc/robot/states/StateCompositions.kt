@@ -26,3 +26,7 @@ fun intaking(): Command = command {
     +DispatchRoller.stop()
     +GripRoller.stop()
 }.named("States/Intaking")
+
+fun alignment() : Command = command {
+    // TODO
+}.named("States/Alignment")
