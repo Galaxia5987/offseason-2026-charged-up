@@ -1,12 +1,13 @@
 package frc.robot.subsystems.sensors
 
 import com.ctre.phoenix6.configs.CANrangeConfiguration
+import frc.robot.field.CubeColors
 import frc.robot.lib.unified_canrange.UnifiedCANRange
 import org.wpilib.util.Color
 
 interface Sensor {
     val isPresent: Boolean
-    val color: Color? get() = null
+    val color: CubeColors get() = null
 }
 
 object Sensors {
@@ -20,22 +21,22 @@ object Sensors {
     val bodySensor = object : Sensor {
         override val isPresent: Boolean
             get() = false
-        override val color: Color
-            get() = Color.BLUE
+        override val color: CubeColors
+            get() = CubeColors.NONE
     }
 
     val DispatchSensor = object : Sensor {
         override val isPresent: Boolean
             get() = false
-        override val color: Color
-            get() = Color.BLUE
+        override val color: CubeColors
+            get() = CubeColors.NONE
 
     }
     val GripSensor = object : Sensor {
         override val isPresent: Boolean
             get() = GripCanRange.isInRange
-        override val color: Color
-            get() = Color.BLUE
+        override val color: CubeColors
+            get() = CubeColors.NONE
 
     }
 }
