@@ -89,6 +89,9 @@ val kg2m
 val rps
     get() = Units.RotationsPerSecond
 
+val kg
+    get() = Units.Kilogram
+
 val rps_squared
     get() = Units.RotationsPerSecond.per(sec)
 
@@ -247,6 +250,9 @@ val Number.kg2m: MomentOfInertia
 val Number.kilogramSquareMeters: MomentOfInertia
     get() = toUnit(Units.KilogramSquareMeters::of)
 
+val Number.kg: Mass
+    get() = toUnit(Units.Kilogram::of)
+
 operator fun MomentOfInertia.get(unit: MomentOfInertiaUnit): Double =
     this.`in`(unit)
 
@@ -260,6 +266,9 @@ operator fun AngularAcceleration.get(unit: AngularAccelerationUnit): Double =
     this.`in`(unit)
 
 operator fun LinearVelocity.get(unit: LinearVelocityUnit): Double =
+    this.`in`(unit)
+
+operator fun Mass.get(unit: MassUnit): Double =
     this.`in`(unit)
 
 fun Angle.toYaw() = getRotation3d(yaw = this)
