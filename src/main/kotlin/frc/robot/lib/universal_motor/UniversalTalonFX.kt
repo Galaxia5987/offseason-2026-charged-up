@@ -3,18 +3,21 @@ package frc.robot.lib.universal_motor
 import com.ctre.phoenix6.CANBus
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.controls.ControlRequest
+import com.ctre.phoenix6.controls.VoltageOut
 import frc.robot.CURRENT_MODE
 import frc.robot.lib.Gains
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.extensions.m
+import frc.robot.lib.extensions.with
 import frc.robot.lib.getFileNameFromStack
 import frc.robot.lib.unit_test.allMotorsFromPorts
 import org.littletonrobotics.junction.Logger
 import org.wpilib.units.measure.Angle
 import org.wpilib.units.measure.Distance
 import org.wpilib.units.measure.MomentOfInertia
+import org.wpilib.units.measure.Voltage
 
 /**
  * Represents a universal wrapper for a motor, which abstracts the real and
@@ -79,12 +82,16 @@ class UniversalTalonFX(
         }
     val inputs: LoggedMotorInputs = motorIO.inputs
 
+    private val voltageOut = VoltageOut(0.0)
+
     /**
      * Sends a control request to the motor (e.g., voltage, velocity, position).
      *
      * @param control The control request to apply.
      */
     fun setControl(control: ControlRequest) = motorIO.setRequest(control)
+
+    fun setVoltage(voltage: Voltage) = setControl(voltageOut with voltage)
 
     fun reset(angle: Angle = 0.deg) = motorIO.resetInternalEncoder(angle)
 

@@ -1,10 +1,13 @@
 package frc.robot
 
 import frc.robot.lib.BasicAlerts
+import frc.robot.lib.MechanismRegistry
 import frc.robot.lib.Mode
 import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
 import frc.robot.lib.extensions.enableAutoLogOutputFor
+import frc.robot.lib.sysid.SysIdable
+import frc.robot.lib.sysid.sysId
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.subsystems.drive.DriveCommands
 import org.ironmaple.simulation.SimulatedArena
@@ -66,27 +69,20 @@ object RobotContainer {
             DriveCommands.feedforwardCharacterization(),
         )
 
-        // TODO: Uncomment when I figure out what happened to SysId
-        //        autoChooser.addOption(
-        //            "Drive SysId (Quasistatic Forward)",
-        //            drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward)
-        //        )
-        //        autoChooser.addOption(
-        //            "Drive SysId (Quasistatic Reverse)",
-        //            drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse)
-        //        )
-        //        autoChooser.addOption(
-        //            "Drive SysId (Dynamic Forward)",
-        //            drive.sysIdDynamic(SysIdRoutine.Direction.kForward)
-        //        )
-        //        autoChooser.addOption(
-        //            "Drive SysId (Dynamic Reverse)",
-        //            drive.sysIdDynamic(SysIdRoutine.Direction.kReverse)
-        //        )
-
         autoChooser.addOption(
             "swerveFFCharacterization",
             DriveCommands.feedforwardCharacterization(),
         )
+
+        // Register all mechanisms that implement SysIdable
+        MechanismRegistry.allMechanisms.forEach { mechanismClass ->
+            val mechanism = mechanismClass.objectInstance
+            if (mechanism is SysIdable) {
+                autoChooser.addOption(
+                    "${mechanism.name} SysId",
+                    mechanism.sysId(),
+                )
+            }
+        }
     }
 }
