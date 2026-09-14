@@ -268,8 +268,7 @@ operator fun AngularAcceleration.get(unit: AngularAccelerationUnit): Double =
 operator fun LinearVelocity.get(unit: LinearVelocityUnit): Double =
     this.`in`(unit)
 
-operator fun Mass.get(unit: MassUnit): Double =
-    this.`in`(unit)
+operator fun Mass.get(unit: MassUnit): Double = this.`in`(unit)
 
 fun Angle.toYaw() = getRotation3d(yaw = this)
 
