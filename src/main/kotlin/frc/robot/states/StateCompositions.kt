@@ -2,10 +2,14 @@ package frc.robot.states
 
 import frc.robot.drive
 import frc.robot.field.CubeColors
+import frc.robot.field.SCORING_POSTS
+import frc.robot.lib.align.runToPose
 import frc.robot.lib.commands.command
 import frc.robot.lib.commands.fork
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.commands.waitUntil
+import frc.robot.lib.extensions.toPose
+import frc.robot.lib.getClosest
 import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.elevator.ElevatorHeights
 import frc.robot.subsystems.roller.ConveyorRoller
@@ -34,9 +38,11 @@ fun intaking(): Command = command {
     +GripRoller.stop()
 }.named("States/Intaking")
 
-fun alignment() : Command = command {
-    // TODO
-}.named("States/Alignment")
+fun alignment(): Command =
+    command {
+        +runToPose(SCORING_POSTS.getClosest(drive.pose.translation).toPose()).named("Drive/AlignToScoringPost")
+    }
+        .named("States/Alignment")
 
 fun scoringLow(): Command = command {
     drive.continousLock().fork()
