@@ -7,6 +7,8 @@ import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
 import frc.robot.subsystems.roller.GripRoller
 import frc.robot.subsystems.roller.IntakeRoller
+import frc.robot.subsystems.wrist.Wrist
+import frc.robot.subsystems.wrist.WristPosition
 import org.wpilib.command3.Command
 
 fun idle(): Command = command {
@@ -17,3 +19,10 @@ fun idle(): Command = command {
     +Elevator.close()
 }.named("States/Idle")
 
+fun intaking(): Command = command {
+    Wrist.setTarget(WristPosition.OPEN)
+    +IntakeRoller.intake()
+    +ConveyorRoller.convey()
+    +DispatchRoller.stop()
+    +GripRoller.stop()
+}.named("States/Intaking")
