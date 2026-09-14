@@ -56,12 +56,6 @@ fun <T> T.sysId(): Command where T : SysIdable, T : Mechanism {
  * a method to set voltage on the subsystem.
  */
 interface SysIdable {
-    /**
-     * Function that consumes a voltage and applies it to the subsystem.
-     * Defaults to using [setVoltage].
-     */
-    val setVoltageConsumer: (Voltage) -> Unit
-        get() = { setVoltage(it) }
 
     /** Applies the specified [voltage] to the subsystem. */
     fun setVoltage(voltage: Voltage)
