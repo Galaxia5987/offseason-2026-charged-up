@@ -12,6 +12,8 @@ val TOWER_Y_OFFSET: Distance = CUBE_SIZE + 0.1.m
 val FIRST_TOWER_LOCATION = Translation2d(1.m, TOWER_Y_OFFSET)
 val TOWER_GRID by periodic {
     Translation2d(
-        FIRST_TOWER_LOCATION.x, 0.0
-    ).flipIfNeeded()
+            FIRST_TOWER_LOCATION.x,
+            0.0,
+        )
+        .flipIfNeeded()
 }
