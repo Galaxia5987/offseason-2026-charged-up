@@ -72,7 +72,7 @@ fun scoringLow(): Command =
                     waitUntil { Sensors.DispatchSensor.isPresent }
                     +DispatchRoller.stop()
                 }
-                .withPriority(10)
+                .withPriority(Command.HIGHEST_PRIORITY)
                 .named("States/Scoring/Low/WhenCancelled")
                 .schedule()
         }
@@ -110,5 +110,5 @@ fun scoringHigh(): Command =
                 .named("States/Scoring/High/WhenCancelled")
                 .schedule()
         }
-        .withPriority(10)
+        .withPriority(Command.HIGHEST_PRIORITY)
         .named("States/Scoring/High")
