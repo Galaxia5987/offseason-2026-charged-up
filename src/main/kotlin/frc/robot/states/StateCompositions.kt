@@ -100,12 +100,6 @@ fun scoringHigh(): Command = command {
 
     +GripRoller.release()
 
-<<<<<<< HEAD
-    GripRoller.stopTrigger.waitUntil()
-
-    +Elevator.close()
-}.named("States/Scoring/High")
-=======
             +Elevator.close()
         }
         .whenCanceled {
@@ -116,4 +110,3 @@ fun scoringHigh(): Command = command {
                 .schedule()
         }
         .named("States/Scoring/High")
->>>>>>> ef682d8 (Add WhenCancelled actions)
