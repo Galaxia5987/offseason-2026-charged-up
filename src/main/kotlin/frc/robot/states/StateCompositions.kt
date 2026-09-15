@@ -21,6 +21,7 @@ import frc.robot.subsystems.sensors.Sensors
 import frc.robot.subsystems.wrist.Wrist
 import frc.robot.subsystems.wrist.WristPosition
 import org.wpilib.command3.Command
+import org.wpilib.math.geometry.Translation2d
 
 fun idle(): Command =
     command {
@@ -44,9 +45,7 @@ fun intaking(): Command =
 
 fun alignment(): Command =
     command {
-            +runToPose(
-                    SCORING_POSTS.getClosest(drive.pose.translation).toPose()
-                )
+            +runToPose(drive.pose.translation.nearest(SCORING_POSTS).toPose())
                 .named("Drive/AlignToScoringPost")
         }
         .named("States/Alignment")
