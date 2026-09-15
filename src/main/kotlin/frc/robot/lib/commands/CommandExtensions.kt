@@ -6,7 +6,6 @@ import org.wpilib.command3.Mechanism
 import org.wpilib.command3.NeedsNameBuilderStage
 import org.wpilib.command3.Scheduler
 import org.wpilib.command3.Trigger
-import java.util.function.BooleanSupplier
 
 /**
  * A typealias for a command that hasn't finished it's building. This command
@@ -69,6 +68,9 @@ fun Command.schedule() {
 
 fun Command.unless(predicate: () -> Boolean): Command {
     return command {
-        if (predicate()) { +this@unless }
-    }.named(this.name() + "/unless")
+            if (predicate()) {
+                +this@unless
+            }
+        }
+        .named(this.name() + "/unless")
 }
