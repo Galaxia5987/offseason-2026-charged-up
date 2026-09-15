@@ -68,10 +68,10 @@ fun Command.schedule() {
 
 fun Command.onlyIf(predicate: () -> Boolean): Command {
     return command {
-        if (predicate()) {
-            +this@onlyIf
+            if (predicate()) {
+                +this@onlyIf
+            }
         }
-    }
         .named(this.name() + "/unless")
 }
 
