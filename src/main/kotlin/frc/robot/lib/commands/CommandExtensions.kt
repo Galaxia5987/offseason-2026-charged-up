@@ -65,3 +65,21 @@ fun Command.fork() {
 fun Command.schedule() {
     Scheduler.getDefault().schedule(this)
 }
+
+fun Command.onlyIf(predicate: () -> Boolean): Command {
+    return command {
+            if (predicate()) {
+                +this@onlyIf
+            }
+        }
+        .named(this.name() + "/unless")
+}
+
+fun Command.unless(predicate: () -> Boolean): Command {
+    return command {
+            if (!predicate()) {
+                +this@unless
+            }
+        }
+        .named(this.name() + "/unless")
+}
