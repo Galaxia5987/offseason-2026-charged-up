@@ -14,7 +14,8 @@ enum class TowerXOffset(val offset: Distance) {
     LOW(PLATFORM_SIZE - CUBE_SIZE / 2),
 }
 
-fun getGridOffset(towerXOffset: TowerXOffset) = towerXOffset.offset[cm] * if (IS_RED) -1 else 1
+fun getGridOffset(towerXOffset: TowerXOffset) =
+    towerXOffset.offset[cm] * if (IS_RED) -1 else 1
 
 private val SCORING_POSTS_START_OFFSET = 0.m
 

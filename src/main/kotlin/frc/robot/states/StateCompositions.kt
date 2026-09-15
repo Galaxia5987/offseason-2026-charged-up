@@ -10,7 +10,6 @@ import frc.robot.lib.commands.schedule
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.toPose
-import frc.robot.lib.getClosest
 import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.elevator.ElevatorHeights
 import frc.robot.subsystems.roller.ConveyorRoller
@@ -21,8 +20,6 @@ import frc.robot.subsystems.sensors.Sensors
 import frc.robot.subsystems.wrist.Wrist
 import frc.robot.subsystems.wrist.WristPosition
 import org.wpilib.command3.Command
-import org.wpilib.math.geometry.Pose2d
-import org.wpilib.math.geometry.Translation2d
 
 fun idle(): Command =
     command {
@@ -46,9 +43,11 @@ fun intaking(): Command =
 
 fun alignment(): Command =
     command {
-            +runToPose({ drive.pose.translation.nearest(SCORING_POSTS).toPose() })
+            +runToPose({
+                    drive.pose.translation.nearest(SCORING_POSTS).toPose()
+                })
                 .named("Drive/AlignToScoringPost")
-    }
+        }
         .named("States/Alignment")
 
 fun scoringLow(): Command =
