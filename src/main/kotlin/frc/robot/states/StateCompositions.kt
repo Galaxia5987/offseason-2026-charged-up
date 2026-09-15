@@ -23,11 +23,13 @@ import org.wpilib.command3.Command
 
 fun idle(): Command =
     command {
-            +IntakeRoller.stop()
-            +ConveyorRoller.stop()
-            +DispatchRoller.stop()
-            +GripRoller.stop()
-            +Elevator.close()
+            +[
+                IntakeRoller.stop(),
+                ConveyorRoller.stop(),
+                DispatchRoller.stop(),
+                GripRoller.stop(),
+                Elevator.close(),
+            ]
         }
         .named("States/Idle")
 
