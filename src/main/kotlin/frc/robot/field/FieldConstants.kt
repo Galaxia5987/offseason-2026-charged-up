@@ -1,5 +1,6 @@
 package frc.robot.field
 
+import frc.robot.lib.IS_RED
 import frc.robot.lib.extensions.*
 import org.wpilib.math.geometry.Translation2d
 import org.wpilib.units.measure.Distance
@@ -13,8 +14,7 @@ enum class TowerXOffset(val offset: Distance) {
     LOW(PLATFORM_SIZE - CUBE_SIZE / 2),
 }
 
-fun getGridOffset(towerXOffset: TowerXOffset) =
-    Translation2d(towerXOffset.offset[m], 0.0).flipIfNeeded().x
+fun getGridOffset(towerXOffset: TowerXOffset) = towerXOffset.offset[cm] * if (IS_RED) -1 else 1
 
 private val SCORING_POSTS_START_OFFSET = 0.m
 
