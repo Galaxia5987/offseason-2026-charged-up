@@ -68,7 +68,7 @@ fun Command.schedule() {
 
 fun Command.unless(predicate: () -> Boolean): Command {
     return command {
-            if (predicate()) {
+            if (!predicate()) {
                 +this@unless
             }
         }
