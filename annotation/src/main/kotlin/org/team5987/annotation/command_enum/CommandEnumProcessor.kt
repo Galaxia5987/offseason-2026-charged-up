@@ -50,7 +50,7 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
         val setTargetOptInMarkerClass =
             ClassName(
                 "org.team5987.annotation.command_enum",
-                "CommandEnumSetTargetOptIn",
+                "CommandEnumSetTarget",
             )
 
         val entryFunctions = entries.map { entry ->

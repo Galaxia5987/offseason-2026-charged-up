@@ -23,7 +23,7 @@ Implement the generated command factory interface and define the angle-setting b
 object Wrist : SubsystemBase(), WristAnglesCommandFactory {
     ..
     
-    @CommandEnumSetTargetOptIn
+    @CommandEnumSetTarget
     override fun setTarget(value: WristAngles): Command = runOnce({
         setpoint = value.angle
         motor.setControl(positionRequest.withPosition(value.angle))
