@@ -18,11 +18,12 @@ enum class WristAngles(val angle: Angle) {
 
 ## Subsystem Implementation
 
-Implement the generated actions interface and define the angle-setting behavior:
+Implement the generated command factory interface and define the angle-setting behavior:
 ```kotlin
-object Wrist : SubsystemBase(), WristAnglesActions {
+object Wrist : SubsystemBase(), WristAnglesCommandFactory {
     ..
     
+    @CommandEnumSetTarget
     override fun setTarget(value: WristAngles): Command = runOnce({
         setpoint = value.angle
         motor.setControl(positionRequest.withPosition(value.angle))

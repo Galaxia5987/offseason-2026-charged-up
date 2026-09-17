@@ -11,6 +11,7 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.with
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.team5987.annotation.command_enum.CommandEnumSetTarget
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 
@@ -36,6 +37,7 @@ object Wrist : Mechanism(), WristPositionCommandFactory {
         motor.inputs.position.isNear(setpoint, TOLERANCE)
     }
 
+    @CommandEnumSetTarget
     override fun setTarget(value: WristPosition): UnnamedCommand = this {
         setpoint = value.angle
         state = value

@@ -46,10 +46,21 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
         val commandClass = ClassName("org.wpilib.command3", "Command")
         val unnamedCommandClass =
             ClassName("frc.robot.lib.commands", "UnnamedCommand")
+        val optInClass = ClassName("kotlin", "OptIn")
+        val setTargetOptInMarkerClass =
+            ClassName(
+                "org.team5987.annotation.command_enum",
+                "CommandEnumSetTarget",
+            )
 
         val entryFunctions = entries.map { entry ->
             val camelEntry = entry.snakeToCamelCase()
             val funBuilder = FunSpec.builder(camelEntry).returns(commandClass)
+            funBuilder.addAnnotation(
+                AnnotationSpec.builder(optInClass)
+                    .addMember("%T::class", setTargetOptInMarkerClass)
+                    .build()
+            )
 
             if (priorityPropertyName != null) {
                 funBuilder.addStatement(
@@ -76,6 +87,7 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
             FunSpec.builder("setTarget")
                 .addParameter("value", enumClass)
                 .returns(unnamedCommandClass)
+                .addAnnotation(setTargetOptInMarkerClass)
                 .addModifiers(KModifier.ABSTRACT)
                 .build()
 

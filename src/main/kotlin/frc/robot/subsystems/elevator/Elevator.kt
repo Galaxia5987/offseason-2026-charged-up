@@ -16,6 +16,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.tan
+import org.team5987.annotation.command_enum.CommandEnumSetTarget
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
@@ -98,6 +99,7 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
             }
             .named("close")
 
+    @CommandEnumSetTarget
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
         while (true) {
             if (targetHeight >= value.minHeight) {
