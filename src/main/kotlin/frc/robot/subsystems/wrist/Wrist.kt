@@ -11,9 +11,11 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.with
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.team5987.annotation.command_enum.CommandEnumSetTargetOptIn
+import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 
-object Wrist : WristPositionCommandFactory() {
+object Wrist : Mechanism(), WristPositionCommandFactory {
 
     private val externalEncoder =
         CANcoder(ENCODER_PORT, systemcore(0)).apply {
@@ -35,13 +37,13 @@ object Wrist : WristPositionCommandFactory() {
         motor.inputs.position.isNear(setpoint, TOLERANCE)
     }
 
-    protected override fun setTarget(value: WristPosition): UnnamedCommand =
-        this {
-            setpoint = value.angle
-            state = value
-            motor.setControl(positionVoltage with setpoint)
-            atSetpoint.waitUntil()
-        }
+    @CommandEnumSetTargetOptIn
+    override fun setTarget(value: WristPosition): UnnamedCommand = this {
+        setpoint = value.angle
+        state = value
+        motor.setControl(positionVoltage with setpoint)
+        atSetpoint.waitUntil()
+    }
 
     init {
         addPeriodic(::periodic)

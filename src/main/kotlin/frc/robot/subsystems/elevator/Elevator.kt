@@ -16,11 +16,13 @@ import kotlin.math.absoluteValue
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.tan
+import org.team5987.annotation.command_enum.CommandEnumSetTargetOptIn
 import org.wpilib.command3.Command
+import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.Distance
 
-object Elevator : ElevatorHeightsCommandFactory() {
+object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
     private val mainMotor =
         UniversalTalonFX(
             MAIN_PORT,
@@ -97,18 +99,18 @@ object Elevator : ElevatorHeightsCommandFactory() {
             }
             .named("close")
 
-    protected override fun setTarget(value: ElevatorHeights): UnnamedCommand =
-        this {
-            while (true) {
-                if (targetHeight >= value.minHeight) {
-                    targetOffset = getGridOffset(value.towerXOffset)
-                    setpoint = targetLength
-                    mainMotor.setControl(
-                        torqueCurrentFOC with
-                            targetLength.toAngle(DIAMETER, GEAR_RATIO)
-                    )
-                }
-                yield()
+    @CommandEnumSetTargetOptIn
+    override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
+        while (true) {
+            if (targetHeight >= value.minHeight) {
+                targetOffset = getGridOffset(value.towerXOffset)
+                setpoint = targetLength
+                mainMotor.setControl(
+                    torqueCurrentFOC with
+                        targetLength.toAngle(DIAMETER, GEAR_RATIO)
+                )
             }
+            yield()
         }
+    }
 }

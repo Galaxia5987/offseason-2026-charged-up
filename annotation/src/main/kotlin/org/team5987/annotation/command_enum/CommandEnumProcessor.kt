@@ -44,13 +44,23 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
     ): FileSpec {
         val enumClass = ClassName(pkg, enumName)
         val commandClass = ClassName("org.wpilib.command3", "Command")
-        val mechanismClass = ClassName("org.wpilib.command3", "Mechanism")
         val unnamedCommandClass =
             ClassName("frc.robot.lib.commands", "UnnamedCommand")
+        val optInClass = ClassName("kotlin", "OptIn")
+        val setTargetOptInMarkerClass =
+            ClassName(
+                "org.team5987.annotation.command_enum",
+                "CommandEnumSetTargetOptIn",
+            )
 
         val entryFunctions = entries.map { entry ->
             val camelEntry = entry.snakeToCamelCase()
             val funBuilder = FunSpec.builder(camelEntry).returns(commandClass)
+            funBuilder.addAnnotation(
+                AnnotationSpec.builder(optInClass)
+                    .addMember("%T::class", setTargetOptInMarkerClass)
+                    .build()
+            )
 
             if (priorityPropertyName != null) {
                 funBuilder.addStatement(
@@ -77,14 +87,12 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
             FunSpec.builder("setTarget")
                 .addParameter("value", enumClass)
                 .returns(unnamedCommandClass)
-                .addModifiers(KModifier.PROTECTED)
+                .addAnnotation(setTargetOptInMarkerClass)
                 .addModifiers(KModifier.ABSTRACT)
                 .build()
 
         val interfaceSpec =
-            TypeSpec.classBuilder(fileName)
-                .addModifiers(KModifier.ABSTRACT)
-                .superclass(mechanismClass)
+            TypeSpec.interfaceBuilder(fileName)
                 .addFunctions(entryFunctions)
                 .addFunction(setTargetFun)
                 .build()
