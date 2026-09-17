@@ -17,11 +17,10 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.tan
 import org.wpilib.command3.Command
-import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.Distance
 
-object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
+object Elevator : ElevatorHeightsCommandFactory() {
     private val mainMotor =
         UniversalTalonFX(
             MAIN_PORT,
@@ -98,17 +97,18 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
             }
             .named("close")
 
-    override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
-        while (true) {
-            if (targetHeight >= value.minHeight) {
-                targetOffset = getGridOffset(value.towerXOffset)
-                setpoint = targetLength
-                mainMotor.setControl(
-                    torqueCurrentFOC with
-                        targetLength.toAngle(DIAMETER, GEAR_RATIO)
-                )
+    protected override fun setTarget(value: ElevatorHeights): UnnamedCommand =
+        this {
+            while (true) {
+                if (targetHeight >= value.minHeight) {
+                    targetOffset = getGridOffset(value.towerXOffset)
+                    setpoint = targetLength
+                    mainMotor.setControl(
+                        torqueCurrentFOC with
+                            targetLength.toAngle(DIAMETER, GEAR_RATIO)
+                    )
+                }
+                yield()
             }
-            yield()
         }
-    }
 }

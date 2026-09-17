@@ -44,6 +44,7 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
     ): FileSpec {
         val enumClass = ClassName(pkg, enumName)
         val commandClass = ClassName("org.wpilib.command3", "Command")
+        val mechanismClass = ClassName("org.wpilib.command3", "Mechanism")
         val unnamedCommandClass =
             ClassName("frc.robot.lib.commands", "UnnamedCommand")
 
@@ -76,11 +77,14 @@ class CreateCommandProcessor(env: SymbolProcessorEnvironment) :
             FunSpec.builder("setTarget")
                 .addParameter("value", enumClass)
                 .returns(unnamedCommandClass)
+                .addModifiers(KModifier.PROTECTED)
                 .addModifiers(KModifier.ABSTRACT)
                 .build()
 
         val interfaceSpec =
-            TypeSpec.interfaceBuilder(fileName)
+            TypeSpec.classBuilder(fileName)
+                .addModifiers(KModifier.ABSTRACT)
+                .superclass(mechanismClass)
                 .addFunctions(entryFunctions)
                 .addFunction(setTargetFun)
                 .build()
