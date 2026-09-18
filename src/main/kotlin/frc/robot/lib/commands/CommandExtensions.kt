@@ -72,7 +72,7 @@ fun Command.onlyIf(predicate: () -> Boolean): Command {
                 +this@onlyIf
             }
         }
-        .named(this.name() + "/unless")
+        .named(this.name() + "/onlyIf")
 }
 
 fun Command.unless(predicate: () -> Boolean): Command {
