@@ -2,10 +2,13 @@ package frc.robot.states
 
 import frc.robot.RobotContainer.buttons.intakeButton
 import frc.robot.RobotContainer.buttons.scoringButton
+import frc.robot.field.CubeColors
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.extensions.not
 import frc.robot.lib.state_machine.buildStateMachine
+import frc.robot.subsystems.sensors.Sensors
 import org.team5987.annotation.graph.graphgen.GenerateStateMachineGraph
+import org.wpilib.command3.Trigger
 
 enum class State {
     IDLE,
@@ -16,6 +19,10 @@ enum class State {
     COLOR_CHECK;
 
     companion object {
+        private val isGreen = Trigger {
+            Sensors.DispatchSensor.color == CubeColors.GREEN
+        }
+
         @GenerateStateMachineGraph("State")
         val stateMachine =
             buildStateMachine<State>("State Machine") {
@@ -38,8 +45,9 @@ enum class State {
 
                 ALIGNMENT.onComplete switchTo COLOR_CHECK
 
-                // TODO: COLOR_CHECK on lastCubeGreen -> SCORING_LOW
-                // TODO: COLOR_CHECK on !lastCubeGreen -> SCORING_HIGH
+                COLOR_CHECK on isGreen switchTo SCORING_LOW
+
+                COLOR_CHECK on !isGreen switchTo SCORING_HIGH
 
                 SCORING_LOW.onComplete switchTo IDLE
 
