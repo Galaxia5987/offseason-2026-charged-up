@@ -1,9 +1,11 @@
 package frc.robot.field
 
+import frc.robot.lib.IS_RED
 import frc.robot.lib.extensions.*
-import org.wpilib.math.geometry.Translation2d
+import frc.robot.lib.flipper
+import frc.robot.lib.getPose2d
 import org.wpilib.units.measure.Distance
-import java.awt.Color
+import org.wpilib.util.Color
 
 val CUBE_SIZE = 24.13.cm
 val PLATFORM_SIZE = 143.cm
@@ -14,11 +16,11 @@ enum class TowerXOffset(val offset: Distance) {
     LOW(PLATFORM_SIZE - CUBE_SIZE / 2),
 }
 
-enum class CubeColors(val color: Color?) {
+enum class CubeColors(val color: Color) {
     RED(Color.RED),
     YELLOW(Color.YELLOW),
     GREEN(Color.GREEN),
-    NONE(null)
+    NONE(Color.BLACK)
 }
 
 fun getGridOffset(towerXOffset: TowerXOffset) =
