@@ -46,7 +46,7 @@ fun intaking(): Command =
 fun alignment(): Command =
     command {
             +runToPose({
-                    drive.pose.translation.nearest(SCORING_POSTS).toPose()
+                    drive.pose.nearest(SCORING_POSTS.get())
                 })
                 .named("Drive/AlignToScoringPost")
         }
