@@ -51,11 +51,11 @@ enum class State {
 
                 SCORING_LOW.onComplete switchTo IDLE
 
-                SCORING_LOW on scoringButton.trigger switchTo IDLE
+                [SCORING_LOW, SCORING_HIGH] on
+                    scoringButton.trigger switchTo
+                    IDLE
 
                 SCORING_HIGH.onComplete switchTo IDLE
-
-                SCORING_HIGH on scoringButton.trigger switchTo IDLE
             }
     }
 }
