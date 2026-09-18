@@ -1,5 +1,7 @@
 package frc.robot
 
+import frc.robot.RobotContainer.buttons.intakeButton
+import frc.robot.RobotContainer.buttons.scoringButton
 import frc.robot.lib.BasicAlerts
 import frc.robot.lib.MechanismRegistry
 import frc.robot.lib.Mode
@@ -8,16 +10,23 @@ import frc.robot.lib.commands.initializeAllMechanisms
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.sysid.sysId
+import frc.robot.lib.toReleaseTrigger
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.subsystems.drive.DriveCommands
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
+import org.wpilib.command3.Trigger
 import org.wpilib.smartdashboard.SendableChooser
 
 object RobotContainer {
     private val driverController = PS5Gamepad(0)
     private val autoChooser: LoggedDashboardChooser<Command>
+
+    object buttons {
+        var scoringButton = Trigger { false }.toReleaseTrigger()
+        var intakeButton = Trigger {false}
+    }
 
     init {
         drive // Ensure Drive is initialized
@@ -52,6 +61,8 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
+        intakeButton = driverController.rightBumper()
+        scoringButton = driverController.leftBumper().toReleaseTrigger()
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()
