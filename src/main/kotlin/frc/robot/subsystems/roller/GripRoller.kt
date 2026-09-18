@@ -5,9 +5,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import frc.robot.lib.commands.onChange
-import frc.robot.lib.commands.unless
 import frc.robot.lib.extensions.volts
-import frc.robot.subsystems.sensors.Sensors
 import org.wpilib.command3.Trigger
 
 val GRIP_ROLLER_CONFIG =
