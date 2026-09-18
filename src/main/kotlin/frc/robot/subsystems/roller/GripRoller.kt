@@ -27,10 +27,7 @@ object GripRoller : Roller("Grip", GRIP_ROLLER_CONFIG) {
     val stopTrigger: Trigger =
         Trigger { Sensors.GripSensor.isPresent }.onChange(stop())
 
-    fun grip() =
-        super.forward()
-            .named("${name}/grip")
-            .unless(Sensors.GripSensor::isPresent)
+    fun grip() = super.forward().named("${name}/grip") .unless(Sensors.GripSensor::isPresent)
 
     fun release() = super.backward().named("${name}/release")
 }
