@@ -4,76 +4,74 @@ import frc.robot.drive
 import frc.robot.field.CubeColors
 import frc.robot.field.SCORING_POSTS
 import frc.robot.lib.align.runToPose
-import frc.robot.lib.commands.command
-import frc.robot.lib.commands.fork
-import frc.robot.lib.commands.schedule
-import frc.robot.lib.commands.unaryPlus
-import frc.robot.lib.commands.waitUntil
-import frc.robot.lib.extensions.toPose
+import frc.robot.lib.commands.*
 import frc.robot.subsystems.elevator.Elevator
-import frc.robot.subsystems.elevator.ElevatorHeights
 import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
 import frc.robot.subsystems.roller.GripRoller
 import frc.robot.subsystems.roller.IntakeRoller
 import frc.robot.subsystems.sensors.Sensors
 import frc.robot.subsystems.wrist.Wrist
-import frc.robot.subsystems.wrist.WristPosition
 import org.wpilib.command3.Command
 
 fun idle(): Command =
     command {
-            +[
-                IntakeRoller.stop(),
-                ConveyorRoller.stop(),
-                DispatchRoller.stop(),
-                GripRoller.stop(),
-                Elevator.close(),
-            ]
-        }
+        +[
+            IntakeRoller.stop(),
+            ConveyorRoller.stop(),
+            DispatchRoller.stop(),
+            GripRoller.stop(),
+            Elevator.close(),
+        ]
+    }
         .named("States/Idle")
 
 fun intaking(): Command =
     command {
-            Wrist.setTarget(WristPosition.OPEN)
-            +IntakeRoller.intake()
-            +ConveyorRoller.convey()
-            +DispatchRoller.stop()
-            +GripRoller.stop()
-        }
+        +[
+            Wrist.open(),
+            IntakeRoller.intake(),
+            ConveyorRoller.convey(),
+            DispatchRoller.stop(),
+            GripRoller.stop(),
+        ]
+    }
         .named("States/Intaking")
 
-fun alignment(): Command =
-    command {
-            +runToPose({
-                    drive.pose.nearest(SCORING_POSTS.get())
-                })
-                .named("Drive/AlignToScoringPost")
-        }
-        .named("States/Alignment")
+fun alignment(): Command = runToPose({
+    drive.pose.nearest(SCORING_POSTS.get())
+})
+    .named("Drive/AlignToScoringPost")
+
+private fun advance(): Command = command {
+    if (Sensors.IntakeSensor.isPresent) {
+        +Wrist.open()
+        +IntakeRoller.intake()
+    } else {
+        +Wrist.closed()
+    }
+
+    +ConveyorRoller.convey()
+}.named("States/advance")
 
 fun scoringLow(): Command =
     command {
-            drive.continousLock().fork()
+        drive.continousLock().fork()
 
-            if (Sensors.IntakeSensor.isPresent) {
-                Wrist.setTarget(WristPosition.OPEN)
-                +IntakeRoller.intake()
-            } else {
-                Wrist.setTarget(WristPosition.CLOSED)
-            }
+        +advance()
 
-            +ConveyorRoller.convey()
-            +DispatchRoller.dispatchLow()
+        +DispatchRoller.dispatchLow()
 
-            waitUntil { !Sensors.DispatchSensor.isPresent }
-        }
+        waitUntil { !Sensors.DispatchSensor.isPresent }
+    }
         .whenCanceled {
             command {
-                    +DispatchRoller.dispatchHigh() // Reverse the roller
-                    waitUntil { Sensors.DispatchSensor.isPresent }
-                    +DispatchRoller.stop()
-                }
+                +ConveyorRoller.stop()
+                +DispatchRoller.dispatchHigh() // Reverse the roller
+                waitUntil { Sensors.DispatchSensor.isPresent }
+                +DispatchRoller.stop()
+                +idle()
+            }
                 .withPriority(Command.HIGHEST_PRIORITY)
                 .named("States/Scoring/Low/WhenCancelled")
                 .schedule()
@@ -82,35 +80,21 @@ fun scoringLow(): Command =
 
 fun scoringHigh(): Command =
     command {
-            drive.continousLock().fork()
+        drive.continousLock().fork()
 
-            if (Sensors.IntakeSensor.isPresent) {
-                Wrist.setTarget(WristPosition.OPEN)
-                +IntakeRoller.intake()
-            } else {
-                Wrist.setTarget(WristPosition.CLOSED)
-            }
+        +advance()
 
-            +ConveyorRoller.convey()
-            +DispatchRoller.dispatchHigh()
-            +GripRoller.grip()
+        +DispatchRoller.dispatchHigh()
+        +GripRoller.grip()
 
-            GripRoller.stopTrigger.waitUntil()
+        GripRoller.stopTrigger.waitUntil()
 
-            if (Sensors.GripSensor.color == CubeColors.RED)
-                Elevator.setTarget(ElevatorHeights.HIGH)
-            else if (Sensors.GripSensor.color == CubeColors.YELLOW)
-                Elevator.setTarget(ElevatorHeights.MID)
-            else +GripRoller.release()
-
-            +Elevator.close()
+        when (Sensors.GripSensor.color) {
+            CubeColors.RED -> +Elevator.high()
+            CubeColors.YELLOW -> +Elevator.mid()
+            else -> +GripRoller.release()
         }
-        .whenCanceled {
-            command {
-                    +Elevator.close()
-                }
-                .named("States/Scoring/High/WhenCancelled")
-                .schedule()
-        }
-        .withPriority(Command.HIGHEST_PRIORITY)
+
+        +Elevator.close()
+    }
         .named("States/Scoring/High")
