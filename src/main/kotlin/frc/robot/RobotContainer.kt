@@ -25,7 +25,7 @@ object RobotContainer {
 
     object buttons {
         var scoringButton = Trigger { false }.toReleaseTrigger()
-        var intakeButton = Trigger {false}
+        var intakeButton = Trigger { false }
     }
 
     init {
