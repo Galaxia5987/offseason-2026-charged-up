@@ -27,10 +27,6 @@ fun List<Any>.toBooleanArray(): BooleanArray {
     return this.map { it as Boolean }.toTypedArray().toBooleanArray()
 }
 
-fun Array<Translation2d>.getClosest(source: Translation2d): Translation2d {
-    return this.minByOrNull { it.getDistance(source) } ?: error("Cannot get closest translation from empty array!")
-}
-
 fun LogTable.put(key: String, defaultValue: List<Any>) {
     when {
         defaultValue.all { it is Double } ->
