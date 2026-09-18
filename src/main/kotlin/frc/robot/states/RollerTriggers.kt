@@ -23,8 +23,8 @@ val conveyorRollerStop =
 
 val dispatchRollerStop =
     Trigger {
-            (StateMachine.SCORINGHIGH && GripSensor.isPresent) ||
-                (StateMachine.SCORINGLOW && StateMachine.cubeLeavesBody)
+            (StateMachine.SCORING_HIGH && GripSensor.isPresent) ||
+                (StateMachine.SCORING_LOW && StateMachine.cubeLeavesBody)
         }
         .whileTrue(DispatchRoller.stop())
 
