@@ -11,6 +11,10 @@ import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.*
+import frc.robot.lib.sysid.SysIdMechanismConfig
+import frc.robot.lib.sysid.SysIdRoutine
+import frc.robot.lib.sysid.SysIdRoutineConfig
+import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import kotlin.math.absoluteValue
 import kotlin.math.cos
@@ -21,8 +25,9 @@ import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
 import org.wpilib.units.measure.Distance
+import org.wpilib.units.measure.Voltage
 
-object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
+object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
     private val mainMotor =
         UniversalTalonFX(
             MAIN_PORT,
@@ -113,4 +118,22 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory {
             yield()
         }
     }
+
+    override fun setVoltage(voltage: Voltage) = mainMotor.setVoltage(voltage)
+
+    override val sysidConfig =
+        SysIdMechanismConfig(
+            SysIdRoutineConfig(
+                1.volts.per(sec),
+                2.volts,
+                5.sec,
+                SysIdRoutine.Direction.FORWARD,
+            ),
+            SysIdRoutineConfig(
+                1.volts.per(sec),
+                2.volts,
+                5.sec,
+                SysIdRoutine.Direction.REVERSE,
+            ),
+        )
 }
