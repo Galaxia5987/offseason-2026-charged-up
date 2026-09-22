@@ -12,6 +12,7 @@ import frc.robot.lib.toReleaseTrigger
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.states.State
 import frc.robot.subsystems.drive.DriveCommands
+import frc.robot.subsystems.leds.Leds
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
@@ -46,6 +47,7 @@ object RobotContainer {
         enableAutoLogOutputFor(this)
         initializeAllMechanisms()
         BasicAlerts
+        Leds
         State.register()
     }
 

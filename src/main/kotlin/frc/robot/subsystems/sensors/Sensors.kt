@@ -39,7 +39,7 @@ object Sensors {
             override val isPresent: Boolean
                 get() = IntakeCanRange.isInRange
         }
-    val bodySensor =
+    val BodySensor =
         object : DistanceColorSensor {
             override val isPresent: Boolean
                 get() = false
