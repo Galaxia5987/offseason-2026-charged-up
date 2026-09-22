@@ -1,7 +1,5 @@
 package frc.robot
 
-import frc.robot.RobotContainer.buttons.intakeButton
-import frc.robot.RobotContainer.buttons.scoringButton
 import frc.robot.lib.BasicAlerts
 import frc.robot.lib.MechanismRegistry
 import frc.robot.lib.Mode
@@ -16,7 +14,6 @@ import frc.robot.subsystems.drive.DriveCommands
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
-import org.wpilib.command3.Trigger
 import org.wpilib.smartdashboard.SendableChooser
 
 object RobotContainer {
@@ -24,8 +21,8 @@ object RobotContainer {
     private val autoChooser: LoggedDashboardChooser<Command>
 
     object Buttons {
-        var scoring = Trigger { false }.toReleaseTrigger()
-        var intake = Trigger { false }
+        var scoring = driverController.leftBumper().toReleaseTrigger()
+        var intake = driverController.rightBumper()
     }
 
     init {
@@ -61,8 +58,6 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        intakeButton = driverController.rightBumper()
-        scoringButton = driverController.leftBumper().toReleaseTrigger()
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()
