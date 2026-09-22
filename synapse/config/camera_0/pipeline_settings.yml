@@ -1,0 +1,12 @@
+pipeline_configs:
+  0:
+    name: Camera
+    type: DriverViewPipeline
+    settings: {crosshair_x: 0.0, crosshair_y: 0.0, brightness: 50, exposure: 50, gain: 50,
+      orientation: 0, resolution: 1920x1080, saturation: 50, sharpness: 50}
+  1:
+    name: Color Detection
+    type: ColorPipeLine
+    settings: {minimum_percentage: 25.000000000000004, brightness: 50, exposure: 50,
+      gain: 50, orientation: 0, resolution: 1920x1080, saturation: 50.0, sharpness: 50.0,
+      tone: 50.0, temperature: 50.0}

@@ -173,3 +173,7 @@ networktables.json
 /.kotlin/sessions/
 /BalisticSimulator/.idea/BalisticSimulator.iml
 /BalisticSimulator/.idea/modules.xml
+
+
+synapse/records
+synapse/logs

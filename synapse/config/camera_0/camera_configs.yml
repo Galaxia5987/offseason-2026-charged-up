@@ -1,0 +1,6 @@
+camera_configs:
+  name: Front
+  id: USB2.0 FHD UVC WebCam_96
+  default_pipeline: 1
+  stream_res: [640, 360]
+  calibration: {}
