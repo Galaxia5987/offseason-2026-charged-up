@@ -9,8 +9,8 @@ enum class ShooterState {
     SHOOT,
     COOLDOWN;
 
-    companion object {
-        val stateMachine = buildStateMachine<ShooterState>("Shooter State Machine") {
+    companion object : StateMachineCompanion<State>(State::class){
+        override val states = makeStates {
             IDLE {
                 shooter.stop()
             }.initial()
