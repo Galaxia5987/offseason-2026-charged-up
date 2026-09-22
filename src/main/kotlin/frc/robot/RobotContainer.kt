@@ -23,9 +23,9 @@ object RobotContainer {
     private val driverController = PS5Gamepad(0)
     private val autoChooser: LoggedDashboardChooser<Command>
 
-    object buttons {
-        var scoringButton = Trigger { false }.toReleaseTrigger()
-        var intakeButton = Trigger { false }
+    object Buttons {
+        var scoring = Trigger { false }.toReleaseTrigger()
+        var intake = Trigger { false }
     }
 
     init {
