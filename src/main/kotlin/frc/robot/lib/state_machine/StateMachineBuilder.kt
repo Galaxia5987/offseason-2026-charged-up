@@ -1,6 +1,7 @@
 package frc.robot.lib.state_machine
 
 import java.util.function.BooleanSupplier
+import kotlin.reflect.KClass
 import org.littletonrobotics.junction.Logger
 import org.wpilib.command3.Command
 import org.wpilib.command3.Command.noRequirements
@@ -122,7 +123,7 @@ class StateMachineBuilder<E : Enum<E>>(
     infix fun Trigger.or(other: BooleanSupplier): Trigger = this.and(other)
 }
 
-inline fun <reified E : Enum<E>> buildStateMachine(
+fun <E : Enum<E>> buildStateMachine(
     name: String,
     init: StateMachineBuilder<E>.() -> Unit,
 ): StateMachine {
@@ -131,4 +132,32 @@ inline fun <reified E : Enum<E>> buildStateMachine(
 
 fun StateMachine.register() {
     Scheduler.getDefault().schedule(this)
+}
+
+@RequiresOptIn annotation class Unsafe
+
+abstract class StateMachineCompanion<T : Enum<T>>(stateClass: KClass<T>) {
+    var state: T = stateClass.java.enumConstants.first()
+        private set
+
+    protected abstract val states: StateMachineBuilder<T>.() -> Unit
+
+    protected fun makeStates(
+        init: StateMachineBuilder<T>.() -> Unit
+    ): StateMachineBuilder<T>.() -> Unit = init
+
+    fun trigger(state: T) = Trigger { state == this.state }
+
+    @Unsafe
+    fun set(state: T) {
+        this.state = state
+    }
+
+    private val stateMachine =
+        buildStateMachine<T>(stateClass.simpleName!!) {
+            states()
+            onStateChange { state = it }
+        }
+
+    fun register() = stateMachine.register()
 }

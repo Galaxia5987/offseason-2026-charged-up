@@ -226,6 +226,11 @@ object LoggedOutputManager {
                     addRunnable(key) {
                         value().ifNotNull { recordOutput(key, it as String) }
                     }
+
+                Loggable::class.java.isAssignableFrom(type) ->
+                    addRunnable(key) {
+                        value().ifNotNull { log(key) }
+                    }
                 else -> {
                     addRunnable(key) {
                         value().ifNotNull {
