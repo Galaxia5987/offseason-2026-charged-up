@@ -9,22 +9,21 @@ import frc.robot.subsystems.sensors.Sensors.GripSensor
 import frc.robot.subsystems.sensors.Sensors.bodySensor
 import org.wpilib.command3.Trigger
 
-val intakeRollerStop =
+fun initRollerTriggers() = Unit
+
+val notIntaking =
     Trigger {
             bodySensor.isPresent && DispatchSensor.isPresent
         }
         .whileTrue(IntakeRoller.stop())
 
 val conveyorRollerStop =
-    Trigger {
-            StateMachine.IDLE
-        }
-        .whileTrue(ConveyorRoller.stop())
+    State.trigger(State.IDLE).whileTrue(ConveyorRoller.stop())
 
 val dispatchRollerStop =
     Trigger {
-            (StateMachine.SCORING_HIGH && GripSensor.isPresent) ||
-                (StateMachine.SCORING_LOW && !DispatchSensor.isPresent)
+            (State.state == State.SCORING_HIGH && GripSensor.isPresent) ||
+                (State.state == State.SCORING_LOW && !DispatchSensor.isPresent)
         }
         .whileTrue(DispatchRoller.stop())
 
