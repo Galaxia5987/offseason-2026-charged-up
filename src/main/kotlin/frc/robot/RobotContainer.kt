@@ -10,6 +10,7 @@ import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.sysid.sysId
 import frc.robot.lib.toReleaseTrigger
 import frc.robot.lib.unified_controller.PS5Gamepad
+import frc.robot.states.State
 import frc.robot.subsystems.drive.DriveCommands
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
@@ -45,6 +46,7 @@ object RobotContainer {
         enableAutoLogOutputFor(this)
         initializeAllMechanisms()
         BasicAlerts
+        State.register()
     }
 
     private fun configureDefaultCommands() {
