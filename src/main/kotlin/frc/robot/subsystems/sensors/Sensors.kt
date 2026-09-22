@@ -6,6 +6,14 @@ import frc.robot.lib.unified_canrange.UnifiedCANRange
 
 interface ColorSensor {
     val color: CubeColors
+    val isGreen: Boolean
+        get() = (color == CubeColors.GREEN)
+
+    val isYellow: Boolean
+        get() = (color == CubeColors.YELLOW)
+
+    val isRed: Boolean
+        get() = (color == CubeColors.RED)
 }
 
 interface DistanceSensor {
