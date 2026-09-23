@@ -30,11 +30,8 @@ object Leds : Mechanism() {
     val intaking = State.trigger(State.INTAKING).whileTrue(intaking())
 
     fun intaking(): Command =
-        this {
-                while (true) {
-                    candle.setControl(flickerRequest.withColor(BLUE))
-                    yield()
-                }
+        runRepeatedly {
+                candle.setControl(flickerRequest.withColor(BLUE))
             }
             .named("Leds/intaking")
 
