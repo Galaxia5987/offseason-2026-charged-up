@@ -11,6 +11,7 @@ import frc.robot.lib.sysid.sysId
 import frc.robot.lib.toReleaseTrigger
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.states.State
+import frc.robot.states.initRollerTriggers
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.leds.Leds
 import org.ironmaple.simulation.SimulatedArena
@@ -49,6 +50,7 @@ object RobotContainer {
         BasicAlerts
         Leds
         State.register()
+        initRollerTriggers()
     }
 
     private fun configureDefaultCommands() {
