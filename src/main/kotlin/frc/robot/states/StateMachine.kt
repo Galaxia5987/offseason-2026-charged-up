@@ -16,7 +16,7 @@ enum class State {
 
     companion object : StateMachineCompanion<State>(State::class) {
         override val states = makeStates {
-            IDLE(idle())
+            IDLE(idle()).initial()
             INTAKING(intaking())
             SCORING_HIGH(scoringHigh())
             SCORING_LOW(scoringLow())
