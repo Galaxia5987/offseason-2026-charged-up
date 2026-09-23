@@ -2,10 +2,10 @@ package frc.robot.subsystems.leds
 
 import com.ctre.phoenix6.signals.RGBWColor
 
-val segment1 = Pair(1, 5)
-val segment2 = Pair(6, 10)
-val segment3 = Pair(42, 53)
-val full = Pair(1, 53)
+val segmentBody = 1..5
+val segmentDispatch = 6..10
+val segmentGrip = 42..53
+val full = segmentBody.first..segmentGrip.last
 
 val RED = RGBWColor.fromHex("#FF0000").get()
 val GREEN = RGBWColor.fromHex("#00FF00").get()

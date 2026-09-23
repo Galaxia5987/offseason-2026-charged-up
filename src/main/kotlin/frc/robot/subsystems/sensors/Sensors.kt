@@ -23,23 +23,23 @@ interface DistanceSensor {
 interface DistanceColorSensor : DistanceSensor, ColorSensor
 
 object Sensors {
-    private val IntakeCanRange =
+    private val intakeCanRange =
         UnifiedCANRange(
             INTAKE_SENSOR_CANRANGE_PORT,
             configuration = CANrangeConfiguration(),
         )
-    private val GripCanRange =
+    private val gripCanRange =
         UnifiedCANRange(
             GRIP_CANRANGE_PORT,
             configuration = CANrangeConfiguration(),
         )
 
-    val IntakeSensor =
+    val intakeSensor =
         object : DistanceSensor {
             override val isPresent: Boolean
-                get() = IntakeCanRange.isInRange
+                get() = intakeCanRange.isInRange
         }
-    val BodySensor =
+    val bodySensor =
         object : DistanceColorSensor {
             override val isPresent: Boolean
                 get() = false
@@ -48,7 +48,7 @@ object Sensors {
                 get() = CubeColors.NONE
         }
 
-    val DispatchSensor =
+    val dispatchSensor =
         object : DistanceColorSensor {
             override val isPresent: Boolean
                 get() = false
@@ -56,10 +56,10 @@ object Sensors {
             override val color: CubeColors
                 get() = CubeColors.NONE
         }
-    val GripSensor =
+    val gripSensor =
         object : DistanceColorSensor {
             override val isPresent: Boolean
-                get() = GripCanRange.isInRange
+                get() = gripCanRange.isInRange
 
             override val color: CubeColors
                 get() = CubeColors.NONE

@@ -1,7 +1,6 @@
 package frc.robot.states
 
 import frc.robot.RobotContainer
-import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.extensions.not
 import frc.robot.lib.state_machine.StateMachineCompanion
 import frc.robot.subsystems.sensors.Sensors
@@ -35,19 +34,19 @@ enum class State {
 
             ALIGNMENT on
                 RobotContainer.Buttons.scoring.trigger.and(
-                    Trigger { Sensors.DispatchSensor.isPresent }
-                        .or(Trigger { Sensors.GripSensor.isPresent })
+                    Trigger { Sensors.dispatchSensor.isPresent }
+                        .or(Trigger { Sensors.gripSensor.isPresent })
                 ) switchTo
                 IDLE
 
             ALIGNMENT.onComplete switchTo COLOR_CHECK
 
             COLOR_CHECK on
-                Trigger { Sensors.DispatchSensor.isGreen } switchTo
+                Trigger { Sensors.dispatchSensor.isGreen } switchTo
                 SCORING_LOW
 
             COLOR_CHECK on
-                !Trigger { Sensors.DispatchSensor.isGreen } switchTo
+                !Trigger { Sensors.dispatchSensor.isGreen } switchTo
                 SCORING_HIGH
 
             SCORING_LOW.onComplete switchTo IDLE
