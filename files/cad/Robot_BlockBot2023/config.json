@@ -6,12 +6,16 @@
     {
       "axis": "x",
       "degrees": 90
+    },
+    {
+      "axis": "z",
+      "degrees": 90
     }
   ],
   "position": [
-    0,
-    0,
-    0.10
+    0.350,
+    -0.363,
+    0.05066
   ],
   "cameras": [],
   "components": [
@@ -21,12 +25,16 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        -0.179,
+        -0.015,
+        -0.205
       ]
     },
     {
@@ -35,12 +43,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        -0.179, -0.7, -0.205
       ]
     },
     {
@@ -49,12 +59,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.063, -0.708, -0.027
       ]
     },
     {
@@ -63,12 +75,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.193, -0.708, -0.052
       ]
     },
     {
@@ -77,12 +91,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.461, -0.482, -0.329
       ]
     },
     {
@@ -91,12 +107,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.162, -0.344, -0.394
       ]
     },
     {
@@ -105,12 +123,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.215, -0.171, -0.308
       ]
     },
     {
@@ -119,12 +139,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.098, -0.344, -0.401
       ]
     },
     {
@@ -133,12 +155,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.071, -0.344, -0.387
       ]
     },
     {
@@ -147,12 +171,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        -0.347, -0.015, -0.07
       ]
     },
     {
@@ -161,12 +187,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.461, -0.205, -0.329
       ]
     },
     {
@@ -175,12 +203,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.099, -0.171, -0.303
       ]
     },
     {
@@ -189,12 +219,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.422, -0.171, -0.291
       ]
     },
     {
@@ -203,12 +235,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.673, -0.171, -0.257
       ]
     },
     {
@@ -217,12 +251,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        -0.179, -0.008, -0.205
       ]
     },
     {
@@ -231,12 +267,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.063, 0.008, -0.027
       ]
     },
     {
@@ -245,12 +283,14 @@
         {
           "axis": "x",
           "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
         }
       ],
       "zeroedPosition": [
-        0,
-        0,
-        0.1
+        0.193, 0.008, -0.052
       ]
     }
   ]
