@@ -10,6 +10,7 @@ import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.with
 import frc.robot.lib.universal_motor.UniversalTalonFX
+import frc.robot.lib.universal_motor.createUniversalMotor
 import org.littletonrobotics.junction.Logger
 import org.team5987.annotation.command_enum.CommandEnumSetTarget
 import org.wpilib.command3.Mechanism
@@ -23,7 +24,7 @@ object Wrist : Mechanism(), WristPositionCommandFactory {
         }
 
     private val motor: UniversalTalonFX =
-        UniversalTalonFX(
+        createUniversalMotor(
             port = PORT,
             config = CONFIG,
             gearRatio = ROTOR_TO_MECHANISM_RATIO,
