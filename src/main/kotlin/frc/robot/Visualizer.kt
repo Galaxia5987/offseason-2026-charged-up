@@ -16,7 +16,7 @@ import org.wpilib.math.geometry.Pose3d
 private object FourBar {
     private val rUpperLinkage = 401.41682.mm
     private val pivotPointUpperLinkage = getTranslation3d(z=193.775.mm, x= -(52.3).mm)
-    val upperLinkage = getPose3d().rotateAround(pivotPointUpperLinkage, (-45).deg.toRoll())
+    val upperLinkage = getPose3d().rotateAround(pivotPointUpperLinkage, Wrist.inputs.position.toRoll())
 }
 
 private val subsystemPoseArray = Array(17) { Pose3d() }
