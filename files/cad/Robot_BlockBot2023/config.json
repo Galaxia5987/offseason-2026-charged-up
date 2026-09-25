@@ -11,7 +11,7 @@
   "position": [
     0,
     0,
-    0
+    0.10
   ],
   "cameras": [],
   "components": [
@@ -26,7 +26,7 @@
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -40,7 +40,7 @@
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -54,7 +54,7 @@
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -68,7 +68,7 @@
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -77,16 +77,12 @@
         {
           "axis": "x",
           "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": -90
         }
       ],
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -95,16 +91,12 @@
         {
           "axis": "x",
           "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": -90
         }
       ],
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -113,16 +105,12 @@
         {
           "axis": "x",
           "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": -90
         }
       ],
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -131,16 +119,12 @@
         {
           "axis": "x",
           "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": -90
         }
       ],
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
       ]
     },
     {
@@ -149,16 +133,124 @@
         {
           "axis": "x",
           "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": -90
         }
       ],
       "zeroedPosition": [
         0,
         0,
-        0
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_9 IntakeRoller2",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_10 GripRoller2",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_11 ConveyorRoller2",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_12 ConveyorRoller3",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_13 DispatchRoller",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_14 FourBarRollerLink",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_15 FourBarLowerLink",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "_comment": "model_16 FourBarUpperLink",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        }
+      ],
+      "zeroedPosition": [
+        0,
+        0,
+        0.1
       ]
     }
   ]

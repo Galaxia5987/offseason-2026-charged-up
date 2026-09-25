@@ -14,6 +14,7 @@ import frc.robot.states.State
 import frc.robot.states.initRollerTriggers
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.leds.Leds
+import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
@@ -64,6 +65,7 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
+        driverController.cross().onTrue(Wrist.open()).onFalse(Wrist.closed())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

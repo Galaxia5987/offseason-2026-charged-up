@@ -36,6 +36,8 @@ object Wrist : Mechanism(), WristPositionCommandFactory {
     val atSetpoint = Trigger {
         motor.inputs.position.isNear(setpoint, TOLERANCE)
     }
+    val inputs
+        get() = motor.inputs
 
     @CommandEnumSetTarget
     override fun setTarget(value: WristPosition): UnnamedCommand = this {
