@@ -9,6 +9,7 @@ import frc.robot.lib.extensions.volts
 import frc.robot.lib.extensions.with
 import frc.robot.lib.universal_motor.MotorLogConfig
 import frc.robot.lib.universal_motor.UniversalTalonFX
+import frc.robot.lib.universal_motor.createUniversalMotor
 import org.littletonrobotics.junction.Logger
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
@@ -17,7 +18,7 @@ import org.wpilib.units.measure.Voltage
 abstract class Roller(name: String, val config: RollerConfig) :
     Mechanism("${name}Roller") {
     protected val motor: UniversalTalonFX =
-        UniversalTalonFX(
+        createUniversalMotor(
             port = config.motorPort,
             canbus = config.canBus,
             config =
