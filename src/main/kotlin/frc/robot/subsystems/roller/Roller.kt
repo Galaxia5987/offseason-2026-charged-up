@@ -36,6 +36,8 @@ abstract class Roller(name: String, val config: RollerConfig) :
 
     protected var setpoint: Voltage = 0.volts
     protected val voltageOut = VoltageOut(setpoint)
+    val inputs
+        get() = motor.inputs
 
     init {
         addPeriodic(::_periodic)

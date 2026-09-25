@@ -3,6 +3,7 @@ package frc.robot
 import frc.robot.lib.BasicAlerts
 import frc.robot.lib.MechanismRegistry
 import frc.robot.lib.Mode
+import frc.robot.lib.commands.command
 import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -11,13 +12,16 @@ import frc.robot.lib.sysid.sysId
 import frc.robot.lib.toReleaseTrigger
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.states.State
+import frc.robot.states.conveyorRollerStop
 import frc.robot.states.initRollerTriggers
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.leds.Leds
+import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
+import org.wpilib.driverstation.Gamepad
 import org.wpilib.smartdashboard.SendableChooser
 
 object RobotContainer {
@@ -65,7 +69,8 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        driverController.cross().onTrue(Wrist.open()).onFalse(Wrist.closed())
+        driverController.circle().onTrue(Wrist.open()).onFalse(Wrist.closed())
+        driverController.cross().onTrue(ConveyorRoller.convey()).onFalse(ConveyorRoller.stop())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()
