@@ -10,6 +10,7 @@ import frc.robot.lib.extensions.toPitch
 import frc.robot.lib.extensions.withRotation
 import frc.robot.lib.getPose3d
 import frc.robot.lib.getTranslation3d
+import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
 import frc.robot.subsystems.roller.IntakeRoller
@@ -88,6 +89,13 @@ private object ConveyorRollers {
     }
 }
 
+private object ElevatorObjects {
+    private val theta0 = 27.132149.deg
+    val gripper by periodic {
+        getPose3d(Gripper.x - Elevator.inputs.distance[m]*cos(theta0[rad]), Gripper.y, Gripper.z + Elevator.inputs.distance[m]*sin(theta0[rad]))
+    }
+}
+
 private val subsystemPoseArray = Array(17) { Pose3d() }
 
 @LoggedOutput(key = "Visualization/mechanismPoses", level = LogLevel.COMP)
@@ -96,7 +104,7 @@ val mechanismPoses by periodic {
     subsystemPoseArray[1] = FourBar.rollerLink2
     subsystemPoseArray[2] = FourBar.upperLinkage2
     subsystemPoseArray[3] = getPose3d(GripRoller)
-    subsystemPoseArray[4] = getPose3d(Gripper)
+    subsystemPoseArray[4] = ElevatorObjects.gripper
     subsystemPoseArray[5] = ConveyorRollers.conveyorRoller
     subsystemPoseArray[6] = getPose3d(ElevatorStage1)
     subsystemPoseArray[7] = getPose3d(ElevatorStage2)

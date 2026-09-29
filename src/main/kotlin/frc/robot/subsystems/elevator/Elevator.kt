@@ -15,6 +15,7 @@ import frc.robot.lib.sysid.SysIdMechanismConfig
 import frc.robot.lib.sysid.SysIdRoutine
 import frc.robot.lib.sysid.SysIdRoutineConfig
 import frc.robot.lib.sysid.SysIdable
+import frc.robot.lib.universal_motor.MotorLogConfig
 import frc.robot.lib.universal_motor.createUniversalMotor
 import kotlin.math.absoluteValue
 import kotlin.math.cos
@@ -35,6 +36,9 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
             gearRatio = GEAR_RATIO,
             simGains = SIM_GAINS,
             linearSystemWheelDiameter = DIAMETER,
+            logConfig = MotorLogConfig(
+
+            )
         )
     private val auxMotor =
         createUniversalMotor(
@@ -53,6 +57,9 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
     val height: Distance by periodic {
         mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad])
     }
+
+    val inputs
+        get() = mainMotor.inputs
 
     var targetOffset = getGridOffset(TowerXOffset.HIGH)
 

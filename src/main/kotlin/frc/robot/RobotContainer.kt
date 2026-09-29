@@ -13,6 +13,7 @@ import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.states.State
 import frc.robot.states.initRollerTriggers
 import frc.robot.subsystems.drive.DriveCommands
+import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.leds.Leds
 import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
@@ -68,7 +69,7 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        driverController.cross().onTrue(ConveyorRoller.convey()).onFalse(ConveyorRoller.stop())
+        driverController.cross().onTrue(Elevator.high()).onFalse(Elevator.close())
         driverController.square().onTrue(DispatchRoller.dispatchHigh()).onFalse(DispatchRoller.stop())
     }
 
