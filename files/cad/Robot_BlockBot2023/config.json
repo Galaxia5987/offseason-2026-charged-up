@@ -54,23 +54,7 @@
       ]
     },
     {
-      "_comment": "model_2 Four bar Lower Link",
-      "zeroedRotations": [
-        {
-          "axis": "x",
-          "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": 90
-        }
-      ],
-      "zeroedPosition": [
-        0.063, -0.708, -0.027
-      ]
-    },
-    {
-      "_comment": "model_3 Four Bar Upper Link",
+      "_comment": "model_2 Four Bar Upper Link",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -86,7 +70,7 @@
       ]
     },
     {
-      "_comment": "model_4 Grip Roller",
+      "_comment": "model_3 Grip Roller",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -102,7 +86,7 @@
       ]
     },
     {
-      "_comment": "model_5 Gripper",
+      "_comment": "model_4 Gripper",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -118,7 +102,7 @@
       ]
     },
     {
-      "_comment": "model_6 Conveyor Roller",
+      "_comment": "model_5 Conveyor Roller",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -134,7 +118,7 @@
       ]
     },
     {
-      "_comment": "model_7 Elevator Stage 1",
+      "_comment": "model_6 Elevator Stage 1",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -150,7 +134,7 @@
       ]
     },
     {
-      "_comment": "model_8 Elevator Stage 2",
+      "_comment": "model_7 Elevator Stage 2",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -166,7 +150,7 @@
       ]
     },
     {
-      "_comment": "model_9 IntakeRoller2",
+      "_comment": "model_8 IntakeRoller2",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -182,7 +166,7 @@
       ]
     },
     {
-      "_comment": "model_10 GripRoller2",
+      "_comment": "model_9 GripRoller2",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -198,7 +182,7 @@
       ]
     },
     {
-      "_comment": "model_11 ConveyorRoller2",
+      "_comment": "model_10 ConveyorRoller2",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -214,7 +198,7 @@
       ]
     },
     {
-      "_comment": "model_12 ConveyorRoller3",
+      "_comment": "model_11 ConveyorRoller3",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -230,7 +214,7 @@
       ]
     },
     {
-      "_comment": "model_13 DispatchRoller",
+      "_comment": "model_12 DispatchRoller",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -246,7 +230,7 @@
       ]
     },
     {
-      "_comment": "model_14 FourBarRollerLink",
+      "_comment": "model_13 FourBarRollerLink",
       "zeroedRotations": [
         {
           "axis": "x",
@@ -262,23 +246,7 @@
       ]
     },
     {
-      "_comment": "model_15 FourBarLowerLink",
-      "zeroedRotations": [
-        {
-          "axis": "x",
-          "degrees": 90
-        },
-        {
-          "axis": "z",
-          "degrees": 90
-        }
-      ],
-      "zeroedPosition": [
-        0.063, 0.008, -0.027
-      ]
-    },
-    {
-      "_comment": "model_16 FourBarUpperLink",
+      "_comment": "model_14 FourBarUpperLink",
       "zeroedRotations": [
         {
           "axis": "x",
