@@ -10,6 +10,8 @@ import frc.robot.lib.extensions.toPitch
 import frc.robot.lib.extensions.withRotation
 import frc.robot.lib.getPose3d
 import frc.robot.lib.getTranslation3d
+import frc.robot.subsystems.roller.ConveyorRoller
+import frc.robot.subsystems.roller.DispatchRoller
 import frc.robot.subsystems.roller.IntakeRoller
 import frc.robot.subsystems.wrist.Wrist
 import org.team5987.annotation.LogLevel
@@ -26,7 +28,7 @@ private val FourBarLowerLink = -Translation3d(0.063, -0.708, -0.027) + rootPosit
 private val FourBarUpperLink = -Translation3d(0.193, -0.708, -0.052) + rootPosition
 private val GripRoller = -Translation3d(0.461, -0.482, -0.329) + rootPosition
 private val Gripper = -Translation3d(0.162, -0.344, -0.394) + rootPosition
-private val ConveyorRoller = -Translation3d(0.215, -0.171, -0.308) + rootPosition
+private val ConveyorRoller1 = -Translation3d(0.215, -0.171, -0.308) + rootPosition
 private val ElevatorStage1 = -Translation3d(0.098, -0.344, -0.401) + rootPosition
 private val ElevatorStage2 = -Translation3d(0.071, -0.344, -0.387) + rootPosition
 private val IntakeRoller2 = -Translation3d(-0.347, -0.015, -0.07) + rootPosition
@@ -71,6 +73,21 @@ private object FourBar {
 
 }
 
+private object ConveyorRollers {
+    val conveyorRoller by periodic {
+        getPose3d(ConveyorRoller1, ConveyorRoller.inputs.position.toPitch())
+    }
+    val conveyorRoller2 by periodic {
+        getPose3d(ConveyorRoller2, rotation = conveyorRoller.rotation)
+    }
+    val conveyorRoller3 by periodic {
+        getPose3d(ConveyorRoller3, rotation = conveyorRoller.rotation)
+    }
+    val dispatchRoller by periodic {
+        getPose3d(DispatchRollerObj, rotation = DispatchRoller.inputs.position.toPitch())
+    }
+}
+
 private val subsystemPoseArray = Array(17) { Pose3d() }
 
 @LoggedOutput(key = "Visualization/mechanismPoses", level = LogLevel.COMP)
@@ -80,14 +97,14 @@ val mechanismPoses by periodic {
     subsystemPoseArray[2] = FourBar.upperLinkage2
     subsystemPoseArray[3] = getPose3d(GripRoller)
     subsystemPoseArray[4] = getPose3d(Gripper)
-    subsystemPoseArray[5] = getPose3d(ConveyorRoller)
+    subsystemPoseArray[5] = ConveyorRollers.conveyorRoller
     subsystemPoseArray[6] = getPose3d(ElevatorStage1)
     subsystemPoseArray[7] = getPose3d(ElevatorStage2)
     subsystemPoseArray[8] = FourBar.intakeRoller2
     subsystemPoseArray[9] = getPose3d(GripRoller2)
-    subsystemPoseArray[10] = getPose3d(ConveyorRoller2)
-    subsystemPoseArray[11] = getPose3d(ConveyorRoller3)
-    subsystemPoseArray[12] = getPose3d(DispatchRollerObj)
+    subsystemPoseArray[10] = ConveyorRollers.conveyorRoller2
+    subsystemPoseArray[11] = ConveyorRollers.conveyorRoller3
+    subsystemPoseArray[12] = ConveyorRollers.dispatchRoller
     subsystemPoseArray[13] = FourBar.rollerLink
     subsystemPoseArray[14] = FourBar.upperLinkage
     subsystemPoseArray
