@@ -4,11 +4,11 @@ import com.ctre.phoenix6.controls.Follower
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC
 import com.ctre.phoenix6.signals.MotorAlignmentValue
 import frc.robot.drive
-import frc.robot.field.TowerXOffset
-import frc.robot.field.getGridOffset
+import frc.robot.field.getPostByLevel
 import frc.robot.lib.commands.UnnamedCommand
 import frc.robot.lib.commands.addPeriodic
 import frc.robot.lib.commands.invoke
+import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.commands.waitUntil
 import frc.robot.lib.extensions.*
 import frc.robot.lib.sysid.SysIdMechanismConfig
@@ -54,26 +54,24 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
                 )
             }
 
-    val height: Distance by periodic {
-        mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad])
-    }
+    val currentHeight: Distance
+        get() = mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad]) + BASE_HEIGHT
 
     val inputs
         get() = mainMotor.inputs
 
-    var targetOffset = getGridOffset(TowerXOffset.HIGH)
+    val distance
+        get() = (drive.pose.x - getPostByLevel(namedSetpoint.level).x).absoluteValue.m
 
-    val distance by periodic { (drive.pose.x - targetOffset).absoluteValue.m }
+    val targetLength: Distance
+        get() = distance / cos(ELEVATOR_ANGLE[rad])
 
-    val targetLength: Distance by periodic {
-        distance * tan(ELEVATOR_ANGLE[rad])
-    }
+    val targetHeight: Distance
+        get() = getPostByLevel(namedSetpoint.level).z.m
 
-    val targetHeight: Distance by periodic {
-        distance / cos(ELEVATOR_ANGLE[rad])
-    }
 
     private var setpoint = 0.m
+    private var namedSetpoint = ElevatorHeights.CLOSE
     private val torqueCurrentFOC = MotionMagicTorqueCurrentFOC(0.0)
 
     val atSetpoint = Trigger {
@@ -88,8 +86,9 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
         PropertyLogGroup(
             ::atSetpoint,
             ::setpoint,
+            ::namedSetpoint,
             ::targetLength,
-            ::height,
+            ::currentHeight,
             ::targetHeight,
         )
 
@@ -99,9 +98,8 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
         logList.periodic()
     }
 
-    fun close(): Command =
+    private fun closed(): Command =
         this {
-                targetOffset = getGridOffset(TowerXOffset.LOW)
                 setpoint = MIN_LENGTH
                 mainMotor.setControl(
                     torqueCurrentFOC with
@@ -113,16 +111,20 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
 
     @CommandEnumSetTarget
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
-        while (true) {
-            if (targetHeight >= value.minHeight) {
-                targetOffset = getGridOffset(value.towerXOffset)
-                setpoint = targetLength
-                mainMotor.setControl(
-                    torqueCurrentFOC with
-                        targetLength.toAngle(DIAMETER, GEAR_RATIO)
-                )
+        namedSetpoint = value
+        if(value == ElevatorHeights.CLOSE){
+            +closed()
+        }else {
+            while (true) {
+                if (targetHeight >= currentHeight) {
+                    setpoint = targetLength
+                    mainMotor.setControl(
+                        torqueCurrentFOC with
+                                targetLength.toAngle(DIAMETER, GEAR_RATIO)
+                    )
+                }
+                yield()
             }
-            yield()
         }
     }
 

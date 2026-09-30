@@ -3,6 +3,7 @@ package frc.robot.states
 import frc.robot.drive
 import frc.robot.field.CubeColors
 import frc.robot.field.SCORING_POSTS
+import frc.robot.field.nearestPost
 import frc.robot.lib.align.runToPose
 import frc.robot.lib.commands.*
 import frc.robot.subsystems.elevator.Elevator
@@ -39,9 +40,7 @@ fun intaking(): Command =
         .named("States/Intaking")
 
 fun alignment(): Command =
-    runToPose({
-            drive.pose.nearest(SCORING_POSTS.get()[0].map { it.toPose2d() })
-        })
+    runToPose(::nearestPost)
         .named("Drive/AlignToScoringPost")
 
 private fun advance(): Command =

@@ -3,8 +3,10 @@ package frc.robot
 import frc.robot.lib.BasicAlerts
 import frc.robot.lib.MechanismRegistry
 import frc.robot.lib.Mode
+import frc.robot.lib.commands.command
 import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
+import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.sysid.sysId
@@ -69,8 +71,9 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        driverController.cross().onTrue(Elevator.high()).onFalse(Elevator.close())
-        driverController.square().onTrue(DispatchRoller.dispatchHigh()).onFalse(DispatchRoller.stop())
+        driverController.cross().onTrue(Elevator.high())
+        driverController.square().onTrue(Elevator.mid())
+        driverController.triangle().onTrue(Elevator.close())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()
