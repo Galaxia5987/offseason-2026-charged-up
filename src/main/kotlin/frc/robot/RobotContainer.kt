@@ -45,9 +45,9 @@ object RobotContainer {
         configureDefaultCommands()
 
         if (CURRENT_MODE == Mode.SIM) {
-            SimulatedArena.getInstance()
+            arena
                 .addDriveTrainSimulation(driveSimulation)
-            SimulatedArena.getInstance().resetFieldForAuto()
+            arena.resetFieldForAuto()
         }
 
         enableAutoLogOutputFor(this)

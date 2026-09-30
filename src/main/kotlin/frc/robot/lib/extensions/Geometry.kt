@@ -2,6 +2,7 @@ package frc.robot.lib.extensions
 
 import com.pathplanner.lib.util.FlippingUtil
 import frc.robot.lib.IS_RED
+import frc.robot.lib.getPose2d
 import org.wpilib.math.geometry.*
 import org.wpilib.units.Units
 import org.wpilib.units.Units.Rotations
@@ -26,6 +27,11 @@ fun Translation2d.getRotationToTranslation(other: Translation2d): Rotation2d =
 fun Pose2d.flip(): Pose2d = FlippingUtil.flipFieldPose(this)
 
 fun Pose2d.flip(isRed: Boolean) = if (isRed) this.flip() else this
+
+fun Pose3d.flip(): Pose3d = getPose2d(x, y).flip().let { Pose3d(it.x, it.y, z, rotation) }
+
+fun Pose3d.flip(isRed: Boolean): Pose3d = if (isRed) this.flip() else this
+
 
 fun Pose2d.flipIfNeeded(): Pose2d = flip(IS_RED)
 

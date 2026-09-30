@@ -21,7 +21,7 @@ val MAPLE_SIM_STARTING_POSE = Pose2d(3.0, 3.0, Rotation2d())
 fun resetSimulationField() {
     if (CURRENT_MODE != Mode.SIM) return
     drive.resetOdometry(MAPLE_SIM_STARTING_POSE)
-    SimulatedArena.getInstance().resetFieldForAuto()
+    arena.resetFieldForAuto()
 }
 
 fun getMapleSimPose(): Pose2d? = driveSimulation?.simulatedDriveTrainPose

@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot
 
+import com.pathplanner.lib.util.FlippingUtil
+import frc.robot.field.EmptyArena
 import frc.robot.lib.BetterPoseEstimator
 import frc.robot.lib.extensions.CacheManager
 import frc.robot.lib.extensions.enableAutoLogOutputFor
@@ -20,6 +22,8 @@ import org.wpilib.hardware.power.PowerDistribution
 import org.wpilib.math.linalg.VecBuilder
 import org.wpilib.system.Timer
 
+val arena = EmptyArena()
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -35,6 +39,7 @@ class Robot : LoggedRobot() {
      * used for any initialization code.
      */
     init {
+        FlippingUtil.symmetryType = FlippingUtil.FieldSymmetry.kMirrored
         arrayOf(vision, drive).forEach { AutoLogOutputManager.addObject(it) }
 
         // Initialize logger
@@ -144,8 +149,6 @@ class Robot : LoggedRobot() {
     }
 
     override fun simulationPeriodic() {
-        val arena = SimulatedArena.getInstance()
-
         val pose = getMapleSimPose()!!.toPose3d()
         val timestamp = Timer.getTimestamp()
         val stdDevs = VecBuilder.fill(0.01, 0.01, 0.01)
