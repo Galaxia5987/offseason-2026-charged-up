@@ -8,6 +8,7 @@ import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
 import frc.robot.lib.commands.unaryPlus
 import frc.robot.lib.extensions.enableAutoLogOutputFor
+import frc.robot.lib.extensions.logTrigger
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.sysid.sysId
 import frc.robot.lib.toReleaseTrigger
@@ -32,8 +33,8 @@ object RobotContainer {
     private val autoChooser: LoggedDashboardChooser<Command>
 
     object Buttons {
-        var scoring = driverController.leftBumper().toReleaseTrigger()
-        var intake = driverController.rightBumper()
+        var scoring = driverController.cross().toReleaseTrigger()
+        var intake = driverController.circle().logTrigger("intakeButton")
     }
 
     init {
@@ -72,9 +73,6 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        driverController.cross().onTrue(GripRoller.grip())
-        driverController.square().onTrue(GripRoller.release())
-        driverController.triangle().onTrue(GripRoller.stop())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

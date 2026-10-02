@@ -26,12 +26,12 @@ class StateMachineBuilder<E : Enum<E>>(
         val state = stateMachine.addState(command)
         if (log) {
             val logPath =
-                "States/${this@StateMachineBuilder::class.simpleName}/state"
+                "States/${this::class.simpleName}/state"
             state.onEnter {
                 Logger.recordOutput(logPath, name)
-                stateChangeCallback(this)
             }
         }
+        state.onEnter { stateChangeCallback(this) }
         stateMap[this] = state
         return this
     }
@@ -118,9 +118,6 @@ class StateMachineBuilder<E : Enum<E>>(
         getState(this.source).switchTo(getState(target)).whenComplete()
     }
 
-    infix fun Trigger.and(other: BooleanSupplier): Trigger = this.and(other)
-
-    infix fun Trigger.or(other: BooleanSupplier): Trigger = this.and(other)
 }
 
 fun <E : Enum<E>> buildStateMachine(
@@ -134,7 +131,8 @@ fun StateMachine.register() {
     Scheduler.getDefault().schedule(this)
 }
 
-@RequiresOptIn annotation class Unsafe
+@RequiresOptIn
+annotation class Unsafe
 
 abstract class StateMachineCompanion<T : Enum<T>>(stateClass: KClass<T>) {
     var state: T = stateClass.java.enumConstants.first()

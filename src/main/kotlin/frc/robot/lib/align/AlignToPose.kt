@@ -26,13 +26,13 @@ private val kConstraints = APConstraints().withAcceleration(5.0).withJerk(2.0)
 private val kProfile =
     APProfile(kConstraints)
         .withErrorXY(2.cm)
-        .withErrorTheta(0.5.deg)
+        .withErrorTheta(1.deg)
         .withBeelineRadius(8.cm)
 
 private val autopilot = Autopilot(kProfile)
 
 private val anglePIDController =
-    TuneablePIDController("alignAnglePIDController", 0.0, 0.0, 0.0)
+    TuneablePIDController("alignAnglePIDController", 1.0, 0.0, 0.0)
 
 private fun Autopilot.APResult.toChassisVelocities(
     omegaResult: AngularVelocity

@@ -39,7 +39,7 @@ class ReleaseTrigger(buttonTrigger: Trigger) {
         }
     }
 
-    val trigger = Trigger { get() }
+    val trigger = Trigger(::get)
 }
 
 fun Trigger.toReleaseTrigger() = ReleaseTrigger(this)

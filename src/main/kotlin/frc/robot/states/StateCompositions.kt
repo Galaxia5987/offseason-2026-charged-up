@@ -17,26 +17,28 @@ import org.wpilib.command3.Command
 
 fun idle(): Command =
     command {
-            +[
-                IntakeRoller.stop(),
-                ConveyorRoller.stop(),
-                DispatchRoller.stop(),
-                GripRoller.stop(),
-                Elevator.close(),
-            ]
-        }
+        +[
+            IntakeRoller.stop(),
+            ConveyorRoller.stop(),
+            DispatchRoller.stop(),
+            GripRoller.stop(),
+            Elevator.close(),
+        ]
+        park()
+    }
         .named("States/Idle")
 
 fun intaking(): Command =
     command {
-            +[
-                Wrist.open(),
-                IntakeRoller.intake(),
-                ConveyorRoller.convey(),
-                DispatchRoller.stop(),
-                GripRoller.stop(),
-            ]
-        }
+        +[
+            Wrist.open(),
+            IntakeRoller.intake(),
+            ConveyorRoller.convey(),
+            DispatchRoller.stop(),
+            GripRoller.stop(),
+        ]
+        park()
+    }
         .named("States/Intaking")
 
 fun alignment(): Command =
@@ -45,35 +47,35 @@ fun alignment(): Command =
 
 private fun advance(): Command =
     command {
-            if (Sensors.intakeSensor.isPresent) {
-                +Wrist.open()
-                +IntakeRoller.intake()
-            } else {
-                +Wrist.closed()
-            }
-
-            +ConveyorRoller.convey()
+        if (Sensors.intakeSensor.isPresent) {
+            +Wrist.open()
+            +IntakeRoller.intake()
+        } else {
+            +Wrist.closed()
         }
+
+        +ConveyorRoller.convey()
+    }
         .named("States/advance")
 
 fun scoringLow(): Command =
     command {
-            drive.continousLock().fork()
+        drive.continousLock().fork()
 
-            +advance()
+        +advance()
 
-            +DispatchRoller.dispatchLow()
+        +DispatchRoller.dispatchLow()
 
-            waitUntil { !Sensors.dispatchSensor.isPresent }
-        }
+        waitUntil { !Sensors.dispatchSensor.isPresent }
+    }
         .whenCanceled {
             command {
-                    +ConveyorRoller.stop()
-                    +DispatchRoller.dispatchHigh() // Reverse the roller
-                    waitUntil { Sensors.dispatchSensor.isPresent }
-                    +DispatchRoller.stop()
-                    +idle()
-                }
+                +ConveyorRoller.stop()
+                +DispatchRoller.dispatchHigh() // Reverse the roller
+                waitUntil { Sensors.dispatchSensor.isPresent }
+                +DispatchRoller.stop()
+                +idle()
+            }
                 .withPriority(Command.HIGHEST_PRIORITY)
                 .named("States/Scoring/Low/WhenCancelled")
                 .schedule()
@@ -82,21 +84,21 @@ fun scoringLow(): Command =
 
 fun scoringHigh(): Command =
     command {
-            drive.continousLock().fork()
+        drive.continousLock().fork()
 
-            +advance()
+        +advance()
 
-            +DispatchRoller.dispatchHigh()
-            +GripRoller.grip()
+        +DispatchRoller.dispatchHigh()
+        +GripRoller.grip()
 
-            GripRoller.stopTrigger.waitUntil()
+        GripRoller.stopTrigger.waitUntil()
 
-            when (Sensors.gripSensor.color) {
-                CubeColors.RED -> +Elevator.high()
-                CubeColors.YELLOW -> +Elevator.mid()
-                else -> +GripRoller.release()
-            }
-
-            +Elevator.close()
+        when (Sensors.gripSensor.color) {
+            CubeColors.RED -> +Elevator.high()
+            CubeColors.YELLOW -> +Elevator.mid()
+            else -> +GripRoller.release()
         }
+
+        +Elevator.close()
+    }
         .named("States/Scoring/High")
