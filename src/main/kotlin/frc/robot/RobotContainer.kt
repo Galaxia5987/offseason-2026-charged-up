@@ -19,6 +19,7 @@ import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.leds.Leds
 import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
+import frc.robot.subsystems.roller.GripRoller
 import frc.robot.subsystems.roller.IntakeRoller
 import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
@@ -71,9 +72,9 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.create().onTrue(DriveCommands.resetGyro())
-        driverController.cross().onTrue(Elevator.high())
-        driverController.square().onTrue(Elevator.mid())
-        driverController.triangle().onTrue(Elevator.close())
+        driverController.cross().onTrue(GripRoller.grip())
+        driverController.square().onTrue(GripRoller.release())
+        driverController.triangle().onTrue(GripRoller.stop())
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()

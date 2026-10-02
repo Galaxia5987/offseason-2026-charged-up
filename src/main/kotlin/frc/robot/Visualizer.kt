@@ -7,12 +7,14 @@ import frc.robot.lib.extensions.mm
 import frc.robot.lib.extensions.periodic
 import frc.robot.lib.extensions.rad
 import frc.robot.lib.extensions.toPitch
+import frc.robot.lib.extensions.toRoll
 import frc.robot.lib.extensions.withRotation
 import frc.robot.lib.getPose3d
 import frc.robot.lib.getTranslation3d
 import frc.robot.subsystems.elevator.Elevator
 import frc.robot.subsystems.roller.ConveyorRoller
 import frc.robot.subsystems.roller.DispatchRoller
+import frc.robot.subsystems.roller.GripRoller
 import frc.robot.subsystems.roller.IntakeRoller
 import frc.robot.subsystems.wrist.Wrist
 import org.team5987.annotation.LogLevel
@@ -27,7 +29,7 @@ private val IntakeRollerObj = -Translation3d(-0.179, -0.015, -0.205) + rootPosit
 private val FourBarRollerLink = -Translation3d(-0.179, -0.7, -0.205) + rootPosition
 private val FourBarLowerLink = -Translation3d(0.063, -0.708, -0.027) + rootPosition
 private val FourBarUpperLink = -Translation3d(0.193, -0.708, -0.052) + rootPosition
-private val GripRoller = -Translation3d(0.461, -0.482, -0.329) + rootPosition
+private val GripRollerObj = -Translation3d(0.461, -0.482, -0.329) + rootPosition
 private val Gripper = -Translation3d(0.162, -0.344, -0.394) + rootPosition
 private val ConveyorRoller1 = -Translation3d(0.215, -0.171, -0.308) + rootPosition
 private val ElevatorStage1 = -Translation3d(0.098, -0.344, -0.401) + rootPosition
@@ -94,6 +96,12 @@ private object ElevatorObjects {
     val gripper by periodic {
         getPose3d(Gripper.x - Elevator.inputs.distance[m]*cos(theta0[rad]), Gripper.y, Gripper.z + Elevator.inputs.distance[m]*sin(theta0[rad]))
     }
+    val gripRoller by periodic {
+        getPose3d(GripRollerObj, rotation = GripRoller.inputs.position.toRoll())
+    }
+    val gripRoller2 by periodic {
+        getPose3d(GripRoller2, rotation = (-GripRoller.inputs.position).toRoll())
+    }
 }
 
 private val subsystemPoseArray = Array(17) { Pose3d() }
@@ -102,14 +110,14 @@ private val subsystemPoseArray = Array(17) { Pose3d() }
 val mechanismPoses by periodic {
     subsystemPoseArray[0] = FourBar.intakeRoller
     subsystemPoseArray[1] = FourBar.rollerLink2
+    subsystemPoseArray[3] = ElevatorObjects.gripRoller
     subsystemPoseArray[2] = FourBar.upperLinkage2
-    subsystemPoseArray[3] = getPose3d(GripRoller)
     subsystemPoseArray[4] = ElevatorObjects.gripper
     subsystemPoseArray[5] = ConveyorRollers.conveyorRoller
     subsystemPoseArray[6] = getPose3d(ElevatorStage1)
     subsystemPoseArray[7] = getPose3d(ElevatorStage2)
     subsystemPoseArray[8] = FourBar.intakeRoller2
-    subsystemPoseArray[9] = getPose3d(GripRoller2)
+    subsystemPoseArray[9] = ElevatorObjects.gripRoller2
     subsystemPoseArray[10] = ConveyorRollers.conveyorRoller2
     subsystemPoseArray[11] = ConveyorRollers.conveyorRoller3
     subsystemPoseArray[12] = ConveyorRollers.dispatchRoller
