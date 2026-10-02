@@ -20,7 +20,6 @@ import frc.robot.lib.universal_motor.createUniversalMotor
 import kotlin.math.absoluteValue
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.tan
 import org.team5987.annotation.command_enum.CommandEnumSetTarget
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
@@ -42,12 +41,12 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
         )
     private val auxMotor =
         createUniversalMotor(
-                AUX_PORT,
-                config = MOTOR_CONFIG,
-                gearRatio = GEAR_RATIO,
-                simGains = SIM_GAINS,
-                linearSystemWheelDiameter = DIAMETER,
-            )
+            AUX_PORT,
+            config = MOTOR_CONFIG,
+            gearRatio = GEAR_RATIO,
+            simGains = SIM_GAINS,
+            linearSystemWheelDiameter = DIAMETER,
+        )
             .apply {
                 setControl(
                     Follower(mainMotor.port, MotorAlignmentValue.Opposed)
@@ -57,14 +56,18 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
     val currentHeight: Distance
         get() = mainMotor.inputs.distance * sin(ELEVATOR_ANGLE[rad]) + BASE_HEIGHT
 
+
     val inputs
         get() = mainMotor.inputs
 
     val distance
         get() = (drive.pose.x - getPostByLevel(namedSetpoint.level).x).absoluteValue.m
 
-    val targetLength: Distance
+    val setLength: Distance
         get() = distance / cos(ELEVATOR_ANGLE[rad])
+
+    val setHeight: Distance
+        get() = setLength * sin(ELEVATOR_ANGLE[rad]) + BASE_HEIGHT
 
     val targetHeight: Distance
         get() = getPostByLevel(namedSetpoint.level).z.m
@@ -87,9 +90,10 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
             ::atSetpoint,
             ::setpoint,
             ::namedSetpoint,
-            ::targetLength,
+            ::setLength,
             ::currentHeight,
             ::targetHeight,
+            ::setHeight
         )
 
     fun periodic() {
@@ -100,32 +104,39 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
 
     private fun closed(): Command =
         this {
-                setpoint = MIN_LENGTH
-                mainMotor.setControl(
-                    torqueCurrentFOC with
+            setpoint = MIN_LENGTH
+            mainMotor.setControl(
+                torqueCurrentFOC with
                         MIN_LENGTH.toAngle(DIAMETER, GEAR_RATIO)
-                )
-                atSetpoint.waitUntil()
-            }
+            )
+            atSetpoint.waitUntil()
+        }
             .named("close")
 
     @CommandEnumSetTarget
     override fun setTarget(value: ElevatorHeights): UnnamedCommand = this {
         namedSetpoint = value
-        if(value == ElevatorHeights.CLOSE){
+        val length = value.defaultLength
+        if (value == ElevatorHeights.CLOSE) {
             +closed()
-        }else {
+        } else {
             while (true) {
-                if (targetHeight >= currentHeight) {
-                    setpoint = targetLength
-                    mainMotor.setControl(
-                        torqueCurrentFOC with
-                                targetLength.toAngle(DIAMETER, GEAR_RATIO)
-                    )
-                }
+                if (targetHeight.isNear(setHeight, HEIGHT_TOLERANCE)) {
+                    if (targetHeight <= setHeight) {
+                        setLength()
+                    }
+                } else setLength(length)
                 yield()
             }
         }
+    }
+
+    private fun setLength(setLength: Distance = this.setLength) {
+        setpoint = setLength
+        mainMotor.setControl(
+            torqueCurrentFOC with
+                    setLength.toAngle(DIAMETER, GEAR_RATIO)
+        )
     }
 
     override fun setVoltage(voltage: Voltage) = mainMotor.setVoltage(voltage)
