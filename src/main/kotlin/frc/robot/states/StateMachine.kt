@@ -15,6 +15,9 @@ enum class State {
     COLOR_CHECK;
 
     companion object : StateMachineCompanion<State>(State::class) {
+
+        var completed = false
+        val onCompleted = Trigger { completed }
         override val states = makeStates {
             IDLE(idle()).initial()
             INTAKING(intaking())
@@ -29,33 +32,30 @@ enum class State {
 
             INTAKING on !RobotContainer.Buttons.intake switchTo IDLE
 
-            IDLE on RobotContainer.Buttons.scoring.trigger switchTo ALIGNMENT
+            IDLE on RobotContainer.Buttons.scoring switchTo ALIGNMENT
             // TODO: Add trigger in position for scoring with 'and' operator
 
             ALIGNMENT on
-                RobotContainer.Buttons.scoring.trigger.and(
-                    Trigger { Sensors.dispatchSensor.isPresent }
-                        .or(Trigger { Sensors.gripSensor.isPresent })
-                ) switchTo
-                IDLE
+                    RobotContainer.Buttons.scoring switchTo
+                    IDLE
 
             ALIGNMENT.onComplete switchTo COLOR_CHECK
 
             COLOR_CHECK on
-                Trigger { Sensors.dispatchSensor.isGreen } switchTo
-                SCORING_LOW
+                    Trigger { Sensors.dispatchSensor.isGreen } switchTo
+                    SCORING_LOW
 
             COLOR_CHECK on
-                !Trigger { Sensors.dispatchSensor.isGreen } switchTo
-                SCORING_HIGH
+                    !Trigger { Sensors.dispatchSensor.isGreen } switchTo
+                    SCORING_HIGH
 
-            SCORING_LOW.onComplete switchTo IDLE
+            SCORING_LOW on onCompleted switchTo IDLE
 
             [SCORING_LOW, SCORING_HIGH] on
-                RobotContainer.Buttons.scoring.trigger switchTo
-                IDLE
+                    RobotContainer.Buttons.scoring switchTo
+                    IDLE
 
-            SCORING_HIGH.onComplete switchTo IDLE
+            SCORING_HIGH on onCompleted switchTo IDLE
         }
     }
 }
