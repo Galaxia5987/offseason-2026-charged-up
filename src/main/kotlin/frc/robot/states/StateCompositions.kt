@@ -24,10 +24,17 @@ fun idle(): Command =
             DispatchRoller.stop(),
             GripRoller.stop(),
             Elevator.close(),
+            closeWristIfNoElement()
         ]
         park()
     }
         .named("States/Idle")
+
+fun closeWristIfNoElement() = command {
+    if(!Sensors.intakeSensor.isPresent) {
+        +Wrist.closed()
+    }
+}.named("States/closeWristIfNoElement")
 
 fun intaking(): Command =
     command {

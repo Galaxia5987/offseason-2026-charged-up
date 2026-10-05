@@ -63,6 +63,6 @@ val ENCODER_CONFIG =
 
 @CommandEnum
 enum class WristPosition(val angle: Angle) {
-    CLOSED(0.deg),
-    OPEN(45.deg),
+    CLOSED(45.deg),
+    OPEN(0.deg),
 }

@@ -15,7 +15,7 @@ enum class State {
     COLOR_CHECK;
 
     companion object : StateMachineCompanion<State>(State::class) {
-
+        private var isGreen = false
         var completed = false
         val onCompleted = Trigger { completed }
         override val states = makeStates {
@@ -25,6 +25,9 @@ enum class State {
             SCORING_LOW(scoringLow())
             ALIGNMENT(alignment())
             COLOR_CHECK {
+                isGreen = false
+                yield()
+                isGreen = Sensors.dispatchSensor.isGreen
                 park()
             }
 
@@ -42,11 +45,11 @@ enum class State {
             ALIGNMENT.onComplete switchTo COLOR_CHECK
 
             COLOR_CHECK on
-                    Trigger { Sensors.dispatchSensor.isGreen } switchTo
+                    Trigger { isGreen } switchTo
                     SCORING_LOW
 
             COLOR_CHECK on
-                    !Trigger { Sensors.dispatchSensor.isGreen } switchTo
+                    !Trigger { isGreen } switchTo
                     SCORING_HIGH
 
             SCORING_LOW on onCompleted switchTo IDLE
