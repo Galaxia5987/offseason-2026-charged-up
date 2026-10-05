@@ -25,9 +25,9 @@ enum class State {
             SCORING_LOW(scoringLow())
             ALIGNMENT(alignment())
             COLOR_CHECK {
-                isGreen = false
-                yield()
                 isGreen = Sensors.dispatchSensor.isGreen
+                yield()
+                isGreen = !Sensors.dispatchSensor.isGreen
                 park()
             }
 
@@ -58,7 +58,7 @@ enum class State {
                     RobotContainer.Buttons.scoring switchTo
                     IDLE
 
-            SCORING_HIGH on onCompleted switchTo IDLE
+            SCORING_HIGH.onComplete switchTo IDLE
         }
     }
 }

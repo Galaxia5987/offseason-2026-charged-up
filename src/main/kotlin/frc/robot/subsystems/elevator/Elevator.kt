@@ -123,19 +123,19 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
             while (true) {
                 if (targetHeight.isNear(setHeight, HEIGHT_TOLERANCE)) {
                     if (targetHeight <= setHeight) {
-                        setLength()
-                    }
+                        setLength(setLength)
+                    } // TODO: Issue a warning
                 } else setLength(length)
                 yield()
             }
         }
     }
 
-    private fun setLength(setLength: Distance = this.setLength) {
-        setpoint = setLength
+    private fun setLength(length: Distance) {
+        setpoint = length
         mainMotor.setControl(
             torqueCurrentFOC with
-                    setLength.toAngle(DIAMETER, GEAR_RATIO)
+                    length.toAngle(DIAMETER, GEAR_RATIO)
         )
     }
 
