@@ -2,7 +2,6 @@ package frc.robot.states
 
 import frc.robot.drive
 import frc.robot.field.CubeColors
-import frc.robot.field.SCORING_POSTS
 import frc.robot.field.nearestPost
 import frc.robot.lib.align.runToPose
 import frc.robot.lib.commands.*
@@ -105,6 +104,10 @@ fun scoringHigh(): Command =
             CubeColors.YELLOW -> +Elevator.mid()
             else -> +GripRoller.release()
         }
+
+        +GripRoller.release()
+
+        GripRoller.stopTrigger.negate().waitUntil()
 
         +Elevator.close()
     }

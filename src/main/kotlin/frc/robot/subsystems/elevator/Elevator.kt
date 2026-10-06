@@ -24,6 +24,7 @@ import org.team5987.annotation.command_enum.CommandEnumSetTarget
 import org.wpilib.command3.Command
 import org.wpilib.command3.Mechanism
 import org.wpilib.command3.Trigger
+import org.wpilib.driverstation.DriverStationErrors
 import org.wpilib.units.measure.Distance
 import org.wpilib.units.measure.Voltage
 
@@ -120,14 +121,16 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
         if (value == ElevatorHeights.CLOSE) {
             +closed()
         } else {
-            while (true) {
+            do {
                 if (targetHeight.isNear(setHeight, HEIGHT_TOLERANCE)) {
                     if (targetHeight <= setHeight) {
                         setLength(setLength)
-                    } // TODO: Issue a warning
+                    }else {
+                        DriverStationErrors.reportWarning("Cannot open elevator to requested height", false)
+                    }
                 } else setLength(length)
                 yield()
-            }
+            } while (!atSetpoint.asBoolean)
         }
     }
 

@@ -48,6 +48,7 @@ object RobotContainer {
         initializeAllMechanisms()
         BasicAlerts
         Leds
+        Buttons
         State.register()
         initRollerTriggers()
     }

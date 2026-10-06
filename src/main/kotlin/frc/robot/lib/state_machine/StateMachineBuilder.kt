@@ -4,6 +4,7 @@
 
 package frc.robot.lib.state_machine
 
+import frc.robot.lib.commands.schedule
 import org.littletonrobotics.junction.Logger
 import org.wpilib.command3.Command
 import org.wpilib.command3.Command.noRequirements
@@ -53,6 +54,8 @@ class StateMachine<E : Enum<E>>(
 
                         val nextState = transition.nextState()
                         currentState = nextState ?: initialState!!
+                        // Return control to the scheduler even when transitions form a cycle.
+                        coroutine.yield()
                         continue@outer_loop
                     }
                 }
@@ -251,10 +254,6 @@ fun <E : Enum<E>> buildStateMachine(
     return StateMachine<E>(name).apply(init)
 }
 
-fun Command.register() {
-    Scheduler.getDefault().schedule(this)
-}
-
 @RequiresOptIn
 annotation class Unsafe
 
@@ -282,5 +281,5 @@ abstract class StateMachineCompanion<T : Enum<T>>(stateClass: KClass<T>) {
         }
     }
 
-    fun register() = stateMachine.register()
+    fun register() = stateMachine.schedule()
 }
