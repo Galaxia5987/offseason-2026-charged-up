@@ -152,7 +152,7 @@ public class DriveCommands {
                                 drive.runVelocity(robotRelativeSpeeds);
                                 coroutine.yield();
                             }
-                        })
+                        }).withPriority(Command.LOWEST_PRIORITY)
                 .named("DriveCommands#JoystickDrive");
     }
 

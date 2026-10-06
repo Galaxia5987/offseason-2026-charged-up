@@ -1,8 +1,11 @@
 package frc.robot.subsystems.sensors
 
 import com.ctre.phoenix6.configs.CANrangeConfiguration
+import frc.robot.CURRENT_MODE
 import frc.robot.field.CubeColors
+import frc.robot.lib.Mode
 import frc.robot.lib.unified_canrange.UnifiedCANRange
+import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean
 
 interface ColorSensor {
     val color: CubeColors
@@ -22,6 +25,44 @@ interface DistanceSensor {
 
 interface DistanceColorSensor : DistanceSensor, ColorSensor
 
+fun <T> switchIfSim(real: T, sim: T): T =
+    when (CURRENT_MODE) {
+        Mode.REAL -> real
+        Mode.SIM -> sim
+        else -> sim
+    }
+
+fun makeSimDistanceSensor(name: String): DistanceSensor =
+    object : DistanceSensor {
+        private val loggedIsPresent =
+            LoggedNetworkBoolean("Tuning/$name/isPresent", false)
+        override val isPresent: Boolean
+            get() = loggedIsPresent.get()
+    }
+
+fun makeSimDistanceColorSensor(name: String): DistanceColorSensor =
+    object : DistanceColorSensor {
+        private val loggedIsGreen =
+            LoggedNetworkBoolean("Tuning/$name/colors/green", false)
+        private val loggedIsYellow =
+            LoggedNetworkBoolean("Tuning/$name/colors/yellow", false)
+        private val loggedIsRed =
+            LoggedNetworkBoolean("Tuning/$name/colors/red", false)
+
+        override val isPresent: Boolean
+            get() =
+                loggedIsRed.get() || loggedIsYellow.get() || loggedIsGreen.get()
+
+        override val color: CubeColors
+            get() =
+                when {
+                    loggedIsGreen.get() -> CubeColors.GREEN
+                    loggedIsYellow.get() -> CubeColors.YELLOW
+                    loggedIsRed.get() -> CubeColors.RED
+                    else -> CubeColors.NONE
+                }
+    }
+
 object Sensors {
     private val intakeCanRange =
         UnifiedCANRange(
@@ -35,33 +76,45 @@ object Sensors {
         )
 
     val intakeSensor =
-        object : DistanceSensor {
-            override val isPresent: Boolean
-                get() = intakeCanRange.isInRange
-        }
+        switchIfSim(
+            object : DistanceSensor {
+                override val isPresent: Boolean
+                    get() = intakeCanRange.isInRange
+            },
+            makeSimDistanceSensor("intakeSensor"),
+        )
     val bodySensor =
-        object : DistanceColorSensor {
-            override val isPresent: Boolean
-                get() = false
+        switchIfSim(
+            object : DistanceColorSensor {
+                override val isPresent: Boolean
+                    get() = false
 
-            override val color: CubeColors
-                get() = CubeColors.NONE
-        }
+                override val color: CubeColors
+                    get() = CubeColors.NONE
+            },
+            makeSimDistanceColorSensor("bodySensor"),
+        )
 
     val dispatchSensor =
-        object : DistanceColorSensor {
-            override val isPresent: Boolean
-                get() = false
+        switchIfSim(
+            object : DistanceColorSensor {
+                override val isPresent: Boolean
+                    get() = false
 
-            override val color: CubeColors
-                get() = CubeColors.NONE
-        }
+                override val color: CubeColors
+                    get() = CubeColors.NONE
+            },
+            makeSimDistanceColorSensor("dispatchSensor"),
+        )
     val gripSensor =
-        object : DistanceColorSensor {
-            override val isPresent: Boolean
-                get() = gripCanRange.isInRange
+        switchIfSim(
+            object : DistanceColorSensor {
+                override val isPresent: Boolean
+                    get() = gripCanRange.isInRange
 
-            override val color: CubeColors
-                get() = CubeColors.NONE
-        }
+                override val color: CubeColors
+                    get() = CubeColors.NONE
+            },
+            makeSimDistanceColorSensor("gripSensor"),
+        )
 }

@@ -29,15 +29,10 @@ enum class State {
 
             INTAKING on !RobotContainer.Buttons.intake switchTo IDLE
 
-            IDLE on RobotContainer.Buttons.scoring.trigger switchTo ALIGNMENT
+            IDLE on RobotContainer.Buttons.scoring switchTo ALIGNMENT
             // TODO: Add trigger in position for scoring with 'and' operator
 
-            ALIGNMENT on
-                RobotContainer.Buttons.scoring.trigger.and(
-                    Trigger { Sensors.dispatchSensor.isPresent }
-                        .or(Trigger { Sensors.gripSensor.isPresent })
-                ) switchTo
-                IDLE
+            ALIGNMENT on RobotContainer.Buttons.scoring switchTo IDLE
 
             ALIGNMENT.onComplete switchTo COLOR_CHECK
 
@@ -52,7 +47,7 @@ enum class State {
             SCORING_LOW.onComplete switchTo IDLE
 
             [SCORING_LOW, SCORING_HIGH] on
-                RobotContainer.Buttons.scoring.trigger switchTo
+                RobotContainer.Buttons.scoring switchTo
                 IDLE
 
             SCORING_HIGH.onComplete switchTo IDLE
