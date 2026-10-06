@@ -1,0 +1,8 @@
+package frc.robot.lib.synapse
+
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
