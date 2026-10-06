@@ -103,7 +103,7 @@ fun scoringHigh(): Command =
             when (Sensors.gripSensor.color) {
                 CubeColors.RED -> +Elevator.high()
                 CubeColors.YELLOW -> +Elevator.mid()
-                else -> +GripRoller.release()
+                else -> Unit
             }
 
             +GripRoller.release()
