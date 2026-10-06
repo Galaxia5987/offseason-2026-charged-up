@@ -1,3 +1,0 @@
-network: {team_number: 5987, name: Synapse, ip: null, interface: null}
-global:
-  cameras: [0]

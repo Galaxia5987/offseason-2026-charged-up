@@ -1,1 +1,6 @@
-name: color pipeline
+deploy:
+  debian:
+    hostname: debian
+    ip: 192.168.5.42
+    password: galaxia5987
+name: color-vision
