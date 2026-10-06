@@ -32,9 +32,6 @@ class StateMachine<E : Enum<E>>(
 
     override fun requirements(): Set<Mechanism> = emptySet()
 
-    // --------------------------------------------------------
-    // State Machine Execution Logic
-    // --------------------------------------------------------
 
     override fun run(coroutine: Coroutine) {
         var currentState = initialState
