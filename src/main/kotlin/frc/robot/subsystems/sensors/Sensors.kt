@@ -25,33 +25,43 @@ interface DistanceSensor {
 
 interface DistanceColorSensor : DistanceSensor, ColorSensor
 
-fun <T> switchIfSim(real: T, sim: T): T = when(CURRENT_MODE) {
-    Mode.REAL -> real
-    Mode.SIM -> sim
-    else -> sim
-}
+fun <T> switchIfSim(real: T, sim: T): T =
+    when (CURRENT_MODE) {
+        Mode.REAL -> real
+        Mode.SIM -> sim
+        else -> sim
+    }
 
-fun makeSimDistanceSensor(name: String): DistanceSensor = object : DistanceSensor {
-    private val loggedIsPresent = LoggedNetworkBoolean("Tuning/$name/isPresent", false)
-    override val isPresent: Boolean
-        get() = loggedIsPresent.get()
-}
+fun makeSimDistanceSensor(name: String): DistanceSensor =
+    object : DistanceSensor {
+        private val loggedIsPresent =
+            LoggedNetworkBoolean("Tuning/$name/isPresent", false)
+        override val isPresent: Boolean
+            get() = loggedIsPresent.get()
+    }
 
-fun makeSimDistanceColorSensor(name: String): DistanceColorSensor = object : DistanceColorSensor {
-    private val loggedIsGreen = LoggedNetworkBoolean("Tuning/$name/colors/green", false)
-    private val loggedIsYellow = LoggedNetworkBoolean("Tuning/$name/colors/yellow", false)
-    private val loggedIsRed = LoggedNetworkBoolean("Tuning/$name/colors/red", false)
+fun makeSimDistanceColorSensor(name: String): DistanceColorSensor =
+    object : DistanceColorSensor {
+        private val loggedIsGreen =
+            LoggedNetworkBoolean("Tuning/$name/colors/green", false)
+        private val loggedIsYellow =
+            LoggedNetworkBoolean("Tuning/$name/colors/yellow", false)
+        private val loggedIsRed =
+            LoggedNetworkBoolean("Tuning/$name/colors/red", false)
 
-    override val isPresent: Boolean
-        get() = loggedIsRed.get() || loggedIsYellow.get() || loggedIsGreen.get()
-    override val color: CubeColors
-        get() = when{
-            loggedIsGreen.get() -> CubeColors.GREEN
-            loggedIsYellow.get() -> CubeColors.YELLOW
-            loggedIsRed.get() -> CubeColors.RED
-            else -> CubeColors.NONE
-        }
-}
+        override val isPresent: Boolean
+            get() =
+                loggedIsRed.get() || loggedIsYellow.get() || loggedIsGreen.get()
+
+        override val color: CubeColors
+            get() =
+                when {
+                    loggedIsGreen.get() -> CubeColors.GREEN
+                    loggedIsYellow.get() -> CubeColors.YELLOW
+                    loggedIsRed.get() -> CubeColors.RED
+                    else -> CubeColors.NONE
+                }
+    }
 
 object Sensors {
     private val intakeCanRange =
@@ -65,34 +75,46 @@ object Sensors {
             configuration = CANrangeConfiguration(),
         )
 
-    val intakeSensor = switchIfSim(
-        object : DistanceSensor {
-            override val isPresent: Boolean
-                get() = intakeCanRange.isInRange
-        }, makeSimDistanceSensor("intakeSensor"))
-    val bodySensor = switchIfSim(
-        object : DistanceColorSensor {
-            override val isPresent: Boolean
-                get() = false
+    val intakeSensor =
+        switchIfSim(
+            object : DistanceSensor {
+                override val isPresent: Boolean
+                    get() = intakeCanRange.isInRange
+            },
+            makeSimDistanceSensor("intakeSensor"),
+        )
+    val bodySensor =
+        switchIfSim(
+            object : DistanceColorSensor {
+                override val isPresent: Boolean
+                    get() = false
 
-            override val color: CubeColors
-                get() = CubeColors.NONE
-        }, makeSimDistanceColorSensor("bodySensor"))
+                override val color: CubeColors
+                    get() = CubeColors.NONE
+            },
+            makeSimDistanceColorSensor("bodySensor"),
+        )
 
-    val dispatchSensor = switchIfSim(
-        object : DistanceColorSensor {
-            override val isPresent: Boolean
-                get() = false
+    val dispatchSensor =
+        switchIfSim(
+            object : DistanceColorSensor {
+                override val isPresent: Boolean
+                    get() = false
 
-            override val color: CubeColors
-                get() = CubeColors.NONE
-        }, makeSimDistanceColorSensor("dispatchSensor"))
-    val gripSensor = switchIfSim(
-        object : DistanceColorSensor {
-            override val isPresent: Boolean
-                get() = gripCanRange.isInRange
+                override val color: CubeColors
+                    get() = CubeColors.NONE
+            },
+            makeSimDistanceColorSensor("dispatchSensor"),
+        )
+    val gripSensor =
+        switchIfSim(
+            object : DistanceColorSensor {
+                override val isPresent: Boolean
+                    get() = gripCanRange.isInRange
 
-            override val color: CubeColors
-                get() = CubeColors.NONE
-        }, makeSimDistanceColorSensor("gripSensor"))
+                override val color: CubeColors
+                    get() = CubeColors.NONE
+            },
+            makeSimDistanceColorSensor("gripSensor"),
+        )
 }

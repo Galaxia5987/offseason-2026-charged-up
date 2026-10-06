@@ -9,9 +9,9 @@ import frc.robot.lib.Gains
 import frc.robot.lib.MotionMagicGains
 import frc.robot.lib.createCurrentLimits
 import frc.robot.lib.extensions.*
+import kotlin.math.sin
 import org.team5987.annotation.command_enum.CommandEnum
 import org.wpilib.units.measure.Distance
-import kotlin.math.sin
 
 const val MAIN_PORT = 1
 const val AUX_PORT = 2
@@ -48,7 +48,8 @@ val MOTOR_CONFIG =
         }
     }
 
-fun calculateLength(level: Int): Distance = getPostByLevel(level).z.m / sin(ELEVATOR_ANGLE[rad])
+fun calculateLength(level: Int): Distance =
+    getPostByLevel(level).z.m / sin(ELEVATOR_ANGLE[rad])
 
 @CommandEnum
 enum class ElevatorHeights(val defaultLength: Distance) {

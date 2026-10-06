@@ -7,15 +7,14 @@ import frc.robot.lib.autopilot.APProfile
 import frc.robot.lib.autopilot.APTarget
 import frc.robot.lib.autopilot.Autopilot
 import frc.robot.lib.commands.UnnamedCommand
-import frc.robot.lib.commands.command
 import frc.robot.lib.commands.invoke
 import frc.robot.lib.extensions.cm
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.mps
 import frc.robot.lib.extensions.rad_ps
-import org.littletonrobotics.junction.Logger
 import kotlin.math.PI
+import org.littletonrobotics.junction.Logger
 import org.wpilib.math.geometry.Pose2d
 import org.wpilib.math.geometry.Rotation2d
 import org.wpilib.math.kinematics.ChassisVelocities
@@ -73,13 +72,12 @@ fun runToPose(
                 drive.pose.rotation.radians,
                 result.targetAngle.radians,
             )
-        val velocities = result
-            .toChassisVelocities(omegaResult.rad_ps)
-            .toRobotRelative(drive.pose.rotation)
+        val velocities =
+            result
+                .toChassisVelocities(omegaResult.rad_ps)
+                .toRobotRelative(drive.pose.rotation)
         Logger.recordOutput("velocities", velocities)
-        drive.runVelocity(
-            velocities
-        )
+        drive.runVelocity(velocities)
         if (autopilot.atTarget(drive.pose, target)) break
         yield()
     }

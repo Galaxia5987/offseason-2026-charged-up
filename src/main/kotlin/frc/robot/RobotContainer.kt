@@ -23,7 +23,8 @@ object RobotContainer {
     private val autoChooser: LoggedDashboardChooser<Command>
 
     object Buttons {
-        var scoring = driverController.cross().fallingEdge().logTrigger("Buttons/scoring")
+        var scoring =
+            driverController.cross().fallingEdge().logTrigger("Buttons/scoring")
         var intake = driverController.circle().logTrigger("Buttons/intake")
     }
 
@@ -39,8 +40,7 @@ object RobotContainer {
         configureDefaultCommands()
 
         if (CURRENT_MODE == Mode.SIM) {
-            arena
-                .addDriveTrainSimulation(driveSimulation)
+            arena.addDriveTrainSimulation(driveSimulation)
             arena.resetFieldForAuto()
         }
 

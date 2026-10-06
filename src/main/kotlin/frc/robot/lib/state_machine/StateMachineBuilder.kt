@@ -5,19 +5,19 @@
 package frc.robot.lib.state_machine
 
 import frc.robot.lib.commands.schedule
+import java.util.function.BooleanSupplier
+import kotlin.reflect.KClass
 import org.littletonrobotics.junction.Logger
 import org.wpilib.command3.Command
 import org.wpilib.command3.Command.noRequirements
 import org.wpilib.command3.Coroutine
 import org.wpilib.command3.Mechanism
-import org.wpilib.command3.Scheduler
 import org.wpilib.command3.Trigger
-import java.util.function.BooleanSupplier
-import kotlin.reflect.KClass
 
 /**
- * A declarative state machine that can be used to implement complex command routines.
- * This combines the execution logic of the WPILib StateMachine with a native Kotlin DSL.
+ * A declarative state machine that can be used to implement complex command
+ * routines. This combines the execution logic of the WPILib StateMachine with a
+ * native Kotlin DSL.
  */
 class StateMachine<E : Enum<E>>(
     private val name: String,
@@ -32,10 +32,12 @@ class StateMachine<E : Enum<E>>(
 
     override fun requirements(): Set<Mechanism> = emptySet()
 
-
     override fun run(coroutine: Coroutine) {
-        var currentState = initialState
-            ?: error("$name does not have an initial state. Use .initial() to provide one.")
+        var currentState =
+            initialState
+                ?: error(
+                    "$name does not have an initial state. Use .initial() to provide one."
+                )
 
         outer_loop@ while (true) {
             val currentCommand = currentState.command
@@ -51,7 +53,8 @@ class StateMachine<E : Enum<E>>(
 
                         val nextState = transition.nextState()
                         currentState = nextState ?: initialState!!
-                        // Return control to the scheduler even when transitions form a cycle.
+                        // Return control to the scheduler even when transitions
+                        // form a cycle.
                         coroutine.yield()
                         continue@outer_loop
                     }
@@ -103,6 +106,7 @@ class StateMachine<E : Enum<E>>(
         }
 
         fun runEnterCallbacks() = enterCallbacks.forEach { it.run() }
+
         fun runExitCallbacks() = exitCallbacks.forEach { it.run() }
 
         fun onEnter(callback: Runnable) {
@@ -116,15 +120,16 @@ class StateMachine<E : Enum<E>>(
 
     inner class Completion(
         private val nextSupplier: () -> State?,
-        val condition: BooleanSupplier
+        val condition: BooleanSupplier,
     ) {
         fun shouldTransition(): Boolean = condition.asBoolean
+
         fun nextState(): State? = nextSupplier()
     }
 
     inner class Transition(
         private val nextSupplier: () -> State?,
-        private val condition: BooleanSupplier
+        private val condition: BooleanSupplier,
     ) {
 
         fun shouldTransition(): Boolean = condition.asBoolean
@@ -143,7 +148,9 @@ class StateMachine<E : Enum<E>>(
     inline fun <reified S : Enum<S>> allOf(): List<S> = enumValues<S>().toList()
 
     operator fun E.invoke(command: Command): E {
-        require(!stateMap.containsKey(this)) { "State $this is already defined." }
+        require(!stateMap.containsKey(this)) {
+            "State $this is already defined."
+        }
 
         val state = State(this, command)
         if (log) {
@@ -168,7 +175,9 @@ class StateMachine<E : Enum<E>>(
 
     private fun getState(enumVal: E): State {
         return stateMap[enumVal]
-            ?: error("State $enumVal was used in a transition but never defined.")
+            ?: error(
+                "State $enumVal was used in a transition but never defined."
+            )
     }
 
     enum class TransitionType {
@@ -224,10 +233,10 @@ class StateMachine<E : Enum<E>>(
     infix fun MultiTransitionCondition.switchTo(target: E) {
         val targetSupplier = { getState(target) }
         this.sources.forEach { sourceEnum ->
-            getState(sourceEnum).addTransition(Transition(targetSupplier, condition))
+            getState(sourceEnum)
+                .addTransition(Transition(targetSupplier, condition))
         }
     }
-
 
     val E.onComplete: CompleteTransitionWrapper
         get() = CompleteTransitionWrapper(this)
@@ -235,7 +244,6 @@ class StateMachine<E : Enum<E>>(
     infix fun CompleteTransitionWrapper.switchTo(target: E) {
         getState(this.source).defaultNextState = { getState(target) }
     }
-
 }
 
 // --------------------------------------------------------
@@ -251,8 +259,7 @@ fun <E : Enum<E>> buildStateMachine(
     return StateMachine<E>(name).apply(init)
 }
 
-@RequiresOptIn
-annotation class Unsafe
+@RequiresOptIn annotation class Unsafe
 
 abstract class StateMachineCompanion<T : Enum<T>>(stateClass: KClass<T>) {
     var state: T = stateClass.java.enumConstants.first()

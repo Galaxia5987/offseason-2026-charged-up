@@ -11,7 +11,6 @@ import frc.robot.subsystems.drive.gyroIOs.GyroIO
 import frc.robot.subsystems.drive.gyroIOs.GyroIOPigeon2
 import frc.robot.subsystems.drive.gyroIOs.GyroIOSim
 import frc.robot.subsystems.vision.*
-import org.ironmaple.simulation.SimulatedArena
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation
 import org.wpilib.math.geometry.Pose2d
 import org.wpilib.math.geometry.Rotation2d

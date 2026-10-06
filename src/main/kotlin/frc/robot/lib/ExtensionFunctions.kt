@@ -215,4 +215,5 @@ fun ChassisVelocities.toTranslation2d(): Translation2d =
     Translation2d(this.vx, this.vy)
 
 fun Boolean.flipSignOnTrue(): Int = if (this) -1 else 1
+
 fun Boolean.flipSignOnFalse(): Int = if (!this) -1 else 1

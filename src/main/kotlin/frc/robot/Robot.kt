@@ -10,7 +10,6 @@ import frc.robot.lib.extensions.CacheManager
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.toPose3d
 import frc.robot.lib.logged_output.LoggedOutputManager
-import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.*
 import org.littletonrobotics.junction.networktables.NT4Publisher
 import org.littletonrobotics.junction.wpilog.WPILOGReader
