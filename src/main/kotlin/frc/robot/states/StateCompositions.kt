@@ -17,7 +17,6 @@ import org.wpilib.command3.Command
 
 fun idle(): Command =
     command {
-        State.completed = false
         +[
             IntakeRoller.stop(),
             ConveyorRoller.stop(),
@@ -38,7 +37,6 @@ fun closeWristIfNoElement() = command {
 
 fun intaking(): Command =
     command {
-        State.completed = false
         +[
             Wrist.open(),
             IntakeRoller.intake(),
@@ -46,7 +44,6 @@ fun intaking(): Command =
             DispatchRoller.stop(),
             GripRoller.stop(),
         ]
-        State.completed = true
         park()
     }
         .named("States/Intaking")
@@ -70,7 +67,6 @@ private fun advance(): Command =
 
 fun scoringLow(): Command =
     command {
-        State.completed = false
         drive.continousLock().fork()
 
         +advance()
@@ -78,8 +74,6 @@ fun scoringLow(): Command =
         +DispatchRoller.dispatchLow()
 
         waitUntil { !Sensors.dispatchSensor.isPresent }
-        State.completed = true
-        park()
     }
         .whenCanceled {
             command {
@@ -97,7 +91,6 @@ fun scoringLow(): Command =
 
 fun scoringHigh(): Command =
     command {
-        State.completed = false
         drive.continousLock().fork()
 
         +advance()
@@ -114,7 +107,5 @@ fun scoringHigh(): Command =
         }
 
         +Elevator.close()
-        State.completed = true
-        park()
     }
         .named("States/Scoring/High")

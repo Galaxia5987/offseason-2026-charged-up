@@ -16,8 +16,6 @@ enum class State {
 
     companion object : StateMachineCompanion<State>(State::class) {
         private var isGreen = false
-        var completed = false
-        val onCompleted = Trigger { completed }
         override val states = makeStates {
             IDLE(idle()).initial()
             INTAKING(intaking())
@@ -25,9 +23,6 @@ enum class State {
             SCORING_LOW(scoringLow())
             ALIGNMENT(alignment())
             COLOR_CHECK {
-                isGreen = Sensors.dispatchSensor.isGreen
-                yield()
-                isGreen = !Sensors.dispatchSensor.isGreen
                 park()
             }
 
@@ -52,7 +47,7 @@ enum class State {
                     !Trigger { isGreen } switchTo
                     SCORING_HIGH
 
-            SCORING_LOW on onCompleted switchTo IDLE
+            SCORING_LOW.onComplete switchTo IDLE
 
             [SCORING_LOW, SCORING_HIGH] on
                     RobotContainer.Buttons.scoring switchTo
