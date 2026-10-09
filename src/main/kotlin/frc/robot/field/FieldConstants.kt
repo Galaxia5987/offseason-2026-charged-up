@@ -16,11 +16,11 @@ enum class TowerXOffset(val offset: Distance) {
     LOW(PLATFORM_SIZE - CUBE_SIZE / 2),
 }
 
-enum class CubeColors(val color: Color) {
-    RED(Color.RED),
-    YELLOW(Color.YELLOW),
-    GREEN(Color.GREEN),
-    NONE(Color.BLACK),
+enum class CubeColors(val color: Color, val networkTableName: String) {
+    RED(Color.RED, "has_green_cube"),
+    YELLOW(Color.YELLOW, "has_yellow_cube"),
+    GREEN(Color.GREEN, "has_red_cube"),
+    NONE(Color.BLACK, ""),
 }
 
 fun getGridOffset(towerXOffset: TowerXOffset) =
@@ -38,14 +38,14 @@ private const val NUM_POSTS = 9
 
 val SCORING_POSTS =
     { isRed: Boolean ->
-            List(NUM_POSTS) { index ->
-                getPose2d(
-                        SCORING_POSTS_X,
-                        SCORING_POSTS_START_OFFSET +
-                            (index * (SCORING_POST_WIDTH + SCORING_POST_GAP)[m])
-                                .m,
-                    )
-                    .flip(isRed)
-            }
+        List(NUM_POSTS) { index ->
+            getPose2d(
+                SCORING_POSTS_X,
+                SCORING_POSTS_START_OFFSET +
+                        (index * (SCORING_POST_WIDTH + SCORING_POST_GAP)[m])
+                            .m,
+            )
+                .flip(isRed)
         }
+    }
         .flipper()
