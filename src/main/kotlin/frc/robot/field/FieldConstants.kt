@@ -17,9 +17,9 @@ enum class TowerXOffset(val offset: Distance) {
 }
 
 enum class CubeColors(val color: Color, val networkTableName: String) {
-    RED(Color.RED, "has_green_cube"),
+    RED(Color.RED, "has_red_cube"),
     YELLOW(Color.YELLOW, "has_yellow_cube"),
-    GREEN(Color.GREEN, "has_red_cube"),
+    GREEN(Color.GREEN, "has_green_cube"),
     NONE(Color.BLACK, ""),
 }
 
