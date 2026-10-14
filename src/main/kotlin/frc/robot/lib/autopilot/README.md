@@ -32,7 +32,7 @@ Give `APTarget` the position and heading you want to reach.
 val target = APTarget(Pose2d(2.0, 3.0, Rotation2d.fromDegrees(90.0)))
 ```
 
-![Robot moving toward the target at (2, 3), where it should face 90 degrees.](../../../../../../../files/mdSvgs/target.svg)
+![Robot moving toward the target at (2, 3), where it should face 90 degrees.](../../../../../../../files/mdSvgs/autopilot/target.svg)
 
 ## 4. Calculate
 

@@ -18,7 +18,7 @@ val heading = pose.rotation // Rotation2d
 
 ## Chassis velocity
 
-![Robot-relative velocity: positive vx forward, positive vy left, and positive omega counterclockwise.](files/mdSvgs/chassis-velocity.svg)
+![Robot-relative velocity: positive vx forward, positive vy left, and positive omega counterclockwise.](../../../../../../../files/mdSvgs/drive/chassis-velocity.svg)
 
 `ChassisVelocities(vx, vy, omega)` describes the movement of the whole robot:
 
@@ -60,7 +60,7 @@ them to the drive's maximum speeds.
 
 ## Stopping
 
-![Normal stop compared with stopping with the wheels in an X arrangement.](files/mdSvgs/stop-with-x.svg)
+![Normal stop compared with stopping with the wheels in an X arrangement.](../../../../../../../files/mdSvgs/drive/stop-with-x.svg)
 
 ```kotlin
 drive.stop() // request zero velocity
