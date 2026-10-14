@@ -11,6 +11,8 @@ This is the code for our 2026 offseason robot, a slightly modified game of Charg
 * [SysId Extensions Explanation](src/main/kotlin/frc/robot/lib/sysid/README.md)
 * [CommandEnum Explanation](annotation/src/main/kotlin/org/team5987/annotation/command_enum/README.md)
 * [UniversalMotor Explanation](src/main/kotlin/frc/robot/lib/universal_motor/UsageExample.md)
+* [Drive Explanation](src/main/kotlin/frc/robot/subsystems/drive/README.md)
+* [Autopilot Explanation](src/main/kotlin/frc/robot/lib/autopilot/README.md)
 
 ## Graphs
 
