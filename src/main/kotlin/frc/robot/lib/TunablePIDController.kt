@@ -2,7 +2,7 @@ package frc.robot.lib
 
 import org.wpilib.math.controller.PIDController
 
-class TuneablePIDController(
+class TunablePIDController(
     val name: String,
     kp: Double,
     ki: Double,
