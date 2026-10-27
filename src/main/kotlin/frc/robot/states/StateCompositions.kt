@@ -2,7 +2,7 @@ package frc.robot.states
 
 import frc.robot.drive
 import frc.robot.field.CubeColors
-import frc.robot.field.SCORING_POSTS
+import frc.robot.field.nearestPost
 import frc.robot.lib.align.runToPose
 import frc.robot.lib.commands.*
 import frc.robot.subsystems.elevator.Elevator
@@ -22,9 +22,19 @@ fun idle(): Command =
                 DispatchRoller.stop(),
                 GripRoller.stop(),
                 Elevator.close(),
+                closeWristIfNoElement(),
             ]
+            park()
         }
         .named("States/Idle")
+
+fun closeWristIfNoElement() =
+    command {
+            if (!Sensors.intakeSensor.isPresent) {
+                +Wrist.closed()
+            }
+        }
+        .named("States/closeWristIfNoElement")
 
 fun intaking(): Command =
     command {
@@ -35,14 +45,12 @@ fun intaking(): Command =
                 DispatchRoller.stop(),
                 GripRoller.stop(),
             ]
+            park()
         }
         .named("States/Intaking")
 
 fun alignment(): Command =
-    runToPose({
-            drive.pose.nearest(SCORING_POSTS.get())
-        })
-        .named("Drive/AlignToScoringPost")
+    runToPose(::nearestPost).named("Drive/AlignToScoringPost")
 
 private fun advance(): Command =
     command {
@@ -95,8 +103,12 @@ fun scoringHigh(): Command =
             when (Sensors.gripSensor.color) {
                 CubeColors.RED -> +Elevator.high()
                 CubeColors.YELLOW -> +Elevator.mid()
-                else -> +GripRoller.release()
+                else -> Unit
             }
+
+            +GripRoller.release()
+
+            GripRoller.stopTrigger.negate().waitUntil()
 
             +Elevator.close()
         }
