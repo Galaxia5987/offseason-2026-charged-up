@@ -153,11 +153,12 @@ abstract class StateMachineCompanion<T : Enum<T>>(stateClass: KClass<T>) {
         this.state = state
     }
 
-    private val stateMachine =
+    private val stateMachine by lazy {
         buildStateMachine<T>(stateClass.simpleName!!) {
             states()
             onStateChange { state = it }
         }
+    }
 
     fun register() = stateMachine.register()
 }

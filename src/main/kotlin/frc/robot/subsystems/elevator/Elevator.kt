@@ -15,7 +15,7 @@ import frc.robot.lib.sysid.SysIdMechanismConfig
 import frc.robot.lib.sysid.SysIdRoutine
 import frc.robot.lib.sysid.SysIdRoutineConfig
 import frc.robot.lib.sysid.SysIdable
-import frc.robot.lib.universal_motor.UniversalTalonFX
+import frc.robot.lib.universal_motor.createUniversalMotor
 import kotlin.math.absoluteValue
 import kotlin.math.cos
 import kotlin.math.sin
@@ -29,7 +29,7 @@ import org.wpilib.units.measure.Voltage
 
 object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
     private val mainMotor =
-        UniversalTalonFX(
+        createUniversalMotor(
             MAIN_PORT,
             config = MOTOR_CONFIG,
             gearRatio = GEAR_RATIO,
@@ -37,7 +37,7 @@ object Elevator : Mechanism(), ElevatorHeightsCommandFactory, SysIdable {
             linearSystemWheelDiameter = DIAMETER,
         )
     private val auxMotor =
-        UniversalTalonFX(
+        createUniversalMotor(
                 AUX_PORT,
                 config = MOTOR_CONFIG,
                 gearRatio = GEAR_RATIO,

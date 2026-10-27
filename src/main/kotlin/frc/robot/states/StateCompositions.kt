@@ -46,7 +46,7 @@ fun alignment(): Command =
 
 private fun advance(): Command =
     command {
-            if (Sensors.IntakeSensor.isPresent) {
+            if (Sensors.intakeSensor.isPresent) {
                 +Wrist.open()
                 +IntakeRoller.intake()
             } else {
@@ -65,13 +65,13 @@ fun scoringLow(): Command =
 
             +DispatchRoller.dispatchLow()
 
-            waitUntil { !Sensors.DispatchSensor.isPresent }
+            waitUntil { !Sensors.dispatchSensor.isPresent }
         }
         .whenCanceled {
             command {
                     +ConveyorRoller.stop()
                     +DispatchRoller.dispatchHigh() // Reverse the roller
-                    waitUntil { Sensors.DispatchSensor.isPresent }
+                    waitUntil { Sensors.dispatchSensor.isPresent }
                     +DispatchRoller.stop()
                     +idle()
                 }
@@ -92,7 +92,7 @@ fun scoringHigh(): Command =
 
             GripRoller.stopTrigger.waitUntil()
 
-            when (Sensors.GripSensor.color) {
+            when (Sensors.gripSensor.color) {
                 CubeColors.RED -> +Elevator.high()
                 CubeColors.YELLOW -> +Elevator.mid()
                 else -> +GripRoller.release()

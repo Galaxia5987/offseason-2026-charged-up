@@ -1,6 +1,7 @@
 package frc.robot.lib.universal_motor
 
 import com.ctre.phoenix6.CANBus
+import com.ctre.phoenix6.CANBus.systemcore
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.controls.ControlRequest
 import com.ctre.phoenix6.controls.VoltageOut
@@ -14,10 +15,39 @@ import frc.robot.lib.extensions.with
 import frc.robot.lib.getFileNameFromStack
 import frc.robot.lib.unit_test.allMotorsFromPorts
 import org.littletonrobotics.junction.Logger
+import org.wpilib.command3.Mechanism
 import org.wpilib.units.measure.Angle
 import org.wpilib.units.measure.Distance
 import org.wpilib.units.measure.MomentOfInertia
 import org.wpilib.units.measure.Voltage
+
+context(mechanism: Mechanism)
+fun createUniversalMotor(
+    port: Int,
+    canbus: CANBus = systemcore(0),
+    subsystem: String = mechanism.name,
+    motorName: String = "motorId $port",
+    config: TalonFXConfiguration = TalonFXConfiguration(),
+    simGains: Gains = Gains(1.0),
+    momentOfInertia: MomentOfInertia = 0.003.kg2m,
+    gearRatio: Double = 1.0,
+    linearSystemWheelDiameter: Distance = 0.m,
+    absoluteEncoderOffset: Angle = 0.deg,
+    logConfig: MotorLogConfig = MotorLogConfig(),
+) =
+    UniversalTalonFX(
+        port = port,
+        canbus = canbus,
+        subsystem = subsystem,
+        motorName = motorName,
+        config = config,
+        simGains = simGains,
+        gearRatio = gearRatio,
+        momentOfInertia = momentOfInertia,
+        linearSystemWheelDiameter = linearSystemWheelDiameter,
+        absoluteEncoderOffset = absoluteEncoderOffset,
+        logConfig = logConfig,
+    )
 
 /**
  * Represents a universal wrapper for a motor, which abstracts the real and
@@ -38,7 +68,7 @@ import org.wpilib.units.measure.Voltage
  */
 class UniversalTalonFX(
     val port: Int,
-    private val canbus: CANBus = CANBus("rio"),
+    private val canbus: CANBus = systemcore(0),
     private val subsystem: String = getFileNameFromStack(),
     private val motorName: String = "motorId $port",
     private val config: TalonFXConfiguration = TalonFXConfiguration(),
