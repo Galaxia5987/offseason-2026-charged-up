@@ -1,7 +1,7 @@
 package frc.robot.lib.align
 
 import frc.robot.drive
-import frc.robot.lib.TunablePIDController
+import frc.robot.lib.TuneablePIDController
 import frc.robot.lib.autopilot.APConstraints
 import frc.robot.lib.autopilot.APProfile
 import frc.robot.lib.autopilot.APTarget
@@ -32,7 +32,7 @@ private val kProfile =
 private val autopilot = Autopilot(kProfile)
 
 private val anglePIDController =
-    TunablePIDController("alignAnglePIDController", 0.0, 0.0, 0.0)
+    TuneablePIDController("alignAnglePIDController", 0.0, 0.0, 0.0)
 
 private fun Autopilot.APResult.toChassisVelocities(
     omegaResult: AngularVelocity
