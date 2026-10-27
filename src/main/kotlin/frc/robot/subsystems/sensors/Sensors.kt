@@ -2,6 +2,7 @@ package frc.robot.subsystems.sensors
 
 import com.ctre.phoenix6.configs.CANrangeConfiguration
 import frc.robot.CURRENT_MODE
+import frc.robot.color_vision.ColorVision
 import frc.robot.field.CubeColors
 import frc.robot.lib.Mode
 import frc.robot.lib.unified_canrange.UnifiedCANRange
@@ -85,35 +86,20 @@ object Sensors {
         )
     val bodySensor =
         switchIfSim(
-            object : DistanceColorSensor {
-                override val isPresent: Boolean
-                    get() = false
-
-                override val color: CubeColors
-                    get() = CubeColors.NONE
-            },
+            ColorVision("SynapseRPI", "BodySensor"),
             makeSimDistanceColorSensor("bodySensor"),
         )
 
     val dispatchSensor =
         switchIfSim(
-            object : DistanceColorSensor {
-                override val isPresent: Boolean
-                    get() = false
-
-                override val color: CubeColors
-                    get() = CubeColors.NONE
-            },
+            ColorVision("SynapseRPI", "DispatchSensor"),
             makeSimDistanceColorSensor("dispatchSensor"),
         )
     val gripSensor =
         switchIfSim(
-            object : DistanceColorSensor {
+            object : ColorVision("SynapseRPI", "DispatchSensor") {
                 override val isPresent: Boolean
                     get() = gripCanRange.isInRange
-
-                override val color: CubeColors
-                    get() = CubeColors.NONE
             },
             makeSimDistanceColorSensor("gripSensor"),
         )
