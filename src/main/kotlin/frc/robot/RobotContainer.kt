@@ -6,15 +6,14 @@ import frc.robot.lib.Mode
 import frc.robot.lib.commands.emptyCommand
 import frc.robot.lib.commands.initializeAllMechanisms
 import frc.robot.lib.extensions.enableAutoLogOutputFor
+import frc.robot.lib.extensions.logTrigger
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.sysid.sysId
-import frc.robot.lib.toReleaseTrigger
 import frc.robot.lib.unified_controller.PS5Gamepad
 import frc.robot.states.State
 import frc.robot.states.initRollerTriggers
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.leds.Leds
-import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 import org.wpilib.command3.Command
 import org.wpilib.smartdashboard.SendableChooser
@@ -24,8 +23,9 @@ object RobotContainer {
     private val autoChooser: LoggedDashboardChooser<Command>
 
     object Buttons {
-        var scoring = driverController.leftBumper().toReleaseTrigger()
-        var intake = driverController.rightBumper()
+        var scoring =
+            driverController.cross().fallingEdge().logTrigger("Buttons/scoring")
+        var intake = driverController.circle().logTrigger("Buttons/intake")
     }
 
     init {
@@ -40,15 +40,15 @@ object RobotContainer {
         configureDefaultCommands()
 
         if (CURRENT_MODE == Mode.SIM) {
-            SimulatedArena.getInstance()
-                .addDriveTrainSimulation(driveSimulation)
-            SimulatedArena.getInstance().resetFieldForAuto()
+            arena.addDriveTrainSimulation(driveSimulation)
+            arena.resetFieldForAuto()
         }
 
         enableAutoLogOutputFor(this)
         initializeAllMechanisms()
         BasicAlerts
         Leds
+        Buttons
         State.register()
         initRollerTriggers()
     }

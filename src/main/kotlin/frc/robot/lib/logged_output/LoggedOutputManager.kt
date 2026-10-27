@@ -103,7 +103,7 @@ object LoggedOutputManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun register(key: String, level: LogLevel, supplier: Supplier<*>) {
+    fun register(key: String, level: LogLevel, supplier: Supplier<*>) {
         if (currentLogLevel.level > level.level) return
         fun value() = supplier.get()
         val type = value()::class.java.toPrimitiveTypeJava()!!

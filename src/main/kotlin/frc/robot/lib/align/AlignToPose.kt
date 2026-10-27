@@ -7,13 +7,14 @@ import frc.robot.lib.autopilot.APProfile
 import frc.robot.lib.autopilot.APTarget
 import frc.robot.lib.autopilot.Autopilot
 import frc.robot.lib.commands.UnnamedCommand
-import frc.robot.lib.commands.command
+import frc.robot.lib.commands.invoke
 import frc.robot.lib.extensions.cm
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.mps
 import frc.robot.lib.extensions.rad_ps
 import kotlin.math.PI
+import org.littletonrobotics.junction.Logger
 import org.wpilib.math.geometry.Pose2d
 import org.wpilib.math.geometry.Rotation2d
 import org.wpilib.math.kinematics.ChassisVelocities
@@ -25,14 +26,14 @@ private val kConstraints = APConstraints().withAcceleration(5.0).withJerk(2.0)
 
 private val kProfile =
     APProfile(kConstraints)
-        .withErrorXY(2.cm)
-        .withErrorTheta(0.5.deg)
+        .withErrorXY(10.cm)
+        .withErrorTheta(10.deg)
         .withBeelineRadius(8.cm)
 
 private val autopilot = Autopilot(kProfile)
 
 private val anglePIDController =
-    TuneablePIDController("alignAnglePIDController", 0.0, 0.0, 0.0)
+    TuneablePIDController("alignAnglePIDController", 1.0, 0.0, 0.0)
 
 private fun Autopilot.APResult.toChassisVelocities(
     omegaResult: AngularVelocity
@@ -51,7 +52,7 @@ fun runToPose(
     entryAngle: Rotation2d? = null,
     endVelocity: LinearVelocity? = null,
     rotationRadius: Distance? = null,
-): UnnamedCommand = command {
+): UnnamedCommand = drive {
     val apTarget = {
         APTarget(targetSupplier())
             .applyIfNotNull(entryAngle) { withEntryAngle(it) }
@@ -71,12 +72,12 @@ fun runToPose(
                 drive.pose.rotation.radians,
                 result.targetAngle.radians,
             )
-
-        drive.runVelocity(
+        val velocities =
             result
                 .toChassisVelocities(omegaResult.rad_ps)
                 .toRobotRelative(drive.pose.rotation)
-        )
+        Logger.recordOutput("velocities", velocities)
+        drive.runVelocity(velocities)
         if (autopilot.atTarget(drive.pose, target)) break
         yield()
     }
