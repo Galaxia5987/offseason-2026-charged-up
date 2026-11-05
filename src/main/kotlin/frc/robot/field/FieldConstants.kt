@@ -16,11 +16,11 @@ import org.team5987.annotation.LoggedOutput
 import org.wpilib.math.geometry.Pose2d
 import org.wpilib.util.Color
 
-enum class CubeColors(val color: Color) {
-    RED(Color.RED),
-    YELLOW(Color.YELLOW),
-    GREEN(Color.GREEN),
-    NONE(Color.BLACK),
+enum class CubeColors(val color: Color, val networkTableName: String) {
+    RED(Color.RED, ""),
+    YELLOW(Color.YELLOW, ""),
+    GREEN(Color.GREEN, ""),
+    NONE(Color.BLACK, ""),
 }
 
 private val SCORING_POSTS_START_OFFSET = 0.527.m
